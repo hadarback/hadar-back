@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הדר בק | ניהול הזמנות</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#EEF2EF; --bg-cream:#E7EEE8; --bg-beige:#E0E6E1;
+  --accent:#4E6E5D; --accent-soft:rgba(78,110,93,.12); --accent-deep:#42604F;
+  --text:#2F3A34; --text-mid:#5C655F; --text-light:#8A938C;
+  --line:#E0E6E1;
+  --clay:#6E9484; --clay-deep:#4E6E5D;
+  --white:#FFFFFF; --footer:#2F3A34;
+  --whatsapp:#25D366; --error:#C0584A;
+  --status-new:#6E9484; --status-ok:#4E6E5D; --status-no:#C0584A; --status-done:#9098A8;
+  --display:'Rubik', sans-serif;
+  --num:'Rubik', sans-serif;
+  --shadow:0 14px 40px -22px rgba(47,58,52,.2); --shadow-lg:0 22px 50px -28px rgba(47,58,52,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Assistant',ui-sans-serif,system-ui,sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+/* Soft green glow */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(60% 45% at 50% 0%, rgba(110,148,132,.10) 0%, transparent 60%)}
+.gate,.app,.toast{position:relative;z-index:2}
+
+/* Header */
+.topbar{background:var(--white);border-bottom:1px solid var(--bg-beige);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;font-size:.9rem}
+.topbar .brand{font-family:var(--display);font-weight:400;font-size:1.25rem;letter-spacing:.02em}
+.topbar .brand .em{font-style:italic;color:var(--clay-deep)}
+.topbar .brand small{color:var(--text-light);font-size:.8rem;margin-right:.5rem}
+.topbar .logout{background:none;border:1px solid var(--bg-beige);color:var(--text-light);padding:.4rem 1rem;border-radius:9999px;cursor:pointer;font-family:inherit;font-size:.82rem;transition:all .2s}
+.topbar .logout:hover{border-color:var(--accent);color:var(--accent-deep)}
+
+/* PIN gate */
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg-cream)}
+.gate .card{background:var(--white);border-radius:20px;padding:3rem 2.5rem;max-width:380px;width:100%;text-align:center;box-shadow:var(--shadow-lg)}
+.gate h1{font-family:var(--display);font-weight:300;font-size:2rem;margin-bottom:.5rem;color:var(--text);letter-spacing:-.01em}
+.gate p{color:var(--text-light);margin-bottom:2rem;font-size:.95rem}
+.gate input{width:100%;padding:1rem;border:1px solid var(--bg-beige);border-radius:12px;font-family:inherit;font-size:1.4rem;text-align:center;letter-spacing:.4rem;color:var(--text);background:var(--bg);transition:all .2s}
+.gate input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);background:var(--white)}
+.gate .err{color:var(--error);font-size:.85rem;margin-top:.5rem;min-height:1.2em}
+.gate button{width:100%;background:var(--accent);color:var(--white);border:none;padding:1rem;border-radius:9999px;font-family:inherit;font-size:1rem;cursor:pointer;margin-top:1.5rem;font-weight:400;letter-spacing:.02em;transition:all .25s}
+.gate button:hover{background:var(--accent-deep);transform:translateY(-1px)}
+.gate button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* App layout */
+.app{display:none;min-height:100vh;flex-direction:column}
+.app.active{display:flex}
+
+/* Tabs */
+.tabs{background:var(--white);border-bottom:1px solid var(--bg-beige);padding:0 2rem;display:flex;gap:.5rem}
+.tab{background:none;border:none;padding:1.2rem 1.4rem;cursor:pointer;font-family:inherit;font-size:.95rem;color:var(--text-light);font-weight:400;border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:.5rem}
+.tab .badge{background:var(--accent-soft);color:var(--accent-deep);font-size:.72rem;padding:.1rem .5rem;border-radius:9999px;font-weight:500}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--text);border-bottom-color:var(--accent)}
+
+main{flex:1;padding:2rem;max-width:1280px;margin:0 auto;width:100%}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
+.stat{background:var(--white);border:1px solid var(--bg-beige);border-radius:14px;padding:1.2rem 1.4rem}
+.stat .num{font-family:var(--num);font-style:italic;font-size:2.4rem;font-weight:500;color:var(--clay-deep);line-height:1}
+.stat .lbl{color:var(--text-light);font-size:.85rem;margin-top:.2rem}
+
+/* Filters */
+.filters{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter{background:var(--white);border:1px solid var(--bg-beige);border-radius:9999px;padding:.45rem 1rem;cursor:pointer;font-family:inherit;font-size:.85rem;color:var(--text-mid);transition:all .2s}
+.filter:hover{border-color:var(--accent)}
+.filter.active{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.search{margin-right:auto;background:var(--white);border:1px solid var(--bg-beige);border-radius:9999px;padding:.45rem 1rem;font-family:inherit;font-size:.85rem;width:240px;color:var(--text)}
+.search:focus{outline:none;border-color:var(--accent)}
+
+/* Bookings table */
+.table-wrap{background:var(--white);border:1px solid var(--bg-beige);border-radius:16px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+thead th{background:var(--bg-cream);text-align:right;padding:1rem;font-weight:500;color:var(--text-mid);font-size:.82rem;letter-spacing:.03em}
+tbody td{padding:1rem;border-top:1px solid var(--bg-beige);color:var(--text);vertical-align:middle}
+tbody tr:hover{background:var(--bg-cream)}
+.status{display:inline-block;padding:.25rem .8rem;border-radius:9999px;font-size:.78rem;font-weight:500;color:#fff}
+.status[data-s="חדש"]{background:var(--status-new)}
+.status[data-s="אושר"]{background:var(--status-ok)}
+.status[data-s="נדחה"]{background:var(--status-no)}
+.status[data-s="בוצע"]{background:var(--status-done)}
+.row-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.act{background:none;border:1px solid var(--bg-beige);padding:.35rem .8rem;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.78rem;color:var(--text-mid);transition:all .15s}
+.act:hover{background:var(--bg-cream);color:var(--text)}
+.act.ok{border-color:var(--status-ok);color:var(--status-ok)}
+.act.ok:hover{background:var(--status-ok);color:#fff}
+.act.no{border-color:var(--status-no);color:var(--status-no)}
+.act.no:hover{background:var(--status-no);color:#fff}
+.act.done{border-color:var(--status-done);color:var(--status-done)}
+.act.done:hover{background:var(--status-done);color:#fff}
+.act.wa{border-color:var(--whatsapp);color:var(--whatsapp);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
+.act.wa:hover{background:var(--whatsapp);color:#fff}
+.notes-cell{max-width:200px;font-size:.82rem;color:var(--text-light)}
+.empty{text-align:center;padding:3rem;color:var(--text-light)}
+.loading{text-align:center;padding:3rem;color:var(--text-light)}
+.loading::before{content:"";display:inline-block;width:20px;height:20px;border:2px solid var(--bg-beige);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-left:.5rem;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Days off panel */
+.daysoff-form{background:var(--white);border:1px solid var(--bg-beige);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap}
+.daysoff-form label{display:block;font-size:.82rem;color:var(--text-light);margin-bottom:.3rem}
+.daysoff-form input{padding:.7rem 1rem;border:1px solid var(--bg-beige);border-radius:10px;font-family:inherit;font-size:.95rem;color:var(--text);background:var(--bg)}
+.daysoff-form input:focus{outline:none;border-color:var(--accent)}
+.daysoff-form button{background:var(--accent);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:9999px;cursor:pointer;font-family:inherit;font-weight:400}
+.daysoff-form button:hover{background:var(--accent-deep)}
+.daysoff-list{display:grid;gap:.6rem}
+.day-row{background:var(--white);border:1px solid var(--bg-beige);border-radius:12px;padding:.8rem 1.2rem;display:flex;justify-content:space-between;align-items:center}
+.day-row .info strong{color:var(--text);font-weight:500}
+.day-row .info small{color:var(--text-light);margin-right:.6rem}
+.day-row button{background:none;border:1px solid var(--bg-beige);color:var(--text-light);padding:.3rem .8rem;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.8rem}
+.day-row button:hover{border-color:var(--status-no);color:var(--status-no)}
+
+/* Extra row-action variants */
+.act.edit{border-color:var(--accent);color:var(--accent-deep)}
+.act.edit:hover{background:var(--accent);color:#fff}
+.act.health{border-color:var(--clay);color:var(--clay-deep)}
+.act.health:hover{background:var(--clay);color:#fff}
+.act.file{border-color:var(--clay-deep);color:var(--clay-deep)}
+.act.file:hover{background:var(--clay-deep);color:#fff}
+
+/* Clients toolbar */
+.toolbar{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.btn-add{background:var(--accent);color:#fff;border:none;padding:.55rem 1.2rem;border-radius:9999px;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:400;transition:all .2s}
+.btn-add:hover{background:var(--accent-deep)}
+.btn-add.clay{background:var(--clay-deep)}
+.btn-add.clay:hover{background:var(--clay)}
+.tag-chip{display:inline-block;background:var(--accent-soft);color:var(--accent-deep);font-size:.72rem;padding:.12rem .6rem;border-radius:9999px;font-weight:500}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(38,34,28,.5);backdrop-filter:blur(3px);z-index:9998;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal-bg.show{display:flex}
+.modal{background:var(--white);border-radius:18px;max-width:560px;width:100%;box-shadow:var(--shadow-lg);margin:auto;animation:modalUp .35s cubic-bezier(.2,.7,.3,1)}
+@keyframes modalUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 1.6rem;border-bottom:1px solid var(--bg-beige)}
+.modal-head h3{font-family:var(--display);font-weight:400;font-size:1.4rem;color:var(--text)}
+.modal-head h3 small{display:block;font-size:.82rem;color:var(--text-light);font-weight:400;font-family:'Heebo',sans-serif;margin-top:.15rem}
+.modal-close{background:none;border:none;font-size:1.6rem;color:var(--text-light);cursor:pointer;line-height:1;padding:.2rem .5rem;border-radius:8px}
+.modal-close:hover{background:var(--bg-cream);color:var(--text)}
+.modal-body{padding:1.5rem 1.6rem}
+.modal-foot{padding:1.1rem 1.6rem;border-top:1px solid var(--bg-beige);display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap}
+.mfield{margin-bottom:1.1rem}
+.mfield label{display:block;font-size:.78rem;color:var(--text-light);margin-bottom:.4rem;font-weight:500}
+.mfield input,.mfield textarea,.mfield select{width:100%;padding:.8rem 1rem;border:1px solid var(--bg-beige);border-radius:10px;font-family:inherit;font-size:.95rem;color:var(--text);background:var(--bg)}
+.mfield textarea{resize:vertical;min-height:90px}
+.mfield input:focus,.mfield textarea:focus,.mfield select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media (max-width:480px){.mrow{grid-template-columns:1fr}}
+.btn-modal{padding:.75rem 1.5rem;border-radius:9999px;cursor:pointer;font-family:inherit;font-size:.9rem;border:1px solid var(--bg-beige);background:var(--white);color:var(--text-mid);font-weight:400}
+.btn-modal:hover{background:var(--bg-cream)}
+.btn-modal.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-modal.primary:hover{background:var(--accent-deep)}
+.btn-modal.danger{color:var(--status-no);border-color:var(--status-no)}
+.btn-modal.danger:hover{background:var(--status-no);color:#fff}
+
+/* Health view */
+.health-meta{background:var(--bg-cream);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.92rem}
+.health-meta strong{color:var(--text)}
+.qa-row{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--bg-beige);font-size:.92rem}
+.qa-row:last-child{border-bottom:none}
+.qa-row .qa-q{color:var(--text-mid);flex:1}
+.qa-row .qa-a{font-weight:600;flex-shrink:0}
+.qa-row .qa-a.yes{color:var(--clay-deep)}
+.qa-row .qa-a.no{color:var(--status-ok)}
+.qa-row .qa-detail{color:var(--text-light);font-size:.85rem;display:block;margin-top:.2rem}
+.qa-row.crit{background:rgba(192,88,74,.07);border-radius:8px;padding-right:.6rem;padding-left:.6rem}
+.qa-row.crit .qa-q{color:var(--status-no);font-weight:600}
+.qa-row.crit .qa-a.yes{color:#fff;background:var(--status-no);padding:.1rem .6rem;border-radius:9999px}
+.crit-banner{background:var(--status-no);color:#fff;border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.2rem;font-weight:600;font-size:.92rem;line-height:1.5;display:flex;gap:.6rem;align-items:flex-start}
+.crit-banner svg{width:20px;height:20px;flex-shrink:0;margin-top:1px}
+.decl-crit{color:var(--status-no);font-weight:700}
+
+/* Patient records */
+.rec-card{background:var(--bg-cream);border:1px solid var(--bg-beige);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.8rem}
+.rec-card .rec-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+.rec-card .rec-date{font-family:var(--num);font-style:italic;font-size:1.15rem;color:var(--clay-deep);font-weight:500}
+.rec-card .rec-reason{font-weight:500;color:var(--text);font-size:.9rem;margin-bottom:.3rem}
+.rec-card .rec-summary{color:var(--text-mid);font-size:.9rem;white-space:pre-wrap;line-height:1.6}
+.rec-card .rec-edit{background:none;border:none;color:var(--accent-deep);cursor:pointer;font-family:inherit;font-size:.8rem}
+.rec-empty{text-align:center;color:var(--text-light);padding:1.5rem}
+
+/* Broadcast */
+.bc-clients{max-height:240px;overflow-y:auto;border:1px solid var(--bg-beige);border-radius:12px;padding:.6rem}
+.bc-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .5rem;border-radius:8px}
+.bc-row:hover{background:var(--bg-cream)}
+.bc-row label{flex:1;cursor:pointer;font-size:.9rem}
+.bc-links{display:grid;gap:.4rem;margin-top:1rem}
+.bc-links a{display:flex;justify-content:space-between;align-items:center;background:var(--bg-cream);border-radius:10px;padding:.6rem .9rem;text-decoration:none;color:var(--text);font-size:.9rem}
+.bc-links a:hover{background:var(--accent-soft)}
+.bc-links a span.wa{color:var(--whatsapp);font-weight:600;font-size:.82rem}
+
+/* Link cards (top) */
+.link-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+@media (max-width:680px){.link-cards{grid-template-columns:1fr}}
+.link-card{background:var(--white);border:1px solid var(--bg-beige);border-radius:16px;padding:1.3rem 1.4rem;box-shadow:var(--shadow)}
+.link-card .lc-head{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;font-family:var(--display);font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:.6rem}
+.link-card .lc-head svg{width:18px;height:18px;color:var(--accent)}
+.link-card .lc-url{font-size:.82rem;color:var(--text-light);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--bg-cream);border-radius:8px;padding:.5rem .7rem;margin-bottom:.8rem}
+.link-card .lc-actions{display:flex;gap:.5rem}
+.lc-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:1px solid var(--bg-beige);background:var(--white);color:var(--text-mid);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-family:inherit;font-size:.84rem;text-decoration:none;transition:all .2s}
+.lc-btn:hover{background:var(--bg-cream);border-color:var(--accent)}
+.lc-btn svg{width:15px;height:15px}
+.lc-btn.wa{color:var(--whatsapp)}.lc-btn.wa:hover{background:var(--whatsapp);color:#fff;border-color:var(--whatsapp)}
+
+/* Hours tab — month calendar */
+.hours-head{font-family:var(--display);font-weight:700;font-size:1.2rem;color:var(--text);text-align:center;margin-bottom:1rem}
+.scal{background:var(--white);border:1px solid var(--bg-beige);border-radius:16px;padding:1.3rem;box-shadow:var(--shadow);margin-bottom:1.5rem}
+.scal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.scal-nav button{background:none;border:1px solid transparent;cursor:pointer;color:var(--text-mid);padding:.4rem .8rem;border-radius:8px;font-size:1.1rem;transition:all .2s}
+.scal-nav button:hover:not(:disabled){background:var(--bg-cream);color:var(--accent-deep)}
+.scal-nav button:disabled{opacity:.25;cursor:not-allowed}
+.scal-nav .ml{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--text)}
+.scal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem}
+.scal-grid .dow{text-align:center;font-size:.72rem;color:var(--text-light);padding:.3rem 0;font-weight:600}
+.scal-grid .cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;cursor:pointer;font-size:.92rem;color:var(--text);border:1.5px solid transparent;transition:all .2s;position:relative;font-weight:500}
+.scal-grid .cell.empty{cursor:default}
+.scal-grid .cell.past{color:#C7CFC9;cursor:pointer}
+.scal-grid .cell:not(.empty):not(.no-hours):hover{background:var(--bg-cream)}
+.scal-grid .cell.no-hours{color:#C7CFC9;cursor:default;opacity:.55}
+.scal-grid .cell.selected{border-color:var(--accent);background:var(--accent-soft)}
+.scal-grid .cell.blocked{background:rgba(192,88,74,.10)}
+.scal-grid .cell.blocked > span:first-child{color:var(--status-no);text-decoration:line-through}
+.scal-grid .cell .lock{position:absolute;top:3px;left:5px;font-size:.62rem;color:var(--status-no)}
+.block-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:rgba(192,88,74,.09);border:1px solid rgba(192,88,74,.3);border-radius:12px;padding:1rem 1.2rem;flex-wrap:wrap}
+.block-banner .bb-text{color:var(--status-no);font-weight:600}
+.block-banner button{background:var(--white);border:1px solid var(--status-no);color:var(--status-no);border-radius:9999px;padding:.5rem 1.2rem;cursor:pointer;font-family:inherit;font-weight:600;font-size:.88rem}
+.block-banner button:hover{background:var(--status-no);color:#fff}
+.scal-grid .cell .dots{display:flex;gap:3px;height:6px;align-items:center}
+.scal-grid .cell .dot{width:6px;height:6px;border-radius:50%}
+.scal-grid .cell .dot.open{background:var(--status-ok)}
+.scal-grid .cell .dot.booked{background:var(--status-no)}
+.scal-legend{display:flex;justify-content:flex-end;gap:1.2rem;margin-top:1rem;font-size:.82rem;color:var(--text-light)}
+.scal-legend span{display:inline-flex;align-items:center;gap:.4rem}
+.scal-legend .dot{width:8px;height:8px;border-radius:50%}
+.scal-legend .dot.open{background:var(--status-ok)}.scal-legend .dot.booked{background:var(--status-no)}
+.scal-legend .dot.mixed{background:linear-gradient(90deg,var(--status-no) 50%,var(--status-ok) 50%)}
+
+/* Slot manager */
+.slot-day-head{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--text);margin:.5rem 0 1rem;text-align:center}
+.slot-manual{background:var(--white);border:1px solid var(--bg-beige);border-radius:14px;padding:1.2rem;display:flex;gap:.8rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem}
+.slot-manual label{display:block;font-size:.8rem;color:var(--text-light);margin-bottom:.3rem;font-weight:600}
+.slot-manual input{padding:.65rem .9rem;border:1px solid var(--bg-beige);border-radius:10px;font-family:inherit;font-size:.95rem;color:var(--text);background:var(--bg)}
+.slot-manual input:focus{outline:none;border-color:var(--accent)}
+.slot-bulk{display:flex;gap:.6rem;justify-content:flex-end;margin-bottom:1rem;flex-wrap:wrap}
+.slot-quick-lbl{font-size:.85rem;color:var(--text-light);margin-bottom:.6rem;text-align:right}
+.slotgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem}
+.slotchip{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:1.5px solid var(--bg-beige);border-radius:10px;padding:.45rem .35rem;font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--text);transition:all .2s;user-select:none}
+.slotchip.open{border-color:var(--status-ok);background:rgba(78,110,93,.08)}
+.slotchip.booked{opacity:.6;background:var(--bg-cream);cursor:default}
+.slotchip.blocked-manual{border-color:rgba(192,88,74,.35);background:rgba(192,88,74,.05)}
+.slotchip .t{flex:1;text-align:center}
+.slotchip .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:var(--bg-cream);color:var(--text-mid);transition:all .15s;flex-shrink:0;cursor:pointer}
+.slotchip .ic svg{width:13px;height:13px}
+.slotchip .ic.add:hover{background:var(--status-ok);color:#fff}
+.slotchip .ic.rem{color:var(--status-no)}
+.slotchip .ic.rem:hover{background:var(--status-no);color:#fff}
+.slotchip .ic.blk{color:rgba(192,88,74,.5)}
+.slotchip .ic.blk:hover{background:rgba(192,88,74,.15);color:var(--error)}
+.slotchip .ic.blk.active{background:rgba(192,88,74,.2);color:var(--error)}
+.slotchip .bk{font-size:.72rem;color:var(--status-no);font-weight:600;padding:0 .3rem}
+.slotchip.buffer{border-color:rgba(191,141,55,.3);background:rgba(191,141,55,.05)}
+.slotchip.open.buffer{border-color:rgba(191,141,55,.7);background:rgba(191,141,55,.12)}
+.slotchip .buf-lbl{font-size:.6rem;color:rgba(150,100,20,.7);display:block;text-align:center;margin-top:1px;font-weight:500;line-height:1}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--footer);color:#fff;padding:.85rem 1.5rem;border-radius:12px;font-size:.9rem;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--error)}
+.toast.success{background:var(--status-ok)}
+
+@media (max-width:760px){
+  .topbar{padding:.8rem 1rem}
+  .tabs{padding:0 .5rem;overflow-x:auto}
+  .tab{padding:1rem .8rem;font-size:.85rem;white-space:nowrap}
+  main{padding:1rem}
+  .filters{flex-direction:column;align-items:stretch}
+  .search{margin-right:0;width:100%}
+  table{font-size:.85rem}
+  thead{display:none}
+  tbody tr{display:block;padding:1rem;border-top:1px solid var(--bg-beige)}
+  tbody td{display:flex;justify-content:space-between;padding:.4rem 0;border:none}
+  tbody td::before{content:attr(data-lbl);color:var(--text-light);font-size:.78rem;font-weight:500}
+  tbody td.row-actions-cell{flex-direction:column;align-items:stretch;margin-top:.6rem}
+  tbody td.row-actions-cell::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Login Gate -->
+<div class="gate" id="gate">
+  <div class="card">
+    <h1>ניהול הזמנות</h1>
+    <p>הדר בק · הכנסי קוד גישה</p>
+    <input type="password" id="pin-input" maxlength="8" inputmode="numeric" placeholder="••••" autocomplete="off">
+    <div class="err" id="pin-err"></div>
+    <button id="pin-go">כניסה</button>
+  </div>
+</div>
+
+<!-- App -->
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand">הדר <span class="em">בק</span> <small>· מערכת ניהול</small></div>
+    <button class="logout" id="logout">יציאה</button>
+  </div>
+
+  <!-- Share links -->
+  <div style="max-width:1280px;margin:1.5rem auto 0;padding:0 2rem;width:100%">
+    <div class="link-cards">
+      <div class="link-card">
+        <div class="lc-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> לינק קביעת תורים</div>
+        <div class="lc-url" id="url-book"></div>
+        <div class="lc-actions">
+          <button class="lc-btn" data-copy="url-book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> העתקה</button>
+          <a class="lc-btn wa" id="share-book" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg> שלחי בוואטסאפ</a>
+        </div>
+      </div>
+      <div class="link-card">
+        <div class="lc-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg> לינק הצהרת בריאות</div>
+        <div class="lc-url" id="url-health"></div>
+        <div class="lc-actions">
+          <button class="lc-btn" data-copy="url-health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> העתקה</button>
+          <a class="lc-btn wa" id="share-health" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg> שלחי בוואטסאפ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" data-panel="hours">שעות</button>
+    <button class="tab active" data-panel="bookings">תורים <span class="badge" id="badge-new">0</span></button>
+    <button class="tab" data-panel="declarations">הצהרות</button>
+    <button class="tab" data-panel="clients">לקוחות</button>
+  </div>
+
+  <main>
+
+    <!-- Bookings panel -->
+    <div class="panel active" id="panel-bookings">
+      <div class="stats" id="stats"></div>
+
+      <div class="toolbar">
+        <button class="btn-add clay" id="send-reminders">🔔 שליחת תזכורות לתורים של מחר</button>
+        <span style="font-size:.8rem;color:var(--text-light)">התזכורות נשלחות גם אוטומטית כל בוקר</span>
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">הכל</button>
+        <button class="filter" data-filter="חדש">חדשות</button>
+        <button class="filter" data-filter="אושר">אושרו</button>
+        <button class="filter" data-filter="בוצע">בוצעו</button>
+        <button class="filter" data-filter="נדחה">נדחו</button>
+        <input type="text" class="search" id="search" placeholder="חיפוש לפי שם או טלפון...">
+      </div>
+
+      <div class="table-wrap">
+        <div class="loading" id="loading">טוען הזמנות</div>
+        <table id="tbl" style="display:none">
+          <thead>
+            <tr>
+              <th>תאריך</th>
+              <th>שעה</th>
+              <th>שם</th>
+              <th>טלפון</th>
+              <th>טיפול</th>
+              <th>הערות</th>
+              <th>סטטוס</th>
+              <th>פעולות</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty" id="empty" style="display:none">אין הזמנות עדיין</div>
+      </div>
+    </div>
+
+    <!-- Hours panel -->
+    <div class="panel" id="panel-hours">
+      <div class="hours-head">תצוגה חודשית</div>
+      <div class="scal">
+        <div class="scal-nav">
+          <button id="scal-prev">›</button>
+          <div class="ml" id="scal-month"></div>
+          <button id="scal-next">‹</button>
+        </div>
+        <div class="scal-grid" id="scal-grid"></div>
+        <div class="scal-legend">
+          <span><span class="dot open"></span> זמין</span>
+          <span><span class="dot booked"></span> תפוס</span>
+          <span><span class="dot mixed"></span> משולב</span>
+        </div>
+      </div>
+
+      <div id="slot-day">
+        <div class="slot-day-head" id="slot-day-head">בחרי תאריך בלוח כדי לנהל שעות</div>
+        <div id="slot-day-body" style="display:none">
+          <div id="slot-block-banner"></div>
+          <div class="slot-manual">
+            <div><label>תאריך</label><input type="date" id="slot-date"></div>
+            <div><label>שעה</label><input type="time" id="slot-time" step="900"></div>
+            <button class="btn-add" id="slot-add">+ הוספה</button>
+          </div>
+          <div class="slot-bulk">
+            <button class="btn-add" id="slot-add-all">＋ הוסיפי הכל</button>
+            <button class="btn-add clay" id="slot-block-all">⊘ חסום הכל</button>
+          </div>
+          <div class="slot-quick-lbl">הוספה מהירה:</div>
+          <div class="slotgrid" id="slotgrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Declarations panel -->
+    <div class="panel" id="panel-declarations">
+      <div class="filters">
+        <input type="text" class="search" id="decl-search" placeholder="חיפוש לפי שם או טלפון..." style="margin-right:auto">
+      </div>
+      <div class="table-wrap">
+        <div class="loading" id="decl-loading">טוען הצהרות</div>
+        <table id="decl-tbl" style="display:none">
+          <thead><tr><th>תאריך</th><th>שם</th><th>טלפון</th><th>דגלים</th><th></th></tr></thead>
+          <tbody id="decl-tbody"></tbody>
+        </table>
+        <div class="empty" id="decl-empty" style="display:none">אין הצהרות בריאות עדיין</div>
+      </div>
+    </div>
+
+    <!-- Clients panel -->
+    <div class="panel" id="panel-clients">
+      <div class="toolbar">
+        <button class="btn-add" id="client-new">+ לקוחה חדשה</button>
+        <button class="btn-add clay" id="bc-open">📣 תפוצת WhatsApp</button>
+        <input type="text" class="search" id="client-search" placeholder="חיפוש לפי שם או טלפון..." style="margin-right:auto">
+      </div>
+      <div class="table-wrap">
+        <div class="loading" id="clients-loading">טוען לקוחות</div>
+        <table id="clients-tbl" style="display:none">
+          <thead>
+            <tr><th>שם</th><th>טלפון</th><th>טיפולים</th><th>אחרון</th><th>תיוג</th><th>פעולות</th></tr>
+          </thead>
+          <tbody id="clients-tbody"></tbody>
+        </table>
+        <div class="empty" id="clients-empty" style="display:none">אין לקוחות עדיין</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== Modals ===== -->
+
+<!-- Reschedule -->
+<div class="modal-bg" id="m-resched">
+  <div class="modal">
+    <div class="modal-head"><h3>שינוי מועד תור<small id="resched-name"></small></h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <p style="color:var(--text-light);font-size:.88rem;margin-bottom:1rem">הצהרת הבריאות נשמרת — רק המועד מתעדכן.</p>
+      <div class="mrow">
+        <div class="mfield"><label>תאריך</label><input type="date" id="resched-date"></div>
+        <div class="mfield"><label>שעה</label><input type="time" id="resched-time" step="900"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-modal" data-close>ביטול</button>
+      <button class="btn-modal primary" id="resched-save">עדכון מועד</button>
+    </div>
+  </div>
+</div>
+
+<!-- Full health form -->
+<div class="modal-bg" id="m-health">
+  <div class="modal">
+    <div class="modal-head"><h3>הצהרת בריאות מלאה<small id="health-name"></small></h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body" id="health-body"><div class="loading">טוען</div></div>
+    <div class="modal-foot"><button class="btn-modal" data-close>סגירה</button></div>
+  </div>
+</div>
+
+<!-- Client edit -->
+<div class="modal-bg" id="m-client">
+  <div class="modal">
+    <div class="modal-head"><h3 id="client-title">לקוחה</h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="mrow">
+        <div class="mfield"><label>שם מלא</label><input type="text" id="client-name"></div>
+        <div class="mfield"><label>טלפון</label><input type="tel" id="client-phone" placeholder="05X-XXXXXXX"></div>
+      </div>
+      <div class="mrow">
+        <div class="mfield"><label>גיל</label><input type="number" id="client-age" min="14" max="120"></div>
+        <div class="mfield"><label>תיוג (אופציונלי)</label><input type="text" id="client-tag" placeholder="קבועה, חדשה, VIP..."></div>
+      </div>
+      <div class="mfield"><label>אימייל</label><input type="email" id="client-email" placeholder="name@example.com"></div>
+      <div class="mfield"><label>הערות</label><textarea id="client-notes" placeholder="העדפות, רגישויות, מידע כללי..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-modal danger" id="client-delete" style="margin-left:auto">מחיקה</button>
+      <button class="btn-modal" data-close>ביטול</button>
+      <button class="btn-modal primary" id="client-save">שמירה</button>
+    </div>
+  </div>
+</div>
+
+<!-- Patient file (records) -->
+<div class="modal-bg" id="m-file">
+  <div class="modal">
+    <div class="modal-head"><h3>תיק מטופל<small id="file-name"></small></h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div id="file-records"><div class="loading">טוען</div></div>
+      <hr style="border:none;border-top:1px solid var(--bg-beige);margin:1.2rem 0">
+      <div id="file-form-title" style="font-weight:500;margin-bottom:.8rem;color:var(--text)">רשומת טיפול חדשה</div>
+      <div class="mrow">
+        <div class="mfield"><label>תאריך הטיפול</label><input type="date" id="rec-date"></div>
+        <div class="mfield"><label>סיבת הפנייה</label><input type="text" id="rec-reason" placeholder="כאב גב, מתח, פינוק..."></div>
+      </div>
+      <div class="mfield"><label>סיכום הטיפול</label><textarea id="rec-summary" placeholder="מה נעשה בטיפול, ממצאים, המלצות להמשך..."></textarea></div>
+      <input type="hidden" id="rec-id">
+    </div>
+    <div class="modal-foot">
+      <button class="btn-modal" id="rec-reset" style="margin-left:auto">ניקוי</button>
+      <button class="btn-modal primary" id="rec-save">שמירת רשומה</button>
+    </div>
+  </div>
+</div>
+
+<!-- Broadcast -->
+<div class="modal-bg" id="m-bc">
+  <div class="modal">
+    <div class="modal-head"><h3>תפוצת WhatsApp<small>בחרי לקוחות והודעה — ייפתחו קישורי שליחה מוכנים</small></h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="mfield"><label>תוכן ההודעה</label><textarea id="bc-msg" placeholder="היי, רציתי לעדכן ש...">היי 🌿 רציתי לעדכן ש</textarea></div>
+      <div class="mfield">
+        <label style="display:flex;justify-content:space-between">נמענות <button id="bc-all" class="rec-edit" style="color:var(--accent-deep)">בחירת הכל</button></label>
+        <div class="bc-clients" id="bc-clients"></div>
+      </div>
+      <div class="bc-links" id="bc-links"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-modal" data-close>סגירה</button>
+      <button class="btn-modal primary" id="bc-gen">יצירת קישורי שליחה</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
+
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const HE_DOW = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const HE_MONTHS_SHORT = ['ינו׳','פבר׳','מרץ','אפר׳','מאי','יוני','יולי','אוג׳','ספט׳','אוק׳','נוב׳','דצמ׳'];
+
+let PIN = sessionStorage.getItem('hadarPin') || '';
+let allBookings = [];
+let currentFilter = 'all';
+let searchTerm = '';
+
+function showToast(msg, kind){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (kind ? ' ' + kind : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ---- JSONP ----
+function api(params, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    if (!SHEETS_URL) { reject(new Error('no SHEETS_URL configured')); return; }
+    const cbName = 'admCb_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+    const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, timeoutMs || 10000);
+    const script = document.createElement('script');
+    function cleanup() {
+      clearTimeout(timer);
+      try { delete window[cbName]; } catch(e) { window[cbName] = undefined; }
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    window[cbName] = function(resp) { cleanup(); resolve(resp); };
+    const usp = new URLSearchParams(params);
+    usp.append('callback', cbName);
+    script.src = SHEETS_URL + '?' + usp.toString();
+    script.onerror = () => { cleanup(); reject(new Error('network')); };
+    document.body.appendChild(script);
+  });
+}
+
+// ---- PIN gate ----
+async function tryLogin(pin) {
+  $('#pin-go').disabled = true;
+  $('#pin-err').textContent = '';
+  try {
+    const resp = await api({ action: 'list', pin: pin });
+    if (resp && resp.result === 'success') {
+      PIN = pin;
+      sessionStorage.setItem('hadarPin', pin);
+      $('#gate').style.display = 'none';
+      $('#app').classList.add('active');
+      allBookings = resp.bookings || [];
+      renderAll();
+    } else {
+      // קוד שגוי / לא מורשה — לנקות זיכרון ולהחזיר את מסך הקוד תמיד
+      sessionStorage.removeItem('hadarPin');
+      $('#app').classList.remove('active');
+      $('#gate').style.display = 'flex';
+      $('#pin-err').textContent = 'קוד שגוי';
+    }
+  } catch (e) {
+    // כשל תקשורת — אסור להישאר במסך לבן. תמיד להחזיר את מסך הקוד כדי שאפשר לנסות שוב
+    $('#app').classList.remove('active');
+    $('#gate').style.display = 'flex';
+    $('#pin-err').textContent = 'שגיאת תקשורת — נסי שוב (אם ממשיך: דפדפן אחר או כיבוי חוסם פרסומות)';
+  } finally {
+    $('#pin-go').disabled = false;
+  }
+}
+
+$('#pin-go').addEventListener('click', () => {
+  const pin = $('#pin-input').value.trim();
+  if (!pin) return;
+  tryLogin(pin);
+});
+$('#pin-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') $('#pin-go').click();
+});
+
+$('#logout').addEventListener('click', () => {
+  sessionStorage.removeItem('hadarPin');
+  PIN = '';
+  $('#app').classList.remove('active');
+  $('#gate').style.display = 'flex';
+  $('#pin-input').value = '';
+});
+
+// auto-login if PIN cached
+if (PIN) {
+  $('#gate').style.display = 'none';
+  tryLogin(PIN);
+}
+
+// ---- Tabs ----
+$$('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.panel;
+    $$('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    $$('.panel').forEach(p => p.classList.remove('active'));
+    $('#panel-' + target).classList.add('active');
+    if (target === 'hours') loadHours();
+    if (target === 'declarations') loadDeclarations();
+    if (target === 'clients') loadClients();
+  });
+});
+
+// ---- Filters ----
+$$('.filter').forEach(b => {
+  b.addEventListener('click', () => {
+    $$('.filter').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    currentFilter = b.dataset.filter;
+    renderTable();
+  });
+});
+$('#search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim().toLowerCase();
+  renderTable();
+});
+
+// ---- Render ----
+function fmtDateLabel(iso) {
+  if (!iso) return '';
+  let d;
+  if (String(iso).indexOf('T') > -1) {
+    // ISO עם זמן (תא Sheets שהומר ל-Date) — לפענח כתאריך מלא
+    d = new Date(iso);
+  } else {
+    const parts = String(iso).split('-');
+    if (parts.length !== 3) return iso;
+    d = new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  if (isNaN(d.getTime())) return iso;
+  return HE_DOW[d.getDay()] + ' · ' + d.getDate() + ' ' + HE_MONTHS_SHORT[d.getMonth()];
+}
+// שעה נקייה HH:mm עם אפס מוביל — גם אם הגיע "7:30" או ISO ("1899-12-30T07:00..") מ-Sheets
+function fmtTime(t) {
+  if (!t) return '';
+  const s = String(t);
+  const m = s.match(/T(\d{1,2}):(\d{2})/) || s.match(/(\d{1,2}):(\d{2})/);
+  return m ? (('0'+m[1]).slice(-2) + ':' + m[2]) : s;
+}
+// yyyy-MM-dd ל-<input type=date> — גם אם הגיע כ-ISO עם זמן
+function fmtDateInput(iso) {
+  if (!iso) return '';
+  const s = String(iso);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const d = new Date(s);
+  if (isNaN(d.getTime())) return s.split('T')[0] || '';
+  const mm = String(d.getMonth()+1).padStart(2,'0'), dd = String(d.getDate()).padStart(2,'0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+
+function renderAll() {
+  // Stats
+  const stats = { total: allBookings.length, חדש:0, אושר:0, בוצע:0, נדחה:0 };
+  allBookings.forEach(b => {
+    if (stats[b.status] !== undefined) stats[b.status]++;
+  });
+  $('#stats').innerHTML = `
+    <div class="stat"><div class="num">${stats.חדש}</div><div class="lbl">חדשות לאישור</div></div>
+    <div class="stat"><div class="num">${stats.אושר}</div><div class="lbl">מאושרות</div></div>
+    <div class="stat"><div class="num">${stats.בוצע}</div><div class="lbl">בוצעו</div></div>
+    <div class="stat"><div class="num">${stats.total}</div><div class="lbl">סה"כ</div></div>
+  `;
+  $('#badge-new').textContent = stats.חדש;
+  renderTable();
+}
+
+function renderTable() {
+  $('#loading').style.display = 'none';
+  const tbody = $('#tbody');
+  let rows = allBookings;
+  if (currentFilter !== 'all') rows = rows.filter(b => b.status === currentFilter);
+  if (searchTerm) rows = rows.filter(b =>
+    String(b.name||'').toLowerCase().includes(searchTerm) ||
+    String(b.phone||'').includes(searchTerm)
+  );
+
+  if (rows.length === 0) {
+    $('#tbl').style.display = 'none';
+    $('#empty').style.display = 'block';
+    return;
+  }
+  $('#empty').style.display = 'none';
+  $('#tbl').style.display = '';
+
+  tbody.innerHTML = rows.map(b => {
+    const phoneClean = String(b.phone||'').replace(/\D/g,'');
+    const waPhone = phoneClean.startsWith('0') ? '972' + phoneClean.substring(1) : phoneClean;
+    const waMsg = encodeURIComponent(`שלום ${b.name}, קיבלתי את בקשתך לתור ${b.service} ב-${fmtDateLabel(b.date)} בשעה ${fmtTime(b.time)}.`);
+    return `
+      <tr data-id="${b.id}">
+        <td data-lbl="תאריך">${fmtDateLabel(b.date)}</td>
+        <td data-lbl="שעה">${fmtTime(b.time)}</td>
+        <td data-lbl="שם"><strong>${b.name||''}</strong></td>
+        <td data-lbl="טלפון">${b.phone||''}</td>
+        <td data-lbl="טיפול">${b.service||''} <small style="color:#8B8B8B">${b.duration?b.duration+' דק׳':''}</small></td>
+        <td data-lbl="הערות" class="notes-cell">${b.notes||'—'}</td>
+        <td data-lbl="סטטוס"><span class="status" data-s="${b.status||'חדש'}">${b.status||'חדש'}</span></td>
+        <td class="row-actions-cell">
+          <div class="row-actions">
+            ${b.status !== 'אושר' ? `<button class="act ok" data-act="אושר">אישור</button>` : ''}
+            ${b.status !== 'נדחה' ? `<button class="act no" data-act="נדחה">דחיה</button>` : ''}
+            ${b.status !== 'בוצע' ? `<button class="act done" data-act="בוצע">בוצע</button>` : ''}
+            <button class="act edit" data-resched>מועד</button>
+            <button class="act health" data-health>בריאות</button>
+            <button class="act file" data-file>תיק</button>
+            <a class="act wa" href="https://api.whatsapp.com/send?phone=${waPhone}&text=${waMsg}" target="_blank" rel="noopener">WA</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  // wire action buttons
+  tbody.querySelectorAll('.act[data-act]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.closest('tr').dataset.id;
+      const status = btn.dataset.act;
+      btn.disabled = true;
+      btn.style.opacity = .5;
+      // אישור: לפתוח WhatsApp ללקוחה מיד (במסגרת לחיצת המשתמש)
+      let waPopup = null;
+      if (status === 'אושר') waPopup = window.open('', '_blank');
+      try {
+        const resp = await api({ action: 'update_status', pin: PIN, id: id, status: status });
+        if (resp && resp.result === 'success') {
+          const row = allBookings.find(b => b.id === id);
+          if (row) row.status = status;
+          // הודעת WhatsApp ללקוחה — אם השרת לא שלח לבד (מצב manual), נפתח קישור מוכן
+          if (status === 'אושר' && resp.wa_url && !resp.wa_sent && waPopup) {
+            waPopup.location = resp.wa_url;
+          } else if (waPopup) { waPopup.close(); }
+          showToast(status === 'אושר'
+            ? (resp.wa_sent ? 'אושר ונשלחה הודעה ללקוחה ✓' : 'אושר — נפתח WhatsApp ללקוחה')
+            : 'עודכן ל-' + status, 'success');
+          renderAll();
+        } else {
+          if (waPopup) waPopup.close();
+          showToast(resp && resp.message || 'שגיאה', 'error');
+          btn.disabled = false; btn.style.opacity = 1;
+        }
+      } catch (e) {
+        if (waPopup) waPopup.close();
+        showToast('שגיאת תקשורת', 'error');
+        btn.disabled = false; btn.style.opacity = 1;
+      }
+    });
+  });
+
+  // reschedule / health / patient-file buttons
+  tbody.querySelectorAll('[data-resched]').forEach(btn =>
+    btn.addEventListener('click', () => openReschedule(btn.closest('tr').dataset.id)));
+  tbody.querySelectorAll('[data-health]').forEach(btn =>
+    btn.addEventListener('click', () => openHealth(btn.closest('tr').dataset.id)));
+  tbody.querySelectorAll('[data-file]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const b = allBookings.find(x => x.id === btn.closest('tr').dataset.id);
+      if (b) openPatientFile(b.phone, b.name);
+    }));
+}
+
+// ====== Modal helpers ======
+function openModal(id){ $('#'+id).classList.add('show'); }
+function closeModal(el){ el.classList.remove('show'); }
+document.addEventListener('click', e => {
+  if (e.target.matches('[data-close]')) closeModal(e.target.closest('.modal-bg'));
+  else if (e.target.classList.contains('modal-bg')) closeModal(e.target);
+});
+
+// ====== Reschedule ======
+let reschedId = null;
+function openReschedule(id){
+  const b = allBookings.find(x => x.id === id);
+  if (!b) return;
+  reschedId = id;
+  const dInput = fmtDateInput(b.date), tInput = fmtTime(b.time);
+  $('#resched-name').textContent = b.name + ' · ' + fmtDateLabel(b.date) + ' ' + tInput;
+  $('#resched-date').value = dInput;
+  $('#resched-time').value = tInput;
+  openModal('m-resched');
+}
+$('#resched-save').addEventListener('click', async () => {
+  const date = $('#resched-date').value, time = $('#resched-time').value;
+  if (!date || !time) { showToast('בחרי תאריך ושעה', 'error'); return; }
+  const btn = $('#resched-save'); btn.disabled = true;
+  let waPopup = null;
+  const b = allBookings.find(x => x.id === reschedId);
+  if (b && b.status === 'אושר') waPopup = window.open('', '_blank');
+  try {
+    const r = await api({ action: 'reschedule', pin: PIN, id: reschedId, date: date, time: time });
+    if (r && r.result === 'success') {
+      if (b) { b.date = date; b.time = time; }
+      if (r.wa_url && !r.wa_sent && waPopup) waPopup.location = r.wa_url; else if (waPopup) waPopup.close();
+      showToast('המועד עודכן ✓', 'success');
+      closeModal($('#m-resched')); renderAll();
+    } else { if (waPopup) waPopup.close(); showToast(r && r.message || 'שגיאה', 'error'); }
+  } catch (e) { if (waPopup) waPopup.close(); showToast('שגיאת תקשורת', 'error'); }
+  finally { btn.disabled = false; }
+});
+
+// ====== Full health form ======
+async function openHealth(bookingId){
+  const b = allBookings.find(x => x.id === bookingId);
+  if (!b) return;
+  $('#health-name').textContent = b.name + ' · ' + b.phone;
+  $('#health-body').innerHTML = '<div class="loading">טוען</div>';
+  openModal('m-health');
+  try {
+    const params = { action: 'get_health', pin: PIN };
+    if (b.health_id) params.id = b.health_id; else params.phone = b.phone;
+    const r = await api(params);
+    renderHealth(r && r.health);
+  } catch (e) { $('#health-body').innerHTML = '<div class="rec-empty">שגיאת תקשורת</div>'; }
+}
+function renderHealth(h){
+  if (!h) { $('#health-body').innerHTML = '<div class="rec-empty">לא נמצאה הצהרת בריאות ללקוחה זו.<br><small>הלקוחה לא מילאה את הטופס המקוון.</small></div>'; return; }
+  let qa = [];
+  try { qa = JSON.parse(h.answers_json || '[]'); } catch(e){ qa = []; }
+  const critYes = qa.filter(i => i.critical && i.a === 'כן');
+  let html = '';
+  if (critYes.length){
+    html += `<div class="crit-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+      <span>🔴 קונטראינדיקציה — לא לקבל לטיפול ללא בירור:<br>${critYes.map(i=>i.q.replace(/\?$/,'')).join(' · ')}</span>
+    </div>`;
+  }
+  html += `<div class="health-meta">
+    <strong>${h.name||''}</strong> · ${h.phone||''}${h.age?' · גיל '+h.age:''}<br>
+    ${h.email?'✉️ '+h.email+'<br>':''}
+    ${h.appointment?'📅 '+h.appointment+'<br>':''}
+    <small style="color:var(--text-light)">נשלח: ${fmtTimestamp(h.submitted)}</small>
+  </div>`;
+  if (qa.length){
+    html += qa.map(item => {
+      const isCrit = item.critical && item.a === 'כן';
+      return `
+      <div class="qa-row${isCrit?' crit':''}">
+        <span class="qa-q">${item.q}${item.detail?`<span class="qa-detail">↳ ${item.detail}</span>`:''}</span>
+        <span class="qa-a ${item.a==='כן'?'yes':'no'}">${item.a}</span>
+      </div>`; }).join('');
+  } else {
+    // גיבוי — הצגת שדה הדגלים אם אין JSON מלא (הצהרות ישנות)
+    html += `<div class="qa-row"><span class="qa-q">דגלים רפואיים שסומנו:</span></div>
+      <div style="padding:.6rem 0;color:var(--text-mid);font-size:.92rem;white-space:pre-wrap">${(h.flags||'אין').replace(/ \| /g,'\n• ')}</div>`;
+  }
+  if (h.notes) html += `<div class="health-meta" style="margin-top:1.2rem;margin-bottom:0"><strong>הערות חופשי:</strong><br>${h.notes}</div>`;
+  $('#health-body').innerHTML = html;
+}
+function fmtTimestamp(iso){
+  if(!iso) return '';
+  try{ const d=new Date(iso); return d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; }
+}
+
+// ====== Hours / available slots ======
+const HE_MONTHS_FULL = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const SLOT_TEMPLATE = (()=>{ const a=[]; for(let h=7;h<=20;h++){ a.push(pad2(h)+':00'); a.push(pad2(h)+':30'); } return a; })();
+function pad2(n){ return String(n).padStart(2,'0'); }
+function fmtDateISO(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+
+let scalMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let monthOpen = new Set(), monthBooked = new Set(), monthOff = new Set();
+let selectedSlotDate = null;
+
+async function loadHours(){ await renderMonth(); }
+
+async function renderMonth(){
+  const m = scalMonth;
+  $('#scal-month').textContent = HE_MONTHS_FULL[m.getMonth()] + ' ' + m.getFullYear();
+  // fetch month summary
+  monthOpen = new Set(); monthBooked = new Set(); monthOff = new Set();
+  try {
+    const r = await api({ action:'slots_month', pin:PIN, month: m.getFullYear()+'-'+pad2(m.getMonth()+1) });
+    if (r && r.result === 'success'){ monthOpen = new Set(r.open||[]); monthBooked = new Set(r.booked||[]); monthOff = new Set(r.off||[]); }
+  } catch(e){}
+  const grid = $('#scal-grid'); grid.innerHTML='';
+  HE_DOW.forEach(d=>{ const c=document.createElement('div'); c.className='dow'; c.textContent=d; grid.appendChild(c); });
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDay = new Date(m.getFullYear(), m.getMonth(), 1).getDay();
+  const lastDate = new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+  for(let i=0;i<firstDay;i++){ const e=document.createElement('div'); e.className='cell empty'; grid.appendChild(e); }
+  for(let d=1;d<=lastDate;d++){
+    const date = new Date(m.getFullYear(), m.getMonth(), d);
+    const iso = fmtDateISO(date);
+    const cell = document.createElement('div'); cell.className='cell';
+    if(date<today) cell.classList.add('past');
+    if(selectedSlotDate===iso) cell.classList.add('selected');
+    const isOff = monthOff.has(iso);
+    if(isOff) cell.classList.add('blocked');
+    const hasOpen = monthOpen.has(iso), hasBooked = monthBooked.has(iso);
+    const noHours = !hasOpen && !hasBooked && !isOff;
+    if(noHours) cell.classList.add('no-hours');
+    cell.innerHTML = `${isOff?'<span class="lock">חסום</span>':''}<span>${d}</span><span class="dots">${hasBooked?'<span class="dot booked"></span>':''}${hasOpen?'<span class="dot open"></span>':''}</span>`;
+    if(!noHours) cell.addEventListener('click', ()=>selectSlotDate(iso));
+    grid.appendChild(cell);
+  }
+}
+$('#scal-prev').addEventListener('click', ()=>{ scalMonth=new Date(scalMonth.getFullYear(),scalMonth.getMonth()-1,1); renderMonth(); });
+$('#scal-next').addEventListener('click', ()=>{ scalMonth=new Date(scalMonth.getFullYear(),scalMonth.getMonth()+1,1); renderMonth(); });
+
+function dayHeadLabel(iso){
+  const p=iso.split('-'); const d=new Date(+p[0],+p[1]-1,+p[2]);
+  const dows=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  return 'שעות ליום '+dows[d.getDay()]+', '+(+p[2])+' ב'+HE_MONTHS_FULL[+p[1]-1];
+}
+async function selectSlotDate(iso){
+  selectedSlotDate = iso;
+  $$('#scal-grid .cell').forEach(c=>c.classList.remove('selected'));
+  $('#slot-day-head').textContent = dayHeadLabel(iso);
+  $('#slot-day-body').style.display='';
+  $('#slot-date').value = iso;
+  renderMonth();
+  await loadDaySlots(iso);
+}
+async function loadDaySlots(iso){
+  // באנר חסימת-יום + הסרה
+  const isDayBlocked = monthOff.has(iso);
+  $('#slot-block-banner').innerHTML = isDayBlocked
+    ? `<div class="block-banner"><span class="bb-text">⊘ היום מסומן כחסום — לא ניתן לקבוע בו תורים.</span><button id="unblock-day">הסר חסימה</button></div>`
+    : '';
+  if (isDayBlocked) $('#unblock-day').addEventListener('click', async ()=>{
+    try { await api({ action:'set_day_off', pin:PIN, date:iso, op:'remove' }); showToast('החסימה הוסרה ✓','success'); await renderMonth(); await loadDaySlots(iso); }
+    catch(e){ showToast('שגיאת תקשורת','error'); }
+  });
+  $('#slotgrid').innerHTML = '<div class="loading">טוען</div>';
+  let open=[], booked=[], blockedSlots=[];
+  try {
+    const r = await api({ action:'slots_admin', pin:PIN, date:iso });
+    if(r && r.result==='success'){ open=r.open||[]; booked=r.booked||[]; blockedSlots=r.blocked||[]; }
+  } catch(e){ $('#slotgrid').innerHTML='<div class="rec-empty">שגיאת תקשורת</div>'; return; }
+
+  // נרמול ל-HH:mm כדי למנוע כפילויות
+  open = open.map(fmtTime); booked = booked.map(fmtTime); blockedSlots = blockedSlots.map(fmtTime);
+  const openSet=new Set(open), bookedSet=new Set(booked), blockedSet=new Set(blockedSlots);
+
+  // סימון שעות שנמצאות בחלון המרווח (75 דק') של תור/חסימה קיימת — לקוחות לא יכולות להזמין אותן
+  function _toMin(s){const[h,m]=s.split(':');return +h*60+ +m;}
+  const busyBase=[...booked,...blockedSlots];
+  const bufferSet=new Set(SLOT_TEMPLATE.map(fmtTime).filter(t=>{
+    if(bookedSet.has(t)||blockedSet.has(t)) return false;
+    const m=_toMin(t);
+    return busyBase.some(b=>{const bm=_toMin(b);return m>bm&&m<bm+75;});
+  }));
+
+  // כל השעות שמוצגות: תבנית + פתוחות + חסומות ידנית (שלא ייעלמו)
+  const times = Array.from(new Set(SLOT_TEMPLATE.map(fmtTime).concat(open).concat(blockedSlots))).sort();
+
+  const addSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`;
+  const remSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M5 5l14 14"/></svg>`;
+  const blkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>`;
+
+  $('#slotgrid').innerHTML = times.map(t=>{
+    const isBooked=bookedSet.has(t), isOpen=openSet.has(t), isBlocked=blockedSet.has(t), isBuffer=bufferSet.has(t);
+    let cls='', state='closed';
+    if(isBooked){ cls='booked'; state='booked'; }
+    else if(isBlocked){ cls='blocked-manual'; state='blocked'; }
+    else if(isOpen){ cls='open'+(isBuffer?' buffer':''); state='open'; }
+    else if(isBuffer){ cls='buffer'; state='buffer'; }
+
+    if(isBooked){
+      return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}"><span class="t">${t}</span><span class="bk">תפוס</span></div>`;
+    }
+    const btn1 = isOpen
+      ? `<span class="ic rem" data-btn="remove">${remSvg}</span>`
+      : `<span class="ic add" data-btn="open">${addSvg}</span>`;
+    const btn2 = `<span class="ic blk${isBlocked?' active':''}" data-btn="block">${blkSvg}</span>`;
+    const bufLbl = isBuffer ? `<span class="buf-lbl">מרווח</span>` : '';
+    return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${bufLbl}</span>${btn2}</div>`;
+  }).join('');
+
+  $('#slotgrid').querySelectorAll('.slotchip').forEach(chip=>{
+    if(chip.dataset.state==='booked'||chip.dataset.state==='buffer') return;
+    chip.addEventListener('click', async e=>{
+      const btn = e.target.closest('[data-btn]');
+      if(!btn) return;
+      const t = chip.dataset.time, chipState = chip.dataset.state, btnType = btn.dataset.btn;
+
+      if(btnType==='open'){
+        if(chipState==='blocked'){
+          // בטל חסימה ופתח — שני קריאות, רענון אחד בסוף
+          try {
+            await api({ action:'unblock_slot', pin:PIN, date:selectedSlotDate, time:t });
+            await api({ action:'add_slot', pin:PIN, date:selectedSlotDate, time:t });
+            showToast('השעה נפתחה ✓','success');
+            await loadDaySlots(selectedSlotDate); renderMonth();
+          } catch(e){ showToast('שגיאת תקשורת','error'); }
+        } else {
+          slotAction('add_slot',{time:t});
+        }
+      } else if(btnType==='remove'){
+        slotAction('remove_slot',{time:t});
+      } else if(btnType==='block'){
+        slotAction(chipState==='blocked' ? 'unblock_slot' : 'block_slot', {time:t});
+      }
+    });
+  });
+}
+async function slotAction(action, extra){
+  if(!selectedSlotDate) return;
+  try {
+    const r = await api(Object.assign({ action:action, pin:PIN, date:selectedSlotDate }, extra||{}));
+    if(r && r.result==='success'){
+      // ביטול חסימת-יום אם פותחים שעה (תאימות למצב fallback)
+      if(action==='add_slot'||action==='add_slots_bulk') api({ action:'set_day_off', pin:PIN, date:selectedSlotDate, op:'remove' }).catch(()=>{});
+      await loadDaySlots(selectedSlotDate); renderMonth();
+    } else showToast(r && r.message || 'שגיאה','error');
+  } catch(e){ showToast('שגיאת תקשורת','error'); }
+}
+$('#slot-add').addEventListener('click', ()=>{
+  const t=$('#slot-time').value; if(!t){ showToast('בחרי שעה','error'); return; }
+  slotAction('add_slot',{time:t});
+});
+$('#slot-add-all').addEventListener('click', ()=> slotAction('add_slots_bulk',{times:SLOT_TEMPLATE.join(',')}));
+$('#slot-block-all').addEventListener('click', async ()=>{
+  if(!selectedSlotDate) return;
+  if(!confirm('לחסום את כל השעות ביום זה?')) return;
+  try {
+    await api({ action:'block_all_slots', pin:PIN, date:selectedSlotDate });
+    api({ action:'set_day_off', pin:PIN, date:selectedSlotDate, op:'add', reason:'נחסם' }).catch(()=>{});
+    showToast('היום נחסם','success');
+    await loadDaySlots(selectedSlotDate); renderMonth();
+  } catch(e){ showToast('שגיאת תקשורת','error'); }
+});
+
+// ====== Declarations ======
+let allDeclarations = [];
+let declSearch = '';
+async function loadDeclarations(){
+  $('#decl-loading').style.display='block'; $('#decl-tbl').style.display='none'; $('#decl-empty').style.display='none';
+  try {
+    const r = await api({ action:'list_health', pin:PIN });
+    allDeclarations = (r && r.declarations) || [];
+    renderDeclarations();
+  } catch(e){ $('#decl-loading').textContent='שגיאת תקשורת'; }
+}
+function renderDeclarations(){
+  $('#decl-loading').style.display='none';
+  let rows = allDeclarations;
+  if(declSearch) rows = rows.filter(d=> String(d.name||'').toLowerCase().includes(declSearch) || String(d.phone||'').includes(declSearch));
+  if(!rows.length){ $('#decl-tbl').style.display='none'; $('#decl-empty').style.display='block'; return; }
+  $('#decl-empty').style.display='none'; $('#decl-tbl').style.display='';
+  $('#decl-tbody').innerHTML = rows.map(d=>`
+    <tr data-id="${d.id}">
+      <td data-lbl="תאריך">${fmtTimestamp(d.submitted)}</td>
+      <td data-lbl="שם"><strong>${d.name||''}</strong></td>
+      <td data-lbl="טלפון">${d.phone||''}</td>
+      <td data-lbl="דגלים" class="notes-cell ${(d.flags&&d.flags.indexOf('🔴')>=0)?'decl-crit':''}">${(d.flags&&d.flags!=='אין דגלים')?d.flags:'—'}</td>
+      <td class="row-actions-cell"><div class="row-actions"><button class="act health" data-dview>צפייה בטופס מלא</button></div></td>
+    </tr>`).join('');
+  $('#decl-tbody').querySelectorAll('[data-dview]').forEach(btn=>btn.addEventListener('click',()=>{
+    const d = allDeclarations.find(x=>x.id===btn.closest('tr').dataset.id);
+    if(d){ $('#health-name').textContent=d.name+' · '+d.phone; renderHealth(d); openModal('m-health'); }
+  }));
+}
+$('#decl-search').addEventListener('input', e=>{ declSearch=e.target.value.trim().toLowerCase(); renderDeclarations(); });
+
+// ====== Share links ======
+(function initLinks(){
+  const PROD = 'https://meytalp-dev.github.io/ort-training/clients/hadar-massage/';
+  const base = /^file:/i.test(location.protocol) ? PROD : location.href.replace(/admin\.html.*$/, '');
+  const bookUrl = base + 'booking.html', healthUrl = base + 'health.html';
+  $('#url-book').textContent = bookUrl;
+  $('#url-health').textContent = healthUrl;
+  $('#share-book').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent('לקביעת תור אצל הדר בק 🌿\n' + bookUrl);
+  $('#share-health').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent('למילוי הצהרת בריאות לפני הטיפול 🌿\n' + healthUrl);
+})();
+$$('[data-copy]').forEach(btn=>btn.addEventListener('click',()=>{
+  const txt = $('#'+btn.dataset.copy).textContent;
+  navigator.clipboard?.writeText(txt).then(()=>showToast('הקישור הועתק ✓','success')).catch(()=>showToast('לא הצלחתי להעתיק','error'));
+}));
+
+// ====== Clients DB ======
+let allClients = [];
+let clientSearch = '';
+let editingClientPhone = null;  // null = new
+
+function waPhoneIntl(p){ const d=String(p||'').replace(/\D/g,''); return d.startsWith('0')?'972'+d.slice(1):d; }
+
+async function loadClients(){
+  $('#clients-loading').style.display = 'block';
+  $('#clients-tbl').style.display = 'none';
+  $('#clients-empty').style.display = 'none';
+  try {
+    const r = await api({ action: 'clients', pin: PIN });
+    allClients = (r && r.clients) || [];
+    renderClients();
+  } catch (e) {
+    $('#clients-loading').textContent = 'שגיאת תקשורת';
+  }
+}
+function renderClients(){
+  $('#clients-loading').style.display = 'none';
+  let rows = allClients;
+  if (clientSearch) rows = rows.filter(c =>
+    String(c.name||'').toLowerCase().includes(clientSearch) || String(c.phone||'').includes(clientSearch));
+  if (rows.length === 0){ $('#clients-tbl').style.display='none'; $('#clients-empty').style.display='block'; return; }
+  $('#clients-empty').style.display = 'none';
+  $('#clients-tbl').style.display = '';
+  $('#clients-tbody').innerHTML = rows.map(c => `
+    <tr data-phone="${c.phone}">
+      <td data-lbl="שם"><strong>${c.name||'—'}</strong></td>
+      <td data-lbl="טלפון">${c.phone||''}</td>
+      <td data-lbl="טיפולים">${c.visits||0}</td>
+      <td data-lbl="אחרון">${c.last||'—'}</td>
+      <td data-lbl="תיוג">${c.tag?`<span class="tag-chip">${c.tag}</span>`:'—'}</td>
+      <td class="row-actions-cell"><div class="row-actions">
+        <button class="act file" data-cfile>תיק מטופל</button>
+        <button class="act edit" data-cedit>עריכה</button>
+        <a class="act wa" href="https://api.whatsapp.com/send?phone=${waPhoneIntl(c.phone)}" target="_blank" rel="noopener">WA</a>
+      </div></td>
+    </tr>`).join('');
+  $('#clients-tbody').querySelectorAll('[data-cedit]').forEach(btn =>
+    btn.addEventListener('click', () => openClientEdit(btn.closest('tr').dataset.phone)));
+  $('#clients-tbody').querySelectorAll('[data-cfile]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const c = allClients.find(x => String(x.phone) === btn.closest('tr').dataset.phone);
+      if (c) openPatientFile(c.phone, c.name);
+    }));
+}
+$('#client-search').addEventListener('input', e => { clientSearch = e.target.value.trim().toLowerCase(); renderClients(); });
+
+function openClientEdit(phone){
+  const c = phone ? allClients.find(x => String(x.phone) === String(phone)) : null;
+  editingClientPhone = c ? c.phone : null;
+  $('#client-title').textContent = c ? 'עריכת לקוחה' : 'לקוחה חדשה';
+  $('#client-name').value = c ? (c.name||'') : '';
+  $('#client-phone').value = c ? (c.phone||'') : '';
+  $('#client-phone').disabled = !!c;
+  $('#client-age').value = c ? (c.age||'') : '';
+  $('#client-tag').value = c ? (c.tag||'') : '';
+  $('#client-email').value = c ? (c.email||'') : '';
+  $('#client-notes').value = c ? (c.notes||'') : '';
+  $('#client-delete').style.display = c ? '' : 'none';
+  openModal('m-client');
+}
+$('#client-new').addEventListener('click', () => openClientEdit(null));
+$('#client-save').addEventListener('click', async () => {
+  const phone = $('#client-phone').value.trim();
+  if (!phone) { showToast('טלפון חובה', 'error'); return; }
+  const btn = $('#client-save'); btn.disabled = true;
+  try {
+    const r = await api({ action:'save_client', pin:PIN, phone:phone,
+      name:$('#client-name').value.trim(), age:$('#client-age').value.trim(),
+      tag:$('#client-tag').value.trim(), email:$('#client-email').value.trim(), notes:$('#client-notes').value.trim() });
+    if (r && r.result === 'success') { showToast('נשמר ✓','success'); closeModal($('#m-client')); loadClients(); }
+    else showToast(r && r.message || 'שגיאה','error');
+  } catch(e){ showToast('שגיאת תקשורת','error'); } finally { btn.disabled = false; }
+});
+$('#client-delete').addEventListener('click', async () => {
+  if (!editingClientPhone) return;
+  if (!confirm('למחוק את הלקוחה מהמאגר? (הטיפולים בתיק לא יימחקו)')) return;
+  try {
+    const r = await api({ action:'delete_client', pin:PIN, phone:editingClientPhone });
+    if (r && r.result === 'success') { showToast('נמחק','success'); closeModal($('#m-client')); loadClients(); }
+    else showToast('שגיאה','error');
+  } catch(e){ showToast('שגיאת תקשורת','error'); }
+});
+
+// ====== Patient file ======
+let fileClient = { phone:null, name:'' };
+async function openPatientFile(phone, name){
+  fileClient = { phone: phone, name: name||'' };
+  $('#file-name').textContent = (name||'') + ' · ' + phone;
+  $('#file-records').innerHTML = '<div class="loading">טוען</div>';
+  resetRecForm();
+  openModal('m-file');
+  try {
+    const r = await api({ action:'patient_records', pin:PIN, phone:phone });
+    renderRecords((r && r.records) || []);
+  } catch(e){ $('#file-records').innerHTML = '<div class="rec-empty">שגיאת תקשורת</div>'; }
+}
+function renderRecords(recs){
+  if (!recs.length){ $('#file-records').innerHTML = '<div class="rec-empty">אין עדיין רשומות טיפול. הוסיפי את הראשונה למטה ↓</div>'; return; }
+  $('#file-records').innerHTML = recs.map(r => `
+    <div class="rec-card" data-id="${r.id}">
+      <div class="rec-top">
+        <span class="rec-date">${r.date||''}</span>
+        <button class="rec-edit" data-redit>עריכה</button>
+      </div>
+      ${r.reason?`<div class="rec-reason">${r.reason}</div>`:''}
+      <div class="rec-summary">${r.summary||''}</div>
+    </div>`).join('');
+  $('#file-records').querySelectorAll('[data-redit]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const rec = recs.find(x => x.id === btn.closest('.rec-card').dataset.id);
+      if (rec){ $('#rec-id').value=rec.id; $('#rec-date').value=rec.date||''; $('#rec-reason').value=rec.reason||'';
+        $('#rec-summary').value=rec.summary||''; $('#file-form-title').textContent='עריכת רשומה';
+        $('#rec-summary').scrollIntoView({behavior:'smooth',block:'center'}); }
+    }));
+}
+function resetRecForm(){
+  $('#rec-id').value=''; $('#rec-date').value=''; $('#rec-reason').value=''; $('#rec-summary').value='';
+  $('#file-form-title').textContent='רשומת טיפול חדשה';
+}
+$('#rec-reset').addEventListener('click', resetRecForm);
+$('#rec-save').addEventListener('click', async () => {
+  if (!fileClient.phone) return;
+  const summary = $('#rec-summary').value.trim();
+  const reason = $('#rec-reason').value.trim();
+  if (!summary && !reason){ showToast('כתבי סיבת פנייה או סיכום', 'error'); return; }
+  const btn = $('#rec-save'); btn.disabled = true;
+  try {
+    const r = await api({ action:'save_patient_record', pin:PIN, phone:fileClient.phone, name:fileClient.name,
+      id:$('#rec-id').value, date:$('#rec-date').value, reason:reason, summary:summary });
+    if (r && r.result === 'success'){ showToast('הרשומה נשמרה ✓','success'); openPatientFile(fileClient.phone, fileClient.name); }
+    else showToast(r && r.message || 'שגיאה','error');
+  } catch(e){ showToast('שגיאת תקשורת','error'); } finally { btn.disabled = false; }
+});
+
+// ====== Broadcast (WhatsApp distribution) ======
+$('#bc-open').addEventListener('click', () => {
+  $('#bc-links').innerHTML = '';
+  $('#bc-clients').innerHTML = allClients.map(c => `
+    <div class="bc-row">
+      <input type="checkbox" id="bc-${c.phone}" value="${c.phone}" data-name="${c.name||''}">
+      <label for="bc-${c.phone}">${c.name||'—'} · ${c.phone}${c.tag?' · '+c.tag:''}</label>
+    </div>`).join('') || '<div class="rec-empty">אין לקוחות במאגר</div>';
+  openModal('m-bc');
+});
+$('#bc-all').addEventListener('click', () => {
+  const boxes = $$('#bc-clients input[type=checkbox]');
+  const allOn = boxes.every(b => b.checked);
+  boxes.forEach(b => b.checked = !allOn);
+});
+$('#bc-gen').addEventListener('click', () => {
+  const msg = $('#bc-msg').value.trim();
+  const chosen = $$('#bc-clients input:checked');
+  if (!msg){ showToast('כתבי הודעה', 'error'); return; }
+  if (!chosen.length){ showToast('בחרי לפחות לקוחה אחת', 'error'); return; }
+  $('#bc-links').innerHTML = `<div style="font-size:.82rem;color:var(--text-light);margin-bottom:.2rem">לחצי על כל שם כדי לפתוח WhatsApp עם ההודעה מוכנה (${chosen.length}):</div>` +
+    chosen.map(ch => {
+      const name = ch.dataset.name;
+      const url = 'https://api.whatsapp.com/send?phone=' + waPhoneIntl(ch.value) + '&text=' + encodeURIComponent(msg);
+      return `<a href="${url}" target="_blank" rel="noopener"><span>${name||ch.value}</span><span class="wa">שליחה ›</span></a>`;
+    }).join('');
+});
+
+// ====== Manual reminders ======
+$('#send-reminders').addEventListener('click', async () => {
+  const btn = $('#send-reminders'); btn.disabled = true; const orig = btn.textContent;
+  btn.textContent = 'שולח...';
+  try {
+    const r = await api({ action:'send_reminders', pin:PIN }, 20000);
+    const list = (r && r.reminders) || [];
+    if (!list.length){ showToast('אין תורים מאושרים למחר', 'success'); }
+    else {
+      const sent = list.filter(x => x.sent).length;
+      if (sent === list.length) showToast(`נשלחו ${sent} תזכורות ✓`, 'success');
+      else {
+        // מצב manual — נפתח קישורי שליחה
+        showToast(`${list.length} תזכורות — נפתחים קישורי WhatsApp`, 'success');
+        list.filter(x => !x.sent && x.wa_url).forEach((x,i) => setTimeout(() => window.open(x.wa_url,'_blank'), i*400));
+      }
+    }
+  } catch(e){ showToast('שגיאת תקשורת', 'error'); }
+  finally { btn.disabled = false; btn.textContent = orig; }
+});
+
+$('#pin-input').focus();
+</script>
+
+</body>
+</html>

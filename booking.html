@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הדר בק · קביעת תור · באר שבע</title>
+<meta name="description" content="קביעת תור לעיסוי אצל הדר בק — מטפלת מוסמכת בבאר שבע. עיסוי שוודי, רפואי וכוסות רוח. לנשים בלבד.">
+<meta property="og:title" content="הדר בק · קביעת תור">
+<meta property="og:description" content="חוויית טיפול אישית ומקצועית לנשים בלבד — באר שבע">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#EEF2EF;
+  --bg-2:#E7EEE8;
+  --surface:#FFFFFF;
+  --surface-2:#F5F8F5;
+  --ink:#2F3A34;
+  --ink-soft:#5C655F;
+  --ink-quiet:#8A938C;
+  --line:#E0E6E1;
+  --primary:#4E6E5D;
+  --primary-deep:#42604F;
+  --primary-soft:rgba(78,110,93,.10);
+  --accent:#6E9484;
+  --accent-soft:rgba(110,148,132,.14);
+  --whatsapp:#25D366;
+  --error:#C0584A;
+  --display:'Rubik', ui-sans-serif, system-ui, sans-serif;
+  --body:'Assistant', ui-sans-serif, system-ui, sans-serif;
+  --shadow-btn:0 14px 30px -14px rgba(66,96,79,.5);
+  --shadow-card:0 18px 44px -24px rgba(47,58,52,.25);
+  --shadow-soft:0 10px 30px -18px rgba(47,58,52,.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--body);
+  font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;min-height:100vh;overflow-x:hidden;position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(70% 50% at 50% 100%, rgba(110,148,132,.16) 0%, transparent 60%);
+}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(238,242,239,.85);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);
+  padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;
+}
+.topbar .mark{font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--ink);text-decoration:none}
+.topbar .mark .dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin:0 .4rem;vertical-align:middle}
+.topbar .back{font-size:.92rem;color:var(--ink-soft);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;transition:color .2s}
+.topbar .back:hover{color:var(--primary)}
+@media (max-width:760px){.topbar{padding:.8rem 1.1rem}}
+
+/* Page head */
+.page-head{padding:3.5rem 2rem 1.5rem;text-align:center;position:relative;z-index:1}
+.page-eyebrow{font-weight:700;font-size:.86rem;letter-spacing:.05em;color:var(--accent);margin-bottom:1rem}
+.page-title{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5.5vw,3.4rem);line-height:1.1;letter-spacing:-.01em;color:var(--ink);margin-bottom:.9rem}
+.page-title .em{color:var(--primary)}
+.page-lead{font-size:1.05rem;color:var(--ink-soft);max-width:42ch;margin:0 auto;line-height:1.7}
+.duration-note{
+  display:inline-flex;align-items:center;gap:.5rem;margin-top:1.4rem;
+  padding:.55rem 1.2rem;background:var(--accent-soft);border:1px solid rgba(110,148,132,.35);
+  border-radius:9999px;font-size:.92rem;color:var(--primary);font-weight:700;
+}
+.duration-note svg{width:17px;height:17px}
+@media (max-width:760px){.page-head{padding:2.5rem 1.1rem 1.2rem}}
+
+/* Stepper */
+.stepper-wrap{position:sticky;top:59px;z-index:40;background:rgba(238,242,239,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:1.2rem 1rem}
+.stepper{display:flex;justify-content:center;align-items:center;max-width:720px;margin:0 auto;gap:.4rem}
+.step{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:default;transition:opacity .2s}
+.step .label{text-align:center;line-height:1.2}
+.step.clickable{cursor:pointer}
+.step.clickable:hover{opacity:.7}
+.step .dot{width:36px;height:36px;border-radius:50%;background:var(--surface);color:var(--ink-quiet);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:1rem;border:1.5px solid var(--line);transition:all .3s cubic-bezier(.2,.7,.3,1)}
+.step.active .dot{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 0 0 5px var(--primary-soft);transform:scale(1.06)}
+.step.done .dot{background:var(--accent);color:#fff;border-color:var(--accent)}
+.step.done .dot .num{display:none}
+.step.done .dot::before{content:'✓';font-size:1rem}
+.step .label{font-size:.76rem;color:var(--ink-quiet);font-weight:600}
+.step.active .label,.step.done .label{color:var(--ink)}
+@media (max-width:620px){.stepper-wrap{top:55px;padding:.9rem .4rem}.step .dot{width:30px;height:30px;font-size:.9rem}.step .label{font-size:.66rem}}
+
+/* Main */
+main{padding:2.5rem 2rem 5rem;max-width:880px;margin:0 auto;position:relative;z-index:1}
+.screen{display:none;animation:fadeUp .45s cubic-bezier(.2,.7,.3,1)}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.screen h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1;color:var(--ink);margin-bottom:.4rem;text-align:center}
+.screen h2 .em{color:var(--primary)}
+.screen .sub{text-align:center;color:var(--ink-quiet);margin-bottom:2.5rem;font-size:1rem}
+@media (max-width:760px){main{padding:2rem 1.1rem 4rem}}
+
+/* Service cards */
+.cards{display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:1.8rem;cursor:pointer;transition:all .3s cubic-bezier(.2,.7,.3,1);text-align:right;display:flex;flex-direction:column;gap:.6rem;position:relative;min-height:210px;box-shadow:var(--shadow-soft)}
+.card .num{position:absolute;top:1.4rem;left:1.4rem;font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--accent)}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:var(--accent)}
+.card.selected{border-color:var(--primary);box-shadow:var(--shadow-card)}
+.card.selected::after{content:'✓';position:absolute;top:1.2rem;left:1.2rem;width:30px;height:30px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700}
+.card.selected .num{display:none}
+.card .card-title{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--ink)}
+.card .card-meta{display:flex;gap:.6rem;font-size:.78rem;letter-spacing:.05em;color:var(--accent);font-weight:700}
+.card .card-desc{font-size:.95rem;color:var(--ink-soft);line-height:1.7;flex:1}
+.card .card-price{font-family:var(--display);font-size:1.2rem;color:var(--primary);font-weight:700;margin-top:.4rem}
+.card .card-price small{font-size:.78rem;color:var(--ink-quiet);font-weight:400;display:block}
+
+/* Add-on */
+.addon{display:block;max-width:780px;margin:1.4rem auto 0;cursor:pointer}
+.addon input{position:absolute;opacity:0;pointer-events:none}
+.addon-box{display:flex;align-items:center;gap:1rem;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:1.2rem 1.4rem;transition:all .25s;box-shadow:var(--shadow-soft)}
+.addon:hover .addon-box{border-color:var(--accent);transform:translateY(-2px)}
+.addon input:checked + .addon-box{border-color:var(--primary);background:var(--primary-soft)}
+.addon-check{width:26px;height:26px;flex-shrink:0;border:1.5px solid var(--ink-quiet);border-radius:7px;background:var(--surface);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.addon-check svg{width:16px;height:16px;color:#fff;opacity:0;transition:opacity .15s}
+.addon input:checked + .addon-box .addon-check{background:var(--primary);border-color:var(--primary)}
+.addon input:checked + .addon-box .addon-check svg{opacity:1}
+.addon-text{flex:1;display:flex;flex-direction:column;gap:.25rem}
+.addon-title{font-family:var(--display);font-weight:700;font-size:1.08rem;color:var(--ink)}
+.addon-desc{font-size:.9rem;color:var(--ink-soft);line-height:1.55}
+.addon-badge{font-family:var(--display);font-weight:700;font-size:.82rem;color:var(--primary);padding:.3rem .9rem;background:var(--accent-soft);border-radius:9999px;flex-shrink:0}
+@media (max-width:600px){.addon-box{flex-wrap:wrap;padding:1rem;gap:.8rem}.addon-badge{order:3;margin-right:auto}}
+
+/* Calendar */
+.cal-wrap{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:1.8rem;max-width:520px;margin:0 auto;box-shadow:var(--shadow-soft)}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem}
+.cal-nav button{background:none;border:1.5px solid transparent;cursor:pointer;color:var(--ink-soft);padding:.5rem .9rem;border-radius:10px;font-size:1.1rem;transition:all .2s;font-family:inherit}
+.cal-nav button:hover:not(:disabled){background:var(--surface-2);color:var(--primary);border-color:var(--line)}
+.cal-nav button:disabled{opacity:.25;cursor:not-allowed}
+.cal-nav .month-label{font-family:var(--display);font-size:1.25rem;font-weight:700;color:var(--ink)}
+.cal-nav .month-label .yr{color:var(--accent);font-weight:600;font-size:1rem;margin-right:.3rem}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.cal-grid .dow{text-align:center;font-size:.72rem;color:var(--ink-quiet);padding:.4rem 0;font-weight:700}
+.cal-grid .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-size:.95rem;color:var(--ink);transition:all .2s;border:1.5px solid transparent;font-family:var(--display);font-weight:500}
+.cal-grid .day.empty{cursor:default}
+.cal-grid .day.disabled{color:#C7CFC9;cursor:not-allowed}
+.cal-grid .day.today{font-weight:700;color:var(--primary);position:relative}
+.cal-grid .day.today::after{content:'';position:absolute;bottom:5px;width:4px;height:4px;border-radius:50%;background:var(--primary)}
+.cal-grid .day:not(.disabled):not(.empty):not(.selected):hover{background:var(--accent-soft);border-color:var(--accent)}
+.cal-grid .day.selected{background:var(--primary);color:#fff;font-weight:700;box-shadow:0 6px 14px -4px rgba(66,96,79,.5)}
+
+/* Times */
+.times-block{max-width:520px;margin:1.6rem auto 0;padding-top:1.6rem;border-top:1.5px dashed var(--line);animation:fadeUp .4s cubic-bezier(.2,.7,.3,1)}
+.times-wrap{max-width:600px;margin:0 auto}
+.times-date{text-align:center;color:var(--ink-soft);margin-bottom:1.8rem;font-family:var(--display);font-size:1.2rem;font-weight:600}
+.times-date .em{color:var(--primary);font-weight:700}
+.times-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:.6rem}
+.time-slot{background:var(--surface);border:1.5px solid var(--line);color:var(--ink);padding:.9rem;border-radius:12px;cursor:pointer;font-family:var(--display);font-size:1.02rem;font-weight:600;transition:all .2s}
+.time-slot:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--primary)}
+.time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.04);box-shadow:0 6px 14px -4px rgba(66,96,79,.5)}
+.time-slot.busy-slot{opacity:.55;cursor:not-allowed;background:var(--surface-2);border-color:var(--line);color:var(--ink-quiet);font-size:.88rem}
+.no-slots{text-align:center;color:var(--ink-quiet);padding:2.5rem;background:var(--surface-2);border-radius:14px;font-weight:600}
+
+/* Form */
+.form{max-width:560px;margin:0 auto;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:2rem;box-shadow:var(--shadow-soft)}
+.summary{background:var(--surface-2);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.8rem;border:1px solid var(--line)}
+.summary .row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;font-size:.95rem;border-bottom:1px dashed var(--line)}
+.summary .row:first-child{padding-top:0}.summary .row:last-child{border-bottom:none;padding-bottom:0}
+.summary .row .lbl{color:var(--ink-quiet);font-size:.78rem;letter-spacing:.05em;font-weight:600}
+.summary .row .val{color:var(--ink);font-family:var(--display);font-weight:600;font-size:1rem}
+.field{margin-bottom:1.3rem}.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:.45rem;font-weight:700}
+.field label .req{color:var(--primary);margin-left:.2rem}
+.field input,.field textarea{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.9rem 1.1rem;font-family:inherit;font-size:1rem;color:var(--ink);transition:all .2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-soft)}
+.field textarea{resize:vertical;min-height:84px}
+.field .error{display:none;color:var(--error);font-size:.82rem;margin-top:.4rem;font-weight:600}
+.field.invalid input,.field.invalid textarea{border-color:var(--error)}
+.field.invalid .error{display:block}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:480px){.field-row{grid-template-columns:1fr}}
+
+/* Health questions */
+.health-intro{display:flex;align-items:flex-start;gap:.8rem;background:var(--accent-soft);border:1px solid rgba(110,148,132,.3);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.6rem;font-size:.92rem;color:var(--primary-deep);line-height:1.6}
+.health-intro svg{width:20px;height:20px;flex-shrink:0;margin-top:2px}
+.q{border-bottom:1px solid var(--line);padding:1.1rem 0}
+.q:last-of-type{border-bottom:none}
+.q-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.q-text{font-size:1rem;color:var(--ink);font-weight:600;line-height:1.5;flex:1}
+.q-text .hint{display:block;font-size:.82rem;color:var(--ink-quiet);font-weight:400;margin-top:.15rem}
+.toggle{display:inline-flex;flex-shrink:0;background:var(--surface-2);border:1.5px solid var(--line);border-radius:9999px;padding:3px;gap:2px}
+.toggle button{appearance:none;border:none;background:none;cursor:pointer;font-family:var(--body);font-size:.88rem;font-weight:700;color:var(--ink-quiet);padding:.5rem 1.05rem;border-radius:9999px;transition:all .2s;min-width:54px}
+.toggle button[aria-pressed="true"][data-val="yes"]{background:var(--primary);color:#fff}
+.toggle button[aria-pressed="true"][data-val="no"]{background:var(--accent);color:#fff}
+.q.unanswered .toggle{box-shadow:0 0 0 2px rgba(192,88,74,.3)}
+.q-detail{max-height:0;overflow:hidden;transition:max-height .35s ease,margin-top .35s ease,opacity .3s ease;opacity:0;margin-top:0}
+.q-detail.open{max-height:180px;opacity:1;margin-top:.9rem}
+.q-detail input{width:100%;background:var(--primary-soft);border:1.5px solid var(--accent);border-radius:10px;padding:.75rem 1rem;font-family:inherit;font-size:.95rem;color:var(--ink)}
+.q-detail input:focus{outline:none;border-color:var(--primary)}
+.q-detail .dlabel{font-size:.78rem;color:var(--primary);margin-bottom:.35rem;font-weight:700}
+
+/* Consent + signature */
+.consent{display:flex;align-items:flex-start;gap:.9rem;cursor:pointer;padding:.4rem 0;margin-top:1.4rem}
+.consent input{position:absolute;opacity:0;pointer-events:none}
+.consent .box{width:26px;height:26px;flex-shrink:0;margin-top:.1rem;border:1.5px solid var(--ink-quiet);border-radius:8px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.consent .box svg{width:16px;height:16px;color:#fff;opacity:0;transition:opacity .15s}
+.consent input:checked + .box{background:var(--primary);border-color:var(--primary)}
+.consent input:checked + .box svg{opacity:1}
+.consent .ctext{font-size:.92rem;color:var(--ink-soft);line-height:1.6}
+.consent.invalid .box{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.15)}
+.sign-field{margin-top:1.4rem}
+.sign-field label{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:.45rem;font-weight:700}
+.sign-field input{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.95rem 1.1rem;font-family:'Rubik',cursive;font-size:1.25rem;color:var(--primary-deep);letter-spacing:.02em;transition:all .2s}
+.sign-field input:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-soft)}
+.sign-field.invalid input{border-color:var(--error)}
+.sign-hint{font-size:.78rem;color:var(--ink-quiet);margin-top:.35rem}
+
+/* Actions / buttons */
+.actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:2.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:1rem 2rem;border-radius:9999px;font-family:var(--body);font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.2,.7,.3,1);border:1.5px solid transparent;min-width:140px}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow-btn)}
+.btn-primary:hover:not(:disabled){background:var(--primary-deep);transform:translateY(-2px)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--ink-soft);padding:1rem 1.3rem;min-width:auto}
+.btn-ghost:hover{color:var(--primary)}
+.btn-ghost:disabled{opacity:.25;cursor:not-allowed}
+.btn-secondary{background:var(--surface);color:var(--ink);border-color:var(--line);box-shadow:var(--shadow-soft)}
+.btn-secondary:hover{border-color:var(--accent);transform:translateY(-2px)}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.loading .spinner{display:block}
+.btn.loading .btn-text{opacity:.7}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Success */
+.success{text-align:center;padding:2.5rem 1.5rem;max-width:560px;margin:0 auto}
+.success-icon{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,var(--accent) 0%,var(--primary) 100%);margin:0 auto 1.8rem;display:flex;align-items:center;justify-content:center;animation:pop .55s cubic-bezier(.18,.89,.32,1.28);box-shadow:0 14px 36px -10px rgba(66,96,79,.5)}
+.success-icon svg{width:40px;height:40px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success h2{margin-bottom:.9rem}
+.success > p{color:var(--ink-soft);margin-bottom:1.8rem;font-size:1.05rem;line-height:1.7}
+.success .summary{text-align:right;margin:1.4rem 0 1.8rem}
+.success-actions{display:flex;flex-direction:column;gap:.7rem;align-items:stretch}
+.btn-whatsapp{background:var(--whatsapp);color:#fff}
+.btn-whatsapp:hover{background:#1ea655;transform:translateY(-2px)}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:1rem 1.6rem;border-radius:9999px;font-size:.92rem;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow-card);font-weight:600;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--error)}
+
+/* Footer */
+footer{background:var(--ink);color:#fff;padding:2.2rem;text-align:center;position:relative;z-index:1}
+footer .brand{font-family:var(--display);font-size:1.4rem;font-weight:700;margin-bottom:.4rem}
+footer .brand .em{color:var(--accent)}
+footer .info{color:rgba(255,255,255,.6);margin-bottom:.5rem;font-size:.9rem}
+footer .copy{color:rgba(255,255,255,.4);font-size:.78rem}
+
+/* FAB */
+.fab-wa{position:fixed;bottom:1.5rem;left:1.5rem;width:56px;height:56px;border-radius:50%;background:var(--whatsapp);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(37,211,102,.4);text-decoration:none;z-index:60;transition:transform .25s ease}
+.fab-wa:hover{transform:scale(1.08) rotate(-5deg)}
+.fab-wa svg{width:30px;height:30px;fill:#fff}
+@media (max-width:600px){.actions{flex-direction:column-reverse}.actions .btn{width:100%}.fab-wa{bottom:1rem;left:1rem;width:50px;height:50px}.form{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="mark" href="index.html">הדר<span class="dot"></span>בק</a>
+  <a class="back" href="index.html">→ חזרה</a>
+</header>
+
+<div class="page-head">
+  <div class="page-eyebrow">קביעת תור אונליין</div>
+  <h1 class="page-title">בואי <span class="em">נקבע</span> זמן.</h1>
+  <p class="page-lead">בחירת תאריך ושעה ומילוי הצהרת בריאות קצרה — והכל מוכן.</p>
+  <div class="duration-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    שימו לב — הטיפול אורך שעה.
+  </div>
+</div>
+
+<div class="stepper-wrap">
+  <div class="stepper" id="stepper">
+    <div class="step" data-step="1"><div class="dot"><span class="num">1</span></div><div class="label">תאריך ושעה</div></div>
+    <div class="step" data-step="2"><div class="dot"><span class="num">2</span></div><div class="label">פרטים</div></div>
+    <div class="step" data-step="3"><div class="dot"><span class="num">3</span></div><div class="label">בריאות</div></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- Screen 1: Date + Time -->
+  <section class="screen active" id="screen-date">
+    <h2>בחירת <span class="em">תאריך ושעה</span></h2>
+    <p class="sub">סמני יום — והשעות הפנויות יופיעו למטה</p>
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <button id="cal-prev" aria-label="חודש קודם">→</button>
+        <div class="month-label" id="cal-month"></div>
+        <button id="cal-next" aria-label="חודש הבא">←</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+
+    <div class="times-block" id="times-block" style="display:none">
+      <div class="times-date" id="times-date"></div>
+      <div class="times-wrap"><div class="times-grid" id="times-grid"></div></div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href="index.html">← חזרה</a>
+      <button class="btn btn-primary" id="btn-next-2" disabled>המשך →</button>
+    </div>
+  </section>
+
+  <!-- Screen 4: Details -->
+  <section class="screen" id="screen-details">
+    <h2>הפרטים <span class="em">שלך</span></h2>
+    <p class="sub">כדי שאוכל לחזור אלייך ולאשר</p>
+    <div class="form">
+      <div class="summary" id="summary-details"></div>
+      <div class="field">
+        <label for="f-name"><span class="req">*</span> שם מלא</label>
+        <input type="text" id="f-name" autocomplete="name" placeholder="שם פרטי ומשפחה">
+        <div class="error">נא להזין שם</div>
+      </div>
+      <div class="field">
+        <label for="f-phone"><span class="req">*</span> טלפון</label>
+        <input type="tel" id="f-phone" autocomplete="tel" placeholder="05X-XXXXXXX" inputmode="tel">
+        <div class="error">נא להזין מספר טלפון תקין (10 ספרות)</div>
+      </div>
+      <div class="field">
+        <label for="f-email">אימייל (אופציונלי)</label>
+        <input type="email" id="f-email" autocomplete="email" placeholder="name@example.com" inputmode="email">
+      </div>
+      <div class="field">
+        <label for="f-notes">הערות (אופציונלי)</label>
+        <textarea id="f-notes" maxlength="500" placeholder="העדפות, אזורים רגישים, כל דבר שחשוב שאדע..."></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" data-back>← חזרה</button>
+        <button class="btn btn-primary" id="btn-next-4">המשך להצהרת בריאות →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 5: Health declaration + signature -->
+  <section class="screen" id="screen-health">
+    <h2>הצהרת <span class="em">בריאות</span></h2>
+    <p class="sub">כמה שאלות קצרות כדי שאתאים לך את הטיפול בבטחה</p>
+    <div class="form">
+      <div class="health-intro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        הפרטים נשלחים ישירות להדר בלבד ונשמרים בדיסקרטיות. סמני "כן" או "לא" לכל שאלה.
+      </div>
+      <div id="questions"></div>
+
+      <label class="consent" id="consent-label">
+        <input type="checkbox" id="f-consent">
+        <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span>
+        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי.</span>
+      </label>
+
+      <div class="sign-field" id="sign-wrap">
+        <label for="f-signature"><span style="color:var(--primary)">*</span> חתימה (הקלידי את שמך המלא)</label>
+        <input type="text" id="f-signature" autocomplete="name" placeholder="השם שלך כחתימה">
+        <div class="sign-hint">ההקלדה מהווה חתימה דיגיטלית על ההצהרה.</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" data-back>← חזרה</button>
+        <button class="btn btn-primary" id="btn-confirm">
+          <span class="btn-text">קביעת התור ושליחה</span>
+          <span class="spinner"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 6: Success -->
+  <section class="screen" id="screen-success">
+    <div class="success">
+      <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></div>
+      <h2>הבקשה <span class="em">נשלחה</span></h2>
+      <p>תודה! ההצהרה נקלטה ונפתח לך וואטסאפ עם ההודעה — <strong>שלחי כדי לסיים</strong>. אחזור אלייך לאישור הפגישה בהקדם.</p>
+      <div class="summary" id="summary-success"></div>
+      <div class="success-actions">
+        <a id="gcal-link" href="#" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          הוספה ליומן Google שלי
+        </a>
+        <a id="wa-fallback" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp" style="display:none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+          <span>וואטסאפ לא נפתח? לחצי כאן</span>
+        </a>
+        <button class="btn btn-ghost" id="btn-restart">↻ הזמנת תור נוסף</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="brand">הדר <span class="em">בק</span></div>
+  <div class="info">מטפלת בעיסוי · באר שבע · לנשים בלבד</div>
+  <div class="copy">© 2026 כל הזכויות שמורות</div>
+</footer>
+
+<a class="fab-wa" href="https://api.whatsapp.com/send?phone=972543270619&text=%D7%94%D7%99%20%D7%94%D7%93%D7%A8%2C%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A7%D7%91%D7%95%D7%A2%20%D7%AA%D7%95%D7%A8" target="_blank" rel="noopener" aria-label="פתחי וואטסאפ">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========================================================
+   מערכת הזמנת תורים — הדר בק (עצמאית)
+   זרימה: טיפול → תאריך → שעה → פרטים → הצהרת בריאות+חתימה → אישור
+   ======================================================== */
+
+// ---------- CONFIG ----------
+const HADAR_PHONE = '972543270619';
+const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
+const CLINIC_ADDRESS = 'וינגייט 74, דירה 24, קומה 6, באר שבע';
+
+const TREATMENT_MIN = 60;
+const BUFFER_MIN = 15;
+
+const SERVICES = [
+  { id:'swedish', title:'עיסוי שוודי', desc:'עיסוי קלאסי, זורם ומרגיע, המשלב תנועות ארוכות לשחרור מתחים, שיפור זרימת הדם והרפיה כללית של הגוף. מושלם למי שמחפשת רגע של שלווה ופינוק.', duration:60, price:null },
+  { id:'medical', title:'עיסוי רפואי', desc:'טיפול ממוקד להקלה על כאבים, עומסים ופציעות, תוך עבודה על אזורים תפוסים ומוגבלים בתנועה. משלב טכניקות עומק לשחרור שרירים ושיפור התפקוד היומיומי.', duration:60, price:null }
+];
+
+const HOURS = { 0:{open:9,close:20},1:{open:9,close:20},2:{open:9,close:20},3:{open:9,close:20},4:{open:9,close:20},5:{open:9,close:14},6:null };
+
+// critical:true = קונטראינדיקציה מוחלטת → מסומן באדום להדר (לא ניתן לקבל לטיפול ללא בירור)
+const QUESTIONS = [
+  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?',            hint:'זיהום פעיל / דלקת חריפה', detail:false, critical:true },
+  { id:'wounds',      text:'פצעים פתוחים, כוויות, חתכים או מחלת עור מדבקת באזור הטיפול?', hint:'',                  detail:true,  dlabel:'איזה אזור?', critical:true },
+  { id:'thrombosis',  text:'קריש דם / טרומבוזה / חשד ל-DVT?',                        hint:'',                       detail:false, critical:true },
+  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?',                      hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
+  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?',                       hint:'קומדין, אספירין במינון גבוה', detail:true, dlabel:'אילו תרופות?', critical:true },
+  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?',                          hint:'',                       detail:true,  dlabel:'איפה ומתי?', critical:true },
+  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?',                 hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
+  { id:'surgery_disc',text:'ניתוח לאחרונה או פריצת דיסק אקוטית?',                     hint:'',                       detail:true,  dlabel:'מה ומתי?', critical:false },
+  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?',                             hint:'',                       detail:true,  dlabel:'באיזה שבוע / כמה אחרי?', critical:false },
+  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?',                        hint:'',                       detail:false, critical:false },
+  { id:'metabolic',   text:'סוכרת, אוסטאופורוזיס או עור דק ורגיש?',                  hint:'',                       detail:true,  dlabel:'פירוט', critical:false },
+  { id:'varicose',    text:'דליות בולטות ברגליים?',                                 hint:'',                       detail:false, critical:false },
+  { id:'allergy',     text:'אלרגיה לשמנים, קרמים או חומרי עיסוי?',                   hint:'',                       detail:true,  dlabel:'למה?', critical:false },
+  { id:'meds_other',  text:'תרופות קבועות או מצב רפואי נוסף שחשוב שאדע?',            hint:'',                       detail:true,  dlabel:'פירוט', critical:false }
+];
+
+// ---------- STATE ----------
+const state = {
+  step:1, service:{ id:'massage', title:'עיסוי', duration:TREATMENT_MIN }, addCupping:false, date:null, time:null,
+  name:'', phone:'', email:'', notes:'',
+  answers:{}, details:{},
+  calMonth:new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  daysOff:new Set(), busy:[], buffer:BUFFER_MIN, publishedSlots:null, blockedSlots:[], lastBookingId:null,
+  openDays:new Set(), openDaysMonth:null
+};
+
+// ---------- HELPERS ----------
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const HE_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const HE_DOW = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+function pad(n){ return String(n).padStart(2,'0'); }
+function fmtDate(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function prettyDate(d){ return HE_DOW[d.getDay()]+', '+d.getDate()+' '+HE_MONTHS[d.getMonth()]+' '+d.getFullYear(); }
+function toMin(hhmm){ const [h,m]=String(hhmm).split(':').map(Number); return h*60+m; }
+function showToast(msg,isError){ const t=$('#toast'); t.textContent=msg; t.className='toast show'+(isError?' error':''); setTimeout(()=>t.classList.remove('show'),3500); }
+
+// ---------- JSONP ----------
+function jsonpGet(params, timeoutMs){
+  return new Promise((resolve,reject)=>{
+    if(!SHEETS_URL){ reject(new Error('no SHEETS_URL')); return; }
+    const cbName='hadarCb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+    const timer=setTimeout(()=>{ cleanup(); reject(new Error('timeout')); }, timeoutMs||7000);
+    const script=document.createElement('script');
+    function cleanup(){ clearTimeout(timer); try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(script.parentNode) script.parentNode.removeChild(script); }
+    window[cbName]=function(resp){ cleanup(); resolve(resp); };
+    const usp=new URLSearchParams(params); usp.append('callback',cbName);
+    script.src=SHEETS_URL+'?'+usp.toString();
+    script.onerror=()=>{ cleanup(); reject(new Error('network')); };
+    document.body.appendChild(script);
+  });
+}
+
+// ---------- STEPPER ----------
+function setStep(n){
+  state.step=n;
+  $$('.step').forEach((el,i)=>{ const idx=i+1; el.classList.toggle('active',idx===n); el.classList.toggle('done',idx<n); el.classList.toggle('clickable',idx<n); });
+  $$('.screen').forEach(s=>s.classList.remove('active'));
+  const screens=['screen-date','screen-details','screen-health','screen-success'];
+  $('#'+screens[n-1]).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$$('.step').forEach(el=>el.addEventListener('click',()=>{ const t=parseInt(el.dataset.step,10); if(t<state.step) setStep(t); }));
+$$('[data-back]').forEach(b=>b.addEventListener('click',()=>setStep(state.step-1)));
+
+// ---------- SCREEN 1: CALENDAR ----------
+function renderCalendar(){
+  const m=state.calMonth;
+  $('#cal-month').innerHTML=HE_MONTHS[m.getMonth()]+' <span class="yr">'+m.getFullYear()+'</span>';
+  const today=new Date(); today.setHours(0,0,0,0);
+  const minMonth=new Date(today.getFullYear(),today.getMonth(),1);
+  $('#cal-prev').disabled=m.getTime()<=minMonth.getTime();
+  const grid=$('#cal-grid'); grid.innerHTML='';
+  HE_DOW.forEach(d=>{ const c=document.createElement('div'); c.className='dow'; c.textContent=d; grid.appendChild(c); });
+  const firstDay=new Date(m.getFullYear(),m.getMonth(),1).getDay();
+  const lastDate=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+  for(let i=0;i<firstDay;i++){ const e=document.createElement('div'); e.className='day empty'; grid.appendChild(e); }
+  for(let d=1;d<=lastDate;d++){
+    const date=new Date(m.getFullYear(),m.getMonth(),d);
+    const cell=document.createElement('div'); cell.className='day'; cell.textContent=d;
+    const isPast=date<today, isClosed=HOURS[date.getDay()]===null, isOff=state.daysOff.has(fmtDate(date));
+    const isNoHours=!isPast&&!isClosed&&!isOff&&!state.openDays.has(fmtDate(date));
+    if(isPast||isClosed||isOff||isNoHours) cell.classList.add('disabled');
+    if(isOff) cell.title='יום חסום';
+    else if(isNoHours) cell.title='טרם נפתחו שעות ליום זה';
+    if(date.getTime()===today.getTime()) cell.classList.add('today');
+    if(state.date && fmtDate(date)===fmtDate(state.date)) cell.classList.add('selected');
+    if(!isPast&&!isClosed&&!isOff&&!isNoHours) cell.addEventListener('click',()=>{ selectDate(date); });
+    grid.appendChild(cell);
+  }
+}
+// ימים עם שעות פתוחות בחודש המוצג — קובע אילו ימים בלוח פנויים ללחיצה (בלי pin)
+async function loadOpenDays(){
+  const key=state.calMonth.getFullYear()+'-'+pad(state.calMonth.getMonth()+1);
+  if(state.openDaysMonth===key) return;
+  if(!SHEETS_URL) return;
+  try{
+    const resp=await jsonpGet({action:'open_days',month:key});
+    if(resp&&Array.isArray(resp.open)){ state.openDays=new Set(resp.open); state.openDaysMonth=key; renderCalendar(); }
+  }catch(e){}
+}
+$('#cal-prev').addEventListener('click',()=>{ const m=state.calMonth; state.calMonth=new Date(m.getFullYear(),m.getMonth()-1,1); renderCalendar(); loadOpenDays(); });
+$('#cal-next').addEventListener('click',()=>{ const m=state.calMonth; state.calMonth=new Date(m.getFullYear(),m.getMonth()+1,1); renderCalendar(); loadOpenDays(); });
+
+// בחירת תאריך → השעות נטענות ומופיעות מתחת ללוח (באותו מסך)
+async function selectDate(date){
+  state.date=date; state.time=null;
+  $('#btn-next-2').disabled=true;
+  renderCalendar();
+  $('#times-block').style.display='';
+  $('#times-grid').innerHTML='<div class="no-slots">טוענת שעות פנויות...</div>';
+  $('#times-block').scrollIntoView({behavior:'smooth',block:'nearest'});
+  state.busy=[]; state.publishedSlots=null; state.blockedSlots=[];
+  if(SHEETS_URL){
+    try{
+      const resp=await jsonpGet({action:'available_slots',date:fmtDate(state.date)});
+      if(resp&&resp.busy) state.busy=resp.busy;
+      if(resp&&resp.buffer!=null) state.buffer=Number(resp.buffer);
+      if(resp&&resp.configured&&Array.isArray(resp.slots)) state.publishedSlots=resp.slots;
+      if(resp&&Array.isArray(resp.blocked_slots)) state.blockedSlots=resp.blocked_slots;
+    }catch(e){
+      try{ const r2=await jsonpGet({action:'busy_times',date:fmtDate(state.date)}); if(r2&&r2.busy) state.busy=r2.busy; else if(r2&&r2.times) state.busy=r2.times.map(t=>({time:t,dur:TREATMENT_MIN})); }catch(e2){}
+    }
+  }
+  renderTimes();
+}
+
+// ---------- TIMES (below the calendar) ----------
+function renderTimes(){
+  const d=state.date;
+  $('#times-date').innerHTML=HE_DOW[d.getDay()]+', '+d.getDate()+' <span class="em">'+HE_MONTHS[d.getMonth()]+'</span>';
+  const grid=$('#times-grid'); grid.innerHTML='';
+  const dur=state.service.duration;
+  let slots;
+  if(state.publishedSlots){
+    // הדר פתחה שעות ספציפיות ליום הזה
+    slots=state.publishedSlots.slice().sort();
+  } else {
+    // fallback — שעות עבודה קבועות
+    const hrs=HOURS[d.getDay()];
+    if(!hrs){ grid.innerHTML='<div class="no-slots">אין טיפולים ביום זה</div>'; return; }
+    const startMin=hrs.open*60, endMin=hrs.close*60-dur;
+    slots=[];
+    for(let t=startMin;t<=endMin;t+=75){ slots.push(pad(Math.floor(t/60))+':'+pad(t%60)); }
+  }
+  if(!slots.length){ grid.innerHTML='<div class="no-slots">אין שעות זמינות ליום זה</div>'; return; }
+
+  const buf=state.buffer;
+  function isBlocked(slotStr){
+    const c=toMin(slotStr), cEnd=c+dur;
+    return state.busy.some(b=>{ const t=toMin(b.time), tEnd=t+(Number(b.dur)||dur); const free=(cEnd+buf<=t)||(c>=tEnd+buf); return !free; });
+  }
+  const now=new Date(), isToday=fmtDate(d)===fmtDate(now);
+  const filtered=slots.filter(s=>{ if(isBlocked(s)) return false; if(!isToday) return true; return toMin(s)>(now.getHours()*60+now.getMinutes()+30); });
+
+  // שעות חסומות ע"י תור קיים — מוצגות כ"תפוס" (לא נמחקות)
+  const busySlots=slots.filter(s=>isBlocked(s));
+  // שעות חסומות ידנית — גם מוצגות כ"תפוס"
+  const manualBlocked=(state.blockedSlots||[]).filter(s=>!filtered.includes(s)&&!busySlots.includes(s));
+  const allBusyVisible=[...busySlots,...manualBlocked];
+
+  if(!filtered.length && !allBusyVisible.length){ grid.innerHTML='<div class="no-slots">אין שעות פנויות ביום זה</div>'; return; }
+
+  // מיזוג ומיון לפי שעה
+  const allDisplay=[
+    ...filtered.map(s=>({t:s,avail:true})),
+    ...allBusyVisible.map(s=>({t:s,avail:false}))
+  ].sort((a,b)=>a.t.localeCompare(b.t));
+
+  allDisplay.forEach(({t:s,avail})=>{
+    const btn=document.createElement('button');
+    if(avail){
+      btn.className='time-slot'; btn.textContent=s;
+      btn.addEventListener('click',()=>{ grid.querySelectorAll('.time-slot').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); state.time=s; $('#btn-next-2').disabled=false; });
+    } else {
+      btn.className='time-slot busy-slot'; btn.textContent=s+' — תפוס'; btn.disabled=true;
+    }
+    grid.appendChild(btn);
+  });
+}
+// תאריך + שעה → פרטים
+$('#btn-next-2').addEventListener('click',()=>{ if(state.date&&state.time){ renderSummary(); setStep(2); } });
+
+// ---------- SCREEN 4: DETAILS ----------
+function renderSummary(){
+  const html=`
+    <div class="row"><span class="lbl">טיפול</span><span class="val">עיסוי · שעה</span></div>
+    <div class="row"><span class="lbl">תאריך</span><span class="val">${prettyDate(state.date)}</span></div>
+    <div class="row"><span class="lbl">שעה</span><span class="val">${state.time}</span></div>
+    <div class="row"><span class="lbl">מיקום</span><span class="val">וינגייט 74, באר שבע</span></div>`;
+  $('#summary-details').innerHTML=html;
+  $('#summary-success').innerHTML=html;
+}
+function validatePhone(p){ return /^0\d{9}$/.test(p.replace(/[\s-]/g,'')); }
+$('#f-phone').addEventListener('input',e=>{ e.target.value=e.target.value.replace(/[^\d\s-]/g,''); });
+
+$('#btn-next-4').addEventListener('click',()=>{
+  const nameField=$('#f-name').closest('.field'), phoneField=$('#f-phone').closest('.field');
+  nameField.classList.remove('invalid'); phoneField.classList.remove('invalid');
+  const name=$('#f-name').value.trim(), phone=$('#f-phone').value.trim();
+  let bad=false;
+  if(!name){ nameField.classList.add('invalid'); bad=true; }
+  if(!validatePhone(phone)){ phoneField.classList.add('invalid'); bad=true; }
+  if(bad){ document.querySelector('.field.invalid')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  state.name=name; state.phone=phone; state.email=$('#f-email').value.trim(); state.notes=$('#f-notes').value.trim();
+  // חתימה מתמלאת מראש מהשם
+  if(!$('#f-signature').value.trim()) $('#f-signature').value=name;
+  setStep(3);
+});
+
+// ---------- SCREEN 5: HEALTH ----------
+function renderQuestions(){
+  $('#questions').innerHTML=QUESTIONS.map(q=>`
+    <div class="q" data-id="${q.id}">
+      <div class="q-row">
+        <span class="q-text">${q.text}${q.hint?`<span class="hint">${q.hint}</span>`:''}</span>
+        <span class="toggle" role="group" aria-label="${q.text}">
+          <button type="button" data-val="yes" aria-pressed="false">כן</button>
+          <button type="button" data-val="no" aria-pressed="false">לא</button>
+        </span>
+      </div>
+      ${q.detail?`<div class="q-detail" data-detail="${q.id}"><div class="dlabel">${q.dlabel}</div><input type="text" maxlength="200" placeholder="${q.dlabel}"></div>`:''}
+    </div>`).join('');
+  $$('.toggle button').forEach(btn=>btn.addEventListener('click',()=>{
+    const q=btn.closest('.q'), id=q.dataset.id, val=btn.dataset.val;
+    state.answers[id]=val; q.classList.remove('unanswered');
+    q.querySelectorAll('.toggle button').forEach(b=>b.setAttribute('aria-pressed', b===btn?'true':'false'));
+    const det=q.querySelector('.q-detail');
+    if(det){ if(val==='yes') det.classList.add('open'); else { det.classList.remove('open'); det.querySelector('input').value=''; state.details[id]=''; } }
+  }));
+  $$('.q-detail input').forEach(inp=>inp.addEventListener('input',e=>{ state.details[e.target.closest('.q-detail').dataset.detail]=e.target.value.trim(); }));
+}
+$('#f-consent').addEventListener('change',()=>$('#consent-label').classList.remove('invalid'));
+
+$('#btn-confirm').addEventListener('click',submitAll);
+
+function submitAll(){
+  // validate health
+  $$('.q').forEach(q=>q.classList.remove('unanswered'));
+  $('#consent-label').classList.remove('invalid');
+  $('#sign-wrap').classList.remove('invalid');
+  let bad=false, firstBad=null;
+  // שאלות הבריאות אינן חובה — ניתן לדלג. רק אישור + חתימה נדרשים.
+  if(!$('#f-consent').checked){ $('#consent-label').classList.add('invalid'); bad=true; firstBad=firstBad||$('#consent-label'); }
+  const signature=$('#f-signature').value.trim();
+  if(!signature){ $('#sign-wrap').classList.add('invalid'); bad=true; firstBad=firstBad||$('#sign-wrap'); }
+  if(bad){ showToast('כמה שדות עוד מחכים למילוי 🙂',true); firstBad?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+  const btn=$('#btn-confirm'); btn.classList.add('loading'); btn.disabled=true;
+
+  const dateStr=prettyDate(state.date);
+  const flagged=QUESTIONS.filter(q=>state.answers[q.id]==='yes');
+  const criticalFlagged=flagged.filter(q=>q.critical);
+  const fmtFlag=q=>q.text.replace(/\?$/,'')+(state.details[q.id]?' ('+state.details[q.id]+')':'');
+  const flagsText=flagged.map(q=>(q.critical?'🔴 ':'')+fmtFlag(q)).join(' | ')||'אין דגלים';
+
+  // מקטע בריאות להודעה — קונטראינדיקציות באדום בראש
+  let healthSection;
+  if(!flagged.length){ healthSection='✅ אין דגלים רפואיים'; }
+  else {
+    healthSection='';
+    if(criticalFlagged.length) healthSection+='🔴 *קונטראינדיקציה — לבדוק לפני קבלה לטיפול:*\n'+criticalFlagged.map(q=>'• '+fmtFlag(q)).join('\n')+'\n';
+    const other=flagged.filter(q=>!q.critical);
+    if(other.length) healthSection+='⚠️ לתשומת לב:\n'+other.map(q=>'• '+fmtFlag(q)).join('\n');
+  }
+
+  // WhatsApp message to Hadar (request + health summary)
+  let waText=`שלום הדר, רוצה לקבוע תור 🌿\n\n`+
+    `🪷 טיפול: עיסוי (שעה)\n`+
+    `📅 תאריך: ${dateStr}\n🕒 שעה: ${state.time}\n📍 ${CLINIC_ADDRESS}\n\n`+
+    `שם: ${state.name}\nטלפון: ${state.phone}`+
+    (state.email?`\nאימייל: ${state.email}`:'')+
+    (state.notes?`\nהערות: ${state.notes}`:'')+
+    `\n\n— הצהרת בריאות —\n`+healthSection+
+    `\n✍️ חתמה: ${signature}`;
+  const waUrl=`https://api.whatsapp.com/send?phone=${HADAR_PHONE}&text=`+encodeURIComponent(waText);
+  const waWindow=window.open(waUrl,'_blank');
+
+  const finish=()=>{
+    btn.classList.remove('loading'); btn.disabled=false;
+    $('#wa-fallback').href=waUrl;
+    if(!waWindow||waWindow.closed) $('#wa-fallback').style.display='flex'; else $('#wa-fallback').style.display='none';
+    $('#gcal-link').href=buildGCalUrl();
+    setStep(4);
+  };
+
+  if(!SHEETS_URL){ finish(); return; }
+
+  // answers_json for admin full-form view (signature first, critical flag per item)
+  const answersFull=JSON.stringify([{q:'חתימה דיגיטלית',a:signature,detail:'',critical:false}].concat(
+    QUESTIONS.map(q=>({q:q.text,a:state.answers[q.id]==='yes'?'כן':(state.answers[q.id]==='no'?'לא':'—'),detail:state.details[q.id]||'',critical:!!q.critical}))
+  ));
+
+  // 1) create booking
+  const bookingParams=new URLSearchParams({
+    action:'submit', timestamp:new Date().toISOString(),
+    service:state.service.title, duration:String(TREATMENT_MIN),
+    date:fmtDate(state.date), time:state.time,
+    name:state.name.substring(0,100), phone:state.phone, email:state.email.substring(0,80),
+    notes:state.notes.substring(0,500)
+  });
+
+  let done=false;
+  const timeout=setTimeout(()=>{ if(done) return; done=true; showToast('נשלח לוואטסאפ. השמירה לא אומתה.',true); finish(); },9000);
+
+  jsonpGet(bookingParams,8000).then(resp=>{
+    if(resp&&resp.id) state.lastBookingId=resp.id;
+    // 2) create health declaration linked to booking
+    const healthParams=new URLSearchParams({
+      action:'submit_health', timestamp:new Date().toISOString(),
+      name:state.name.substring(0,100), phone:state.phone, email:state.email.substring(0,80),
+      appointment:dateStr+' '+state.time,
+      flags:flagsText.substring(0,1200),
+      notes:state.notes.substring(0,600),
+      consent:'כן', answers_json:answersFull.substring(0,4000), signature:signature.substring(0,100)
+    });
+    if(state.lastBookingId) healthParams.append('booking_id',state.lastBookingId);
+    return jsonpGet(healthParams,8000).catch(()=>null);
+  }).then(()=>{ if(done) return; done=true; clearTimeout(timeout); finish(); })
+    .catch(()=>{ if(done) return; done=true; clearTimeout(timeout); showToast('נשלח לוואטסאפ. השמירה לא אומתה.',true); finish(); });
+}
+
+// ---------- Google Calendar (client) ----------
+function buildGCalUrl(){
+  const d=state.date, [h,m]=state.time.split(':').map(Number);
+  const start=new Date(d.getFullYear(),d.getMonth(),d.getDate(),h,m,0);
+  const end=new Date(start.getTime()+TREATMENT_MIN*60000);
+  const stamp=dt=>dt.getFullYear()+pad(dt.getMonth()+1)+pad(dt.getDate())+'T'+pad(dt.getHours())+pad(dt.getMinutes())+'00';
+  const params=new URLSearchParams({ action:'TEMPLATE', text:'עיסוי אצל הדר בק'+(state.service?' — '+state.service.title:''), dates:stamp(start)+'/'+stamp(end), details:'התור שלך אצל הדר בק.\nנא להגיע בבגדים נוחים.', location:CLINIC_ADDRESS });
+  return 'https://calendar.google.com/calendar/render?'+params.toString();
+}
+
+// ---------- RESTART ----------
+$('#btn-restart').addEventListener('click',()=>{
+  state.date=null; state.time=null;
+  state.name=''; state.phone=''; state.email=''; state.notes=''; state.answers={}; state.details={}; state.lastBookingId=null;
+  $('#btn-next-2').disabled=true;
+  $('#times-block').style.display='none';
+  $('#f-name').value=''; $('#f-phone').value=''; $('#f-email').value=''; $('#f-notes').value=''; $('#f-signature').value=''; $('#f-consent').checked=false;
+  renderQuestions();
+  renderCalendar();
+  setStep(1);
+});
+
+// ---------- INIT ----------
+renderQuestions();
+renderCalendar();
+setStep(1);
+if(SHEETS_URL){
+  jsonpGet({action:'days_off'}).then(resp=>{ if(resp&&resp.dates){ state.daysOff=new Set(resp.dates); renderCalendar(); } }).catch(()=>{});
+  loadOpenDays();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הדר בק · ערכת מותג</title>
+<meta name="description" content="ערכת המותג של הדר בק — מרחב טיפול לנשים, באר שבע. עיסוי ממוקד תנועה. צבע, טיפוגרפיה, קול וסגנון.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* ── פלטה · כחול-אבן עמוק במרכז ── */
+  --sig:#3D5A60;        /* Deep Teal-Slate — צבע החתימה הבולט */
+  --sig-soft:rgba(61,90,96,.12);
+  --soft:#87A697;       /* Sage-Teal — מרווה-אבן רך, משני (גוון ה-B והעמוד שדרה בלוגו) */
+  --soft-soft:rgba(135,166,151,.20);
+  --blush:#D8A793;      /* Blush Clay — אקסנט חם */
+  --blush-soft:rgba(216,167,147,.16);
+  --oat:#F1EBE2;        /* Warm Oat — רקע ראשי */
+  --sand:#E0D6C8;       /* Soft Sand */
+  --white:#FBF8F4;
+  --charcoal:#2C3A3D;   /* Charcoal Stone — טקסט */
+  --ink:#2C3A3D;
+  --ink-soft:#566468;
+  --ink-quiet:#8B989A;
+  --line:rgba(61,90,96,.15);
+
+  --display:'Frank Ruhl Libre', Georgia, serif;
+  --body:'Heebo', ui-sans-serif, system-ui, sans-serif;
+  --shadow:0 24px 60px -32px rgba(44,58,61,.42);
+  --shadow-sm:0 10px 30px -18px rgba(44,58,61,.30);
+  --maxw:1040px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--oat);color:var(--ink);font-family:var(--body);
+  font-weight:400;line-height:1.7;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.6rem}
+h1,h2,h3,.serif{font-family:var(--display)}
+.eyebrow{font-family:var(--body);font-weight:600;font-size:.78rem;letter-spacing:.22em;color:var(--sig)}
+.section-num{font-family:var(--display);font-weight:400;font-size:.95rem;color:var(--ink-quiet);letter-spacing:.05em}
+
+/* ════════ COVER ════════ */
+.cover{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;padding:4rem 1.6rem;overflow:hidden;
+  background:
+    radial-gradient(58% 50% at 50% 32%, rgba(61,90,96,.12) 0%, transparent 62%),
+    radial-gradient(70% 60% at 50% 112%, rgba(143,169,176,.18) 0%, transparent 55%),
+    var(--oat);
+}
+.cover-mono{width:128px;height:auto;margin-bottom:1.5rem;animation:rise .9s both}
+.cover .brand{
+  font-family:var(--display);font-weight:900;font-size:clamp(2.4rem,8vw,4.6rem);
+  line-height:1;letter-spacing:.14em;color:var(--charcoal);margin-bottom:.5rem;
+  animation:rise .9s .05s cubic-bezier(.2,.7,.3,1) both;
+}
+.cover .motto{
+  font-family:var(--body);font-weight:600;letter-spacing:.34em;font-size:.82rem;
+  color:var(--soft);margin-bottom:1.8rem;
+  animation:rise .9s .12s cubic-bezier(.2,.7,.3,1) both;
+}
+.cover .descriptor{
+  font-family:var(--body);font-weight:500;font-size:clamp(1rem,2.6vw,1.25rem);
+  letter-spacing:.08em;color:var(--sig);margin-bottom:2.4rem;
+  animation:rise .9s .18s cubic-bezier(.2,.7,.3,1) both;
+}
+.cover .descriptor .dot{color:var(--blush);margin:0 .5rem}
+.cover .tagline{
+  font-family:var(--display);font-weight:500;font-style:italic;font-size:clamp(1.5rem,4.6vw,2.5rem);
+  color:var(--ink-soft);max-width:20ch;line-height:1.4;
+  animation:rise .9s .26s cubic-bezier(.2,.7,.3,1) both;
+}
+.cover .label{position:absolute;bottom:2.2rem;left:0;right:0;text-align:center;font-size:.8rem;letter-spacing:.2em;color:var(--ink-quiet);font-weight:500}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ════════ SECTION ════════ */
+section.block{padding:5.5rem 0;border-top:1px solid var(--line)}
+.sec-head{margin-bottom:3rem;max-width:700px}
+.sec-head .row{display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem}
+.sec-head h2{font-weight:700;font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;color:var(--charcoal);letter-spacing:-.01em}
+.sec-head p{font-size:1.08rem;color:var(--ink-soft);max-width:62ch}
+.subhead{font-family:var(--display);font-weight:700;font-size:1.3rem;color:var(--charcoal);margin:2.8rem 0 1.2rem}
+
+/* ── מיצוב ── */
+.position-card{background:var(--white);border-radius:24px;padding:2.6rem;box-shadow:var(--shadow-sm);border:1px solid var(--line)}
+.onliness{border-inline-start:4px solid var(--sig);padding-inline-start:1.6rem;margin-top:1.8rem}
+.onliness .q{font-family:var(--display);font-style:italic;font-size:1.35rem;line-height:1.55;color:var(--sig)}
+.journey{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-top:2rem}
+.journey .step{background:var(--sig-soft);color:var(--sig);border-radius:9999px;padding:.6rem 1.4rem;font-family:var(--display);font-weight:700;font-size:1.05rem}
+.journey .arr{color:var(--blush)}
+.pos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem}
+.pos-grid .cell{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:1.5rem;box-shadow:var(--shadow-sm)}
+.pos-grid .cell .k{font-size:.78rem;letter-spacing:.16em;color:var(--sig);font-weight:600;margin-bottom:.6rem}
+.pos-grid .cell .v{font-size:1rem;color:var(--ink-soft);line-height:1.6}
+
+/* ── צבע ── */
+.palette{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1rem}
+.swatch{border-radius:20px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--line);background:var(--white)}
+.swatch .chip{height:150px;display:flex;align-items:flex-end;padding:1rem}
+.swatch .chip .star{font-size:1.4rem}
+.swatch .meta{padding:1.1rem 1.2rem 1.3rem}
+.swatch .meta .nm{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--charcoal)}
+.swatch .meta .hex{font-family:var(--body);font-weight:500;font-size:.92rem;color:var(--ink-soft);letter-spacing:.04em;margin-top:.15rem}
+.swatch .meta .use{font-size:.85rem;color:var(--ink-quiet);margin-top:.5rem;line-height:1.5}
+.swatch.big .chip{height:220px}
+.sig-note{margin-top:1.6rem;background:var(--sig-soft);border-radius:18px;padding:1.5rem 1.7rem;border:1px solid rgba(61,90,96,.22);display:flex;gap:1rem;align-items:flex-start}
+.sig-note svg{width:26px;height:26px;flex-shrink:0;color:var(--sig);margin-top:.1rem}
+.sig-note p{font-size:1rem;color:var(--sig);line-height:1.65}
+.sig-note strong{color:var(--charcoal)}
+.ratio{display:flex;gap:.5rem;margin-top:1.4rem;align-items:center;flex-wrap:wrap}
+.ratio .bar{height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;color:#fff}
+.ratio .cap{font-size:.85rem;color:var(--ink-quiet);width:100%;margin-bottom:.2rem}
+
+/* ── לוגוטייפ ── */
+.logo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem}
+.logo-cell{border-radius:20px;padding:2.6rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;min-height:210px;box-shadow:var(--shadow-sm);border:1px solid var(--line);text-align:center}
+.logo-cell .cap{font-size:.82rem;color:var(--ink-quiet);letter-spacing:.04em}
+.lc-light{background:var(--white)}
+.lc-sig{background:var(--sig)}
+.lc-soft{background:var(--soft)}
+.lc-sig .cap,.lc-soft .cap{color:rgba(255,255,255,.78)}
+.lockup{display:flex;flex-direction:column;align-items:center;gap:.45rem}
+.lockup .lk-brand{font-family:var(--display);font-weight:900;font-size:2rem;line-height:1;color:var(--charcoal)}
+.lockup .lk-rule{width:46px;height:2px;background:var(--blush);border-radius:2px;margin:.1rem 0}
+.lockup .lk-desc{font-family:var(--body);font-weight:500;font-size:.72rem;letter-spacing:.12em;color:var(--sig)}
+.lc-sig .lk-brand,.lc-soft .lk-brand{color:var(--white)}
+.lc-sig .lk-desc,.lc-soft .lk-desc{color:rgba(255,255,255,.9)}
+.clear-demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+.clear-box{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);text-align:center}
+.clear-box .frame{display:inline-block;padding:24px 32px;border:1.5px dashed var(--soft);border-radius:14px;margin-bottom:1rem}
+.clear-box .frame .lk-brand{font-family:var(--display);font-weight:900;font-size:1.7rem;color:var(--charcoal)}
+.clear-box .cap{font-size:.88rem;color:var(--ink-soft)}
+.clear-box .cap b{color:var(--charcoal)}
+.minsize{display:flex;align-items:flex-end;gap:1.6rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}
+.minsize .ms{display:flex;flex-direction:column;align-items:center;gap:.45rem}
+.minsize .ms .lk-brand{font-family:var(--display);font-weight:900;color:var(--charcoal)}
+.minsize .ms small{font-size:.72rem;color:var(--ink-quiet)}
+.dodont{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem}
+.dd{border-radius:16px;padding:1.4rem 1rem;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--line);background:var(--white)}
+.dd .vis{height:64px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+.dd .vis .lk-brand{font-family:var(--display);font-weight:900;font-size:1.4rem;color:var(--charcoal)}
+.dd .t{font-size:.84rem;color:#A86B52;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.dd .t svg{width:15px;height:15px}
+
+/* ── טיפוגרפיה ── */
+.type-card{background:var(--white);border-radius:22px;padding:2.4rem;box-shadow:var(--shadow-sm);border:1px solid var(--line);margin-bottom:1.2rem}
+.type-card .tc-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.type-card .tc-name{font-size:.82rem;letter-spacing:.14em;color:var(--sig);font-weight:600}
+.type-card .tc-role{font-size:.85rem;color:var(--ink-quiet)}
+.specimen-display{font-family:var(--display);font-weight:900;font-size:clamp(2rem,6.5vw,3.4rem);line-height:1.12;color:var(--charcoal)}
+.specimen-display .light{font-weight:400;font-style:italic;color:var(--ink-soft)}
+.specimen-body{font-family:var(--body);font-size:1.1rem;color:var(--ink-soft);line-height:1.75}
+.weights{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1rem;font-family:var(--body);color:var(--ink-soft)}
+.weights span{font-size:1.05rem}
+
+/* ── קול ── */
+.voice-words{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.voice-words .w{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1rem;text-align:center;box-shadow:var(--shadow-sm)}
+.voice-words .w .ww{font-family:var(--display);font-weight:700;font-size:1.35rem;color:var(--sig)}
+.voice-words .w .ws{font-size:.82rem;color:var(--ink-quiet);margin-top:.3rem}
+.say-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.say{border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm)}
+.say.do{background:var(--sig-soft);border:1px solid rgba(61,90,96,.20)}
+.say.dont{background:var(--blush-soft);border:1px solid rgba(216,167,147,.30)}
+.say .tag{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.9rem;margin-bottom:1rem}
+.say.do .tag{color:var(--sig)}
+.say.dont .tag{color:#A86B52}
+.say .tag svg{width:18px;height:18px}
+.say .q{font-family:var(--display);font-style:italic;font-size:1.08rem;line-height:1.6;color:var(--ink);margin-bottom:.9rem}
+.say .q:last-child{margin-bottom:0}
+.say.dont .q{font-style:normal;font-family:var(--body);color:var(--ink-soft)}
+
+/* ── אינסטגרם ── */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);max-width:520px}
+.ig-tile{aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center;position:relative;overflow:hidden}
+.ig-tile.t-quote{background:var(--oat);flex-direction:column;gap:.4rem}
+.ig-tile.t-quote .qt{font-family:var(--display);font-style:italic;font-size:clamp(.9rem,2.4vw,1.12rem);line-height:1.4;color:var(--sig)}
+.ig-tile.t-sig{background:var(--sig)}
+.ig-tile.t-soft{background:var(--soft)}
+.ig-tile.t-sand{background:var(--sand)}
+.ig-tile.t-blush{background:var(--blush)}
+.ig-tile.t-white{background:var(--white)}
+.ig-tile .small{font-family:var(--body);font-size:.72rem;letter-spacing:.1em;color:rgba(255,255,255,.9)}
+.ig-tile .wm{font-family:var(--display);font-weight:900;font-size:1.3rem}
+.ig-tips{margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.ig-tip{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.5rem;box-shadow:var(--shadow-sm)}
+.ig-tip .h{display:flex;align-items:center;gap:.6rem;font-weight:600;color:var(--charcoal);margin-bottom:.5rem}
+.ig-tip .h svg{width:20px;height:20px;color:var(--sig)}
+.ig-tip p{font-size:.94rem;color:var(--ink-soft);line-height:1.6}
+
+/* ── אלמנטים גרפיים ── */
+.elem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
+.elem{border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);border:1px solid var(--line);background:var(--white);overflow:hidden}
+.elem .ec{font-size:.82rem;letter-spacing:.1em;color:var(--ink-quiet);font-weight:600;margin-top:1.2rem}
+.flow{height:120px;border-radius:14px;background:var(--oat);display:flex;align-items:center;justify-content:center;overflow:hidden}
+
+/* ── אייקונים ── */
+.icon-set{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem}
+.icon-set .ic{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1rem;text-align:center;box-shadow:var(--shadow-sm)}
+.icon-set .ic svg{width:34px;height:34px;color:var(--sig);stroke-width:1.6}
+.icon-set .ic .nm{font-size:.82rem;color:var(--ink-soft);margin-top:.7rem}
+
+/* ── היילייטס ── */
+.highlights{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center}
+.hl{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.hl .circle{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--sand)}
+.hl .circle svg{width:34px;height:34px}
+.hl .nm{font-size:.82rem;color:var(--ink-soft)}
+
+/* ── כרטיס / שובר ── */
+.apply-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;align-items:start}
+.card-demo{aspect-ratio:1.75;border-radius:18px;padding:1.8rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.card-front{background:var(--sig);color:#fff}
+.card-back{background:var(--oat);color:var(--charcoal);border:1px solid var(--line)}
+.card-demo .cb{font-family:var(--display);font-weight:900;font-size:1.7rem;line-height:1}
+.card-demo .crule{width:40px;height:2px;background:var(--blush);border-radius:2px;margin:.5rem 0}
+.card-demo .cd{font-size:.74rem;letter-spacing:.1em;opacity:.92}
+.card-demo .cc{font-size:.86rem;line-height:1.7}
+.voucher{background:linear-gradient(135deg,var(--sig),#2e4549);color:#fff;border-radius:20px;padding:2.2rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.voucher .vflow{position:absolute;left:0;right:0;bottom:-10px;opacity:.18}
+.voucher .vt{font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--soft);opacity:.95;position:relative}
+.voucher .vbig{font-family:var(--display);font-weight:900;font-size:1.9rem;margin:.4rem 0;position:relative}
+.voucher .vline{font-size:.9rem;opacity:.88;line-height:1.7;position:relative}
+
+/* ── בנק תוכן ── */
+.bank{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.bk{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:1.7rem;box-shadow:var(--shadow-sm)}
+.bk .bh{font-family:var(--display);font-weight:700;font-size:1.1rem;color:var(--charcoal);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.bk .bh svg{width:18px;height:18px;color:var(--sig)}
+.bk p{font-size:.96rem;color:var(--ink-soft);line-height:1.7;margin-bottom:.7rem}
+.bk .quote{font-family:var(--display);font-style:italic;color:var(--sig);border-inline-start:3px solid var(--soft);padding-inline-start:.9rem;margin:.5rem 0 .9rem}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem}
+.pill{background:var(--sig-soft);color:var(--sig);border-radius:9999px;padding:.32rem .8rem;font-size:.82rem;font-weight:500}
+.svc-copy{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:1.6rem;box-shadow:var(--shadow-sm);margin-bottom:1rem}
+.svc-copy .sn{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--sig);margin-bottom:.4rem}
+.svc-copy p{font-size:.96rem;color:var(--ink-soft);line-height:1.7}
+
+/* ── יישום ── */
+.demo-card{background:var(--white);border-radius:22px;padding:2rem;box-shadow:var(--shadow-sm);border:1px solid var(--line)}
+.demo-card .dc-cap{font-size:.8rem;letter-spacing:.12em;color:var(--ink-quiet);margin-bottom:1.4rem;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.8rem;border-radius:9999px;font-family:var(--body);font-size:1rem;font-weight:600;text-decoration:none;border:1.5px solid transparent;cursor:pointer}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--sig);color:#fff;box-shadow:0 14px 28px -14px rgba(61,90,96,.6)}
+.btn-ghost{background:var(--oat);color:var(--charcoal);border-color:var(--line)}
+.btn-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.wa-bubble{background:#DCF8C6;color:#1a3a1a;border-radius:16px 16px 16px 4px;padding:1rem 1.2rem;font-size:.96rem;line-height:1.6;max-width:88%;box-shadow:var(--shadow-sm)}
+.wa-wrap{background:#E7E0D6;border-radius:16px;padding:1.4rem;display:flex}
+
+/* ── footer ── */
+footer{padding:4rem 1.6rem 5rem;text-align:center;border-top:1px solid var(--line);background:var(--white)}
+footer .fbrand{font-family:var(--display);font-weight:900;font-size:2rem;color:var(--charcoal)}
+footer .frule{width:50px;height:2px;background:var(--blush);border-radius:2px;margin:.7rem auto 1rem}
+footer .fdesc{font-size:.85rem;letter-spacing:.1em;color:var(--sig);margin-bottom:1.4rem;font-weight:500}
+footer .fmeta{font-size:.85rem;color:var(--ink-quiet);line-height:1.8}
+
+@media (max-width:820px){
+  .palette,.logo-grid,.voice-words,.pos-grid{grid-template-columns:1fr 1fr}
+  .say-grid,.apply-grid,.ig-tips{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .palette,.logo-grid,.voice-words,.pos-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ COVER ════════ -->
+<header class="cover">
+  <svg class="cover-mono" viewBox="0 0 170 122" fill="none" aria-label="HB">
+    <text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',Georgia,serif" font-size="112" font-weight="700" fill="#3D5A60">H</text>
+    <text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',Georgia,serif" font-size="112" font-weight="700" fill="#87A697">B</text>
+    <g stroke="#87A697" stroke-width="3.2" stroke-linecap="round" fill="none">
+      <path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/>
+      <path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/>
+    </g>
+    <circle cx="83" cy="12" r="3.6" fill="#87A697"/>
+  </svg>
+  <div class="brand">HADAR BACK</div>
+  <div class="motto">— BACK TO MOTION —</div>
+  <div class="descriptor">הדר בק<span class="dot">·</span>טיפולים מותאמים אישית<span class="dot">·</span>באר שבע</div>
+  <div class="tagline">״מטיפול לתנועה,<br>מתנועה לחיים.״</div>
+  <div class="label">ערכת מותג · BRAND KIT · 2026</div>
+</header>
+
+<!-- ════════ 01 · מיצוב ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">01</span><h2>מי הדר, ולמה זוכרים אותה</h2></div>
+      <p>הדר לא מוכרת שעה של פינוק שנשכחת למחרת. היא מבינה מה הגוף צריך לעשות כדי להרגיש טוב — ועובדת איתו ישיר וברור, כדי שתזוזי בנוחות גם הרבה אחרי שיצאת מהקליניקה.</p>
+    </div>
+    <div class="position-card">
+      <p style="font-size:1.12rem;color:var(--ink-soft);line-height:1.8">
+        הדר בק היא לא ״עוד מטפלת בעיסוי בבאר שבע״. היא <strong style="color:var(--charcoal)">המרחב הנשי הפרטי</strong>
+        שאישה מגיעה אליו כשכואב, כשתפוס, כשהתנועה מוגבלת — ורוצה שמישהי שמבינה גוף תעבוד על זה ישיר.
+        לא ספא מנוכר ולא מרפאה קרה. מקצועיות אמיתית, בחום של בית, עם מטרה לטווח ארוך.
+      </p>
+      <div class="onliness">
+        <div class="eyebrow" style="margin-bottom:.6rem">ONLINESS — ההצהרה היחידה</div>
+        <div class="q">המטפלת היחידה בבאר שבע, במרחב לנשים בלבד, שהמטרה שלה היא לא רק להקל על הכאב עכשיו — אלא לשנות את האופן שבו הגוף שלך זז בכל יום.</div>
+      </div>
+      <div class="journey">
+        <span class="step">טיפול</span><span class="arr">→</span>
+        <span class="step">תנועה</span><span class="arr">→</span>
+        <span class="step">חיים</span>
+      </div>
+      <div class="pos-grid">
+        <div class="cell"><div class="k">למי</div><div class="v">נשים עם כאב, עומס שרירי או הגבלת תנועה — אחרי לידה, עבודה פיזית, ישיבה ממושכת או פציעה.</div></div>
+        <div class="cell"><div class="k">מול מה</div><div class="v">ספא שמפנק לשעה ונשכח, מצד אחד, ופיזיותרפיה קלינית ומנוכרת מצד שני.</div></div>
+        <div class="cell"><div class="k">הבידול</div><div class="v">הבנה ישירה של הגוף + מרחב נשי חם + מטרה תפקודית: לשפר איך את זזה ביום-יום.</div></div>
+      </div>
+    </div>
+
+    <div class="position-card" style="margin-top:1.4rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap">
+      <svg width="46" height="104" viewBox="0 0 40 110" fill="none" stroke="#3D5A60" stroke-width="3" stroke-linecap="round" style="flex-shrink:0">
+        <path d="M20 8 C12 24 28 38 20 54 S12 86 20 100"/>
+        <path d="M11 18 L29 15 M10 36 L30 39 M11 54 L29 51 M10 74 L30 77 M11 94 L29 91"/>
+        <circle cx="20" cy="5" r="3" fill="#87A697" stroke="none"/>
+      </svg>
+      <div style="flex:1;min-width:240px">
+        <div class="eyebrow" style="margin-bottom:.5rem">רעיון המותג — למה זה עובד</div>
+        <p style="font-size:1.05rem;color:var(--ink-soft);line-height:1.75">
+          הלוגו בנוי על משחק מילים מושלם: <strong style="color:var(--charcoal)">BACK</strong> = <strong style="color:var(--charcoal)">בק</strong> (שם המשפחה) = <strong style="color:var(--charcoal)">הגב · עמוד השדרה</strong>.
+          המונוגרם <strong style="color:var(--charcoal)">HB</strong> משלב עמוד שדרה, והתגית <em style="color:var(--sig)">BACK TO MOTION</em> אומרת בו-זמנית ״חזרה לתנועה״ ו״הגב בתנועה״. שם, סמל ותגית מספרים סיפור אחד.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 02 · צבע ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">02</span><h2>צבע החתימה</h2></div>
+      <p>טורקיז-אבן עמוק — נלקח ישירות מהלוגו. צבע יציב, בוטח ומקצועי, שמשדר ידע ועומק בלי להיות קר. אף מטפלת בארץ לא הולכת עליו, ולכן הוא <em>נשאר בזיכרון</em>. מאוזן במרווה-אבן רך ובחרסית חמה — כך המרחב נשאר נשי ומזמין.</p>
+    </div>
+
+    <div class="palette">
+      <div class="swatch big">
+        <div class="chip" style="background:#3D5A60"><span class="star">⭐</span></div>
+        <div class="meta"><div class="nm">טורקיז-אבן עמוק · Deep Teal</div><div class="hex">#3D5A60</div><div class="use">צבע החתימה הבולט — צבע הלוגו. כותרות מותג, כפתורים ראשיים, האובייקט החוזר בכל תמונה.</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#87A697"></div>
+        <div class="meta"><div class="nm">מרווה-אבן רך · Sage-Teal</div><div class="hex">#87A697</div><div class="use">משני — הגוון של ה-B ועמוד השדרה בלוגו. רקעים, מילויים, hover.</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#D8A793"></div>
+        <div class="meta"><div class="nm">חרסית ורודה</div><div class="hex">#D8A793</div><div class="use">אקסנט חם. קו הדגשה, נגיעות, חמימות.</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#F1EBE2;border-bottom:1px solid var(--line)"></div>
+        <div class="meta"><div class="nm">פשתן חם · Warm Oat</div><div class="hex">#F1EBE2</div><div class="use">רקע ראשי. נושב, חמים, נקי.</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#E0D6C8"></div>
+        <div class="meta"><div class="nm">חול רך · Soft Sand</div><div class="hex">#E0D6C8</div><div class="use">רקע משני, כרטיסים, גבולות.</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#2C3A3D"></div>
+        <div class="meta"><div class="nm">פחם · Charcoal</div><div class="hex">#2C3A3D</div><div class="use">טקסט ראשי.</div></div>
+      </div>
+    </div>
+
+    <div class="sig-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+      <p><strong>הכלל שמחזיק את כל המותג:</strong> בכל תמונה לאינסטגרם צריך להופיע אובייקט אחד בכחול-אבן העמוק — מגבת, כרית, כד, וילון או בקבוק שמן. החזרה על הצבע הזה היא מה שהופך את הפיד לזיהוי מיידי. בלי זה — הפלטה לא ״נדבקת״.</p>
+    </div>
+
+    <div class="ratio">
+      <div class="cap">יחס שימוש מומלץ — שומר על מקצועי, חם ולא צועק</div>
+      <div class="bar" style="background:#F1EBE2;color:#566468;flex:60">60% פשתן/ניטרלים</div>
+      <div class="bar" style="background:#3D5A60;flex:30">30% כחול-אבן עמוק</div>
+      <div class="bar" style="background:#D8A793;flex:10">10% חרסית</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 03 · הלוגו ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">03</span><h2>הלוגו</h2></div>
+      <p>מונוגרם <strong>HB</strong> שעמוד שדרה עובר במרכזו, מעל ״HADAR BACK״ והתגית ״BACK TO MOTION״. עובד על שלושה רקעים — בהיר, טורקיז עמוק ומרווה. (התצוגה כאן וקטורית; להטמעת קובץ הלוגו המקורי ראו את ההערה בהמשך.)</p>
+    </div>
+    <div class="logo-grid">
+      <div class="logo-cell lc-light">
+        <div class="lockup">
+          <svg width="74" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text><g stroke="#87A697" stroke-width="3.2" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/><path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/></g><circle cx="83" cy="12" r="3.6" fill="#87A697"/></svg>
+          <div class="lk-brand" style="letter-spacing:.12em;font-size:1.4rem">HADAR BACK</div>
+          <div class="lk-rule"></div>
+          <div class="lk-desc">BACK TO MOTION</div>
+        </div>
+        <span class="cap">על רקע בהיר</span>
+      </div>
+      <div class="logo-cell lc-sig">
+        <div class="lockup">
+          <svg width="74" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#FBF8F4">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#B9CFC4">B</text><g stroke="#B9CFC4" stroke-width="3.2" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/><path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/></g><circle cx="83" cy="12" r="3.6" fill="#B9CFC4"/></svg>
+          <div class="lk-brand" style="letter-spacing:.12em;font-size:1.4rem">HADAR BACK</div>
+          <div class="lk-rule"></div>
+          <div class="lk-desc">BACK TO MOTION</div>
+        </div>
+        <span class="cap">על טורקיז-אבן עמוק</span>
+      </div>
+      <div class="logo-cell lc-soft">
+        <div class="lockup">
+          <svg width="74" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#2C3A3D">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#FBF8F4">B</text><g stroke="#FBF8F4" stroke-width="3.2" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/><path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/></g><circle cx="83" cy="12" r="3.6" fill="#FBF8F4"/></svg>
+          <div class="lk-brand" style="letter-spacing:.12em;font-size:1.4rem">HADAR BACK</div>
+          <div class="lk-rule"></div>
+          <div class="lk-desc">BACK TO MOTION</div>
+        </div>
+        <span class="cap">על מרווה-אבן רך</span>
+      </div>
+    </div>
+
+    <div class="subhead">מרחב נשימה ומידה מינימלית</div>
+    <div class="clear-demo">
+      <div class="clear-box">
+        <div class="frame">
+          <svg width="56" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text><g stroke="#87A697" stroke-width="3.2" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/><path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/></g></svg>
+        </div>
+        <div class="cap"><b>מרחב נשימה:</b> השאירו סביב הלוגו ריווח של לפחות חצי מגובה המונוגרם. אל תצמידו טקסט או אובייקטים.</div>
+      </div>
+      <div class="clear-box">
+        <div class="minsize">
+          <div class="ms"><svg width="50" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text><g stroke="#87A697" stroke-width="3.4" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/></g></svg><small>שלט / אתר</small></div>
+          <div class="ms"><svg width="34" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text><g stroke="#87A697" stroke-width="4" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/></g></svg><small>אווטאר</small></div>
+          <div class="ms"><svg width="22" viewBox="0 0 170 122" fill="none"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text></svg><small>מינ' 22px</small></div>
+        </div>
+        <div class="cap"><b>מידה מינימלית:</b> מתחת ל-22px משתמשים במונוגרם HB בלבד (בלי המילים), כאווטאר.</div>
+      </div>
+    </div>
+
+    <div class="subhead">מה אסור לעשות ללוגו</div>
+    <div class="dodont">
+      <div class="dd"><div class="vis"><div class="lk-brand" style="transform:scaleX(1.7);font-size:1.2rem;letter-spacing:.1em">HADAR BACK</div></div><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>למתוח / לעוות</div></div>
+      <div class="dd"><div class="vis"><div class="lk-brand" style="color:#C0392B;font-size:1.2rem;letter-spacing:.1em">HADAR BACK</div></div><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>צבע מחוץ לפלטה</div></div>
+      <div class="dd"><div class="vis"><div class="lk-brand" style="transform:rotate(-12deg);font-size:1.2rem;letter-spacing:.1em">HADAR BACK</div></div><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>להטות / לסובב</div></div>
+      <div class="dd"><div class="vis"><div class="lk-brand" style="text-shadow:3px 4px 4px rgba(0,0,0,.5);font-size:1.2rem;letter-spacing:.1em">HADAR BACK</div></div><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>צללים ואפקטים</div></div>
+      <div class="dd"><div class="vis"><span style="font-family:var(--body);font-weight:800;font-size:1.1rem;color:var(--charcoal);letter-spacing:.05em">HADAR BACK</span></div><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>להחליף פונט</div></div>
+    </div>
+
+    <div class="sig-note" style="margin-top:2rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      <p><strong>קובץ הלוגו המקורי:</strong> שמרי את קובץ הלוגו שלך כ-<b>assets/logo.png</b> (ולגרסה לבנה לרקע כהה: <b>assets/logo-white.png</b>), ואחליף את הגרסה הווקטורית בלוגו המדויק שלך בכל הערכה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 04 · טיפוגרפיה ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">04</span><h2>טיפוגרפיה</h2></div>
+      <p>זוג עם אופי — סריף אלגנטי לכותרות, סן-סריף נקי לטקסט. הניגוד יוצר היררכיה עשירה ומרגיש ״איכות״ בלי מאמץ. שניהם חינמיים ב-Google Fonts.</p>
+    </div>
+    <div class="type-card">
+      <div class="tc-label"><span class="tc-name">FRANK RUHL LIBRE</span><span class="tc-role">כותרות · שם המותג · ציטוטים</span></div>
+      <div class="specimen-display">מטיפול <span class="light">לתנועה,</span> מתנועה לחיים</div>
+      <div class="weights"><span style="font-weight:400">Regular</span><span style="font-weight:500">Medium</span><span style="font-weight:700">Bold</span><span style="font-weight:900">Black</span></div>
+    </div>
+    <div class="type-card">
+      <div class="tc-label"><span class="tc-name">HEEBO</span><span class="tc-role">טקסט שוטף · עמוד הזמנה · טופס · מובייל</span></div>
+      <div class="specimen-body">נעבוד על שחרור העומס מהשרירים שגורם לכאב ולהגבלה בתנועה, כדי להחזיר לגוף תפקוד נוח יותר. המטרה היא לא רק להקל על הכאב עכשיו, אלא לשפר את האופן שבו הגוף שלך זז ביום-יום.</div>
+      <div class="weights"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:500">Medium</span><span style="font-weight:700">Bold</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 05 · קול ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">05</span><h2>הקול של הדר</h2></div>
+      <p>תמיד בלשון נקבה, אישית וישירה. הדר יודעת מה היא עושה ואומרת את זה בבהירות — בלי סופרלטיבים ובלי הבטחות ריקות. מקצועית, חמה, ומעצימה.</p>
+    </div>
+    <div class="voice-words">
+      <div class="w"><div class="ww">ישירה</div><div class="ws">אומרת את הדברים בפשטות</div></div>
+      <div class="w"><div class="ww">בהירה</div><div class="ws">מסבירה למה ולשם מה</div></div>
+      <div class="w"><div class="ww">יודעת</div><div class="ws">מבינה גוף, בלי להשוויץ</div></div>
+      <div class="w"><div class="ww">מעצימה</div><div class="ws">מסתכלת קדימה, לא רק על עכשיו</div></div>
+    </div>
+    <div class="say-grid">
+      <div class="say do">
+        <div class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>ככה הדר מדברת</div>
+        <div class="q">״אני מבינה מה הגוף שלך צריך לעשות כדי להרגיש טוב יותר, ואני עובדת איתו בצורה ישירה וברורה.״</div>
+        <div class="q">״נעבוד על שחרור העומס מהשרירים שגורם לכאב ולהגבלה בתנועה — המטרה היא לשפר את האופן שבו הגוף שלך זז ביום-יום.״</div>
+      </div>
+      <div class="say dont">
+        <div class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>ככה היא לא מדברת</div>
+        <div class="q">״מגוון טיפולים מקצועיים ברמה הגבוהה ביותר! פנקו את עצמכם בחוויה אולטימטיבית של רוגע ושלווה!! ✨💆‍♀️״</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 06 · אינסטגרם ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">06</span><h2>הפיד באינסטגרם</h2></div>
+      <p>מקצב של שלושה: פרט-מאקרו / מרחב-קליניקה / ציטוט-טקסט. החזרה על כחול-אבן עמוק לאורך הגריד היא החתימה הוויזואלית — כך זוכרים את הדר אחרי שגללו 50 מטפלות.</p>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-tile t-quote"><div class="qt">״מטיפול לתנועה,<br>מתנועה לחיים.״</div></div>
+      <div class="ig-tile t-sig"><span class="wm" style="color:#fff">הדר בק</span></div>
+      <div class="ig-tile t-sand"><span style="font-family:var(--display);font-style:italic;color:var(--sig);font-size:1.05rem">פרט · ידיים בעבודה</span></div>
+      <div class="ig-tile t-soft"><span class="small">עיסוי רפואי</span></div>
+      <div class="ig-tile t-white"><span style="font-family:var(--display);color:var(--sig);font-size:1.05rem;font-style:italic">לזוז בנוחות</span></div>
+      <div class="ig-tile t-blush"><span style="color:#5E3B33;font-family:var(--display);font-style:italic;font-size:1.05rem">שחרור עומס</span></div>
+      <div class="ig-tile t-sig"><span class="small">לנשים בלבד</span></div>
+      <div class="ig-tile t-quote"><div class="qt">איך את<br>זזה היום?</div></div>
+      <div class="ig-tile t-soft"><span class="wm" style="color:#fff;font-size:1.05rem">באר שבע</span></div>
+    </div>
+
+    <div class="ig-tips">
+      <div class="ig-tip"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v1M12 20v1M3 12h1M20 12h1"/></svg>אור</div><p>טבעי, רך, מהצד. בלי פלאש ובלי אור לבן קר — צללים רכים, לא דרמטיים.</p></div>
+      <div class="ig-tip"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>עריכה</div><p>להוריד מעט סטורציה, להעלות מעט חשיפה, לשמור טונים חמים. עקביות מעל ״יפה״.</p></div>
+      <div class="ig-tip"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c4-3 6-3 9 0s5 3 9 0"/></svg>נושאים</div><p>ידיים בעבודה, אזורי שחרור, תנועה ומתיחה, פרטים בקליניקה. גוף בתפקוד — לא סטוק-ספא.</p></div>
+      <div class="ig-tip"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg>קומפוזיציה</div><p>הרבה אוויר ושטח שלילי, מרכז נקי. אובייקט אחד בכחול-אבן עמוק בכל פריים.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 07 · אלמנטים גרפיים ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">07</span><h2>אלמנטים גרפיים</h2></div>
+      <p>שני אלמנטים פשוטים שמספרים את הסיפור של תנועה — קו תנועה זורם, וקו חרסית קצר כהדגשה. הם מחליפים את ה״סמל״ ושומרים על שפה אחידה.</p>
+    </div>
+    <div class="elem-grid">
+      <div class="elem">
+        <div class="flow">
+          <svg width="90%" height="60" viewBox="0 0 280 60" fill="none" preserveAspectRatio="xMidYMid meet">
+            <path d="M6 40 C70 40 70 18 140 18 S210 40 274 40" stroke="#3D5A60" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M6 50 C70 50 70 30 140 30 S210 50 274 50" stroke="#87A697" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
+            <circle cx="140" cy="18" r="4" fill="#D8A793"/>
+          </svg>
+        </div>
+        <div class="ec">קו תנועה — לרקעים, כותרות סטורי, חוצצים</div>
+      </div>
+      <div class="elem">
+        <div class="flow" style="background:var(--white)">
+          <svg width="40" height="92" viewBox="0 0 40 100" fill="none" stroke="#3D5A60" stroke-width="3" stroke-linecap="round"><path d="M20 6 C12 22 28 36 20 52 S12 84 20 96"/><path d="M11 16 L29 13 M10 34 L30 37 M11 52 L29 49 M10 72 L30 75 M11 90 L29 87"/><circle cx="20" cy="3" r="2.6" fill="#87A697" stroke="none"/></svg>
+        </div>
+        <div class="ec">עמוד שדרה — מהמונוגרם, לאלמנט מפריד או רקע סטורי</div>
+      </div>
+      <div class="elem" style="background:var(--sig);text-align:center">
+        <div class="flow" style="background:transparent"><span style="font-family:var(--display);font-weight:900;color:#fff;font-size:1.6rem">הדר בק</span></div>
+        <div class="ec" style="color:rgba(255,255,255,.72)">חותם טקסטואלי — פינה תחתונה של כל פוסט</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 08 · אייקונוגרפיה ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">08</span><h2>אייקונוגרפיה</h2></div>
+      <p>קו דק אחיד, פינות מעוגלות, בלי מילוי. תמיד בכחול-אבן עמוק על בהיר, או כחול-אבן רך על כהה.</p>
+    </div>
+    <div class="icon-set">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c4-3 6-3 9 0s5 3 9 0"/><path d="M3 17c4-3 6-3 9 0s5 3 9 0"/></svg><div class="nm">עיסוי שוודי</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="6"/><path d="M10 15c1 1 3 1 4 0M9 21h6"/></svg><div class="nm">כוסות רוח</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><path d="M12 8v6M9 11h6"/></svg><div class="nm">עיסוי רפואי</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12c4-4 10-4 14 0M5 12c4 4 10 4 14 0"/><circle cx="12" cy="12" r="1.5"/></svg><div class="nm">תנועה / טווח</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg><div class="nm">לנשים בלבד</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg><div class="nm">קליניקה</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div class="nm">משך הטיפול</div></div>
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20c2-6 4-9 6-9s4 3 6 9M12 11V4M9 6l3-2 3 2"/></svg><div class="nm">שחרור / הקלה</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 09 · נכסים מוכנים ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">09</span><h2>נכסים מוכנים</h2></div>
+      <p>הכל באותה שפה — כיסויי היילייטס לאינסטגרם, כרטיס ביקור, ושובר מתנה. מוכן לעיצוב סופי.</p>
+    </div>
+
+    <div class="subhead">כיסויי היילייטס · אינסטגרם</div>
+    <div class="highlights">
+      <div class="hl"><div class="circle" style="background:var(--sig)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c4-3 6-3 9 0s5 3 9 0"/><path d="M3 17c4-3 6-3 9 0s5 3 9 0"/></svg></div><div class="nm">טיפולים</div></div>
+      <div class="hl"><div class="circle" style="background:var(--oat)"><svg viewBox="0 0 24 24" fill="none" stroke="#3D5A60" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="nm">הקליניקה</div></div>
+      <div class="hl"><div class="circle" style="background:var(--blush)"><svg viewBox="0 0 24 24" fill="none" stroke="#5E3B33" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><div class="nm">המלצות</div></div>
+      <div class="hl"><div class="circle" style="background:var(--soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12c4-4 10-4 14 0M5 12c4 4 10 4 14 0"/></svg></div><div class="nm">תנועה</div></div>
+      <div class="hl"><div class="circle" style="background:var(--sand)"><svg viewBox="0 0 24 24" fill="none" stroke="#3D5A60" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></div><div class="nm">לתיאום</div></div>
+    </div>
+
+    <div class="subhead">כרטיס ביקור</div>
+    <div class="apply-grid">
+      <div class="card-demo card-front">
+        <div><div class="cb" style="letter-spacing:.1em;font-size:1.5rem">HADAR BACK</div><div class="crule"></div><div class="cd">הדר בק · טיפולים מותאמים אישית · באר שבע</div></div>
+        <div style="font-family:var(--body);font-weight:600;letter-spacing:.18em;color:var(--soft);font-size:.78rem">BACK TO MOTION</div>
+      </div>
+      <div class="card-demo card-back">
+        <div style="font-family:var(--display);font-weight:700;color:var(--sig);font-size:1.1rem">עיסוי ממוקד תנועה</div>
+        <div class="cc">שוודי · רפואי · כוסות רוח<br>וינגייט 74, באר שבע<br>054-3270619</div>
+      </div>
+    </div>
+
+    <div class="subhead">שובר מתנה</div>
+    <div class="voucher">
+      <svg class="vflow" width="100%" height="70" viewBox="0 0 400 70" fill="none" preserveAspectRatio="none"><path d="M0 50 C100 50 100 25 200 25 S300 50 400 50" stroke="#87A697" stroke-width="3" stroke-linecap="round"/></svg>
+      <div class="vt">שובר מתנה · מרחב טיפול לנשים</div>
+      <div class="vbig">טיפול שמחזיר לגוף לזוז</div>
+      <div class="vline">עיסוי אישי ממוקד תנועה בקליניקה של הדר בק, באר שבע.<br>בתוקף שישה חודשים · לתיאום: 054-3270619</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 10 · בנק תוכן ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">10</span><h2>בנק תוכן מוכן</h2></div>
+      <p>טקסטים מוכנים בקול של הדר — להעתיק ולהדביק. ביו, כיתובים, האשטגים, הודעות וואטסאפ ותיאורי שירות.</p>
+    </div>
+    <div class="bank">
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg>ביו לאינסטגרם</div>
+        <div class="quote">HADAR BACK · הדר בק 🌿<br>עיסוי רפואי ממוקד תנועה · טיפולים מותאמים אישית<br>באר שבע · לנשים בלבד<br>BACK TO MOTION · מטיפול לתנועה, מתנועה לחיים<br>↓ לתיאום תור</div>
+        <p style="font-size:.85rem;color:var(--ink-quiet)">קצר, ברור, בלשון נקבה. השורה האחרונה מובילה לקישור.</p>
+      </div>
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3Z"/></svg>כיתוב לפוסט · הכרות</div>
+        <div class="quote">כאב הוא לרוב לא גזירת גורל — הוא עומס שתפס מקום בשריר והגביל לך את התנועה.<br>אני מבינה מה הגוף שלך צריך לעשות כדי להרגיש טוב, ועובדת איתו ישיר וברור. נשחרר את העומס, ונחזיר לך לזוז בנוחות.</div>
+        <p style="font-size:.85rem;color:var(--ink-quiet)">פתיח שמסביר ערך אמיתי, לא ״הצעת מכר״.</p>
+      </div>
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg>סטים של האשטגים</div>
+        <div class="tags">
+          <span class="pill">#עיסוי_באר_שבע</span><span class="pill">#עיסוי_רפואי</span><span class="pill">#שחרור_שרירים</span><span class="pill">#כאב_גב</span><span class="pill">#טווח_תנועה</span><span class="pill">#עיסוי_שוודי</span><span class="pill">#כוסות_רוח</span><span class="pill">#מרחב_נשי</span><span class="pill">#אחרי_לידה</span><span class="pill">#באר_שבע</span>
+        </div>
+      </div>
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>הודעות וואטסאפ</div>
+        <p><b style="color:var(--charcoal)">קבלת בקשה:</b></p>
+        <div class="quote">היי [שם] 🌿 קיבלתי את הבקשה לתור. אחזור אלייך לאישור הסופי בהקדם. הדר בק</div>
+        <p><b style="color:var(--charcoal)">אישור תור:</b></p>
+        <div class="quote">היי [שם] 🌿 התור שלך נקבע! 📅 [תאריך] 🕐 [שעה] 📍 וינגייט 74, באר שבע. נא בבגדים נוחים שמאפשרים תנועה. נתראה 💪</div>
+      </div>
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.5 3 4 4 4 7a4 4 0 0 1-8 0c0-3 2.5-4 4-7Z"/><path d="M8 21h8"/></svg>תזכורת 24 שעות</div>
+        <div class="quote">תזכורת קטנה 🌿 היי [שם], נתראה מחר ב-[שעה]. בגדים נוחים, ובואי כמו שאת. 📍 וינגייט 74, באר שבע. הדר</div>
+      </div>
+      <div class="bk">
+        <div class="bh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>קריאה לפעולה (CTA)</div>
+        <p>תמיד מזמין, אף פעם דוחף:</p>
+        <div class="quote">בואי נמצא מה תפוס ומה מגביל — ונשחרר.<br>בחרי זמן, ואחזור אלייך לאישור.</div>
+      </div>
+    </div>
+
+    <div class="subhead">תיאורי שירות · בקול של הדר</div>
+    <div class="svc-copy"><div class="sn">עיסוי רפואי</div><p>טיפול ממוקד לכאב, לעומס ולאזורים תפוסים שמגבילים תנועה — אחרי לידה, פציעה, או יותר מדי שעות על הרגליים או מול מסך. עבודת עומק ישירה ומדויקת, במטרה להחזיר לגוף תפקוד נוח.</p></div>
+    <div class="svc-copy"><div class="sn">עיסוי שוודי</div><p>עיסוי זורם שמרגיע את מערכת העצבים ומשחרר מתח שהצטבר. מתאים כשהגוף צריך לשחרר הילוך — ולחזור לזוז בלי הכובד.</p></div>
+    <div class="svc-copy"><div class="sn">כוסות רוח</div><p>שיטה עתיקה ועדינה לשחרור שרירים ולשיפור זרימת הדם. משתלבת בכל טיפול לפי הצורך — תמיד ללא עלות נוספת.</p></div>
+  </div>
+</section>
+
+<!-- ════════ 11 · יישום ════════ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="row"><span class="section-num">11</span><h2>איך זה נראה בפועל</h2></div>
+      <p>אותה שפה — מעמוד ההזמנה ועד הודעת הוואטסאפ.</p>
+    </div>
+    <div class="apply-grid">
+      <div class="demo-card">
+        <div class="dc-cap">כפתורים · עמוד הזמנה</div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#">קביעת תור<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></a>
+          <a class="btn btn-ghost" href="#">שלחי הודעה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+        <div style="margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+          <div style="font-family:var(--display);font-weight:900;font-size:1.6rem;color:var(--charcoal)">טיפול שמחזיר<span style="color:var(--sig)"> לגוף לזוז</span></div>
+          <div style="color:var(--ink-soft);margin-top:.4rem">עיסוי ממוקד תנועה · לנשים בלבד · באר שבע</div>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="dc-cap">הודעת וואטסאפ · בקול של הדר</div>
+        <div class="wa-wrap">
+          <div class="wa-bubble">היי דנה 🌿 קיבלתי את הבקשה לתור. אחזור אלייך לאישור הסופי בהקדם. הדר בק</div>
+        </div>
+        <div style="margin-top:1.2rem;font-size:.88rem;color:var(--ink-quiet);line-height:1.6">ישיר, אישי, בלשון נקבה. בלי סופרלטיבים, בלי סימני קריאה כפולים.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <svg width="64" viewBox="0 0 170 122" fill="none" style="margin:0 auto .6rem;display:block"><text x="44" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#3D5A60">H</text><text x="122" y="92" text-anchor="middle" font-family="'Frank Ruhl Libre',serif" font-size="112" font-weight="700" fill="#87A697">B</text><g stroke="#87A697" stroke-width="3.2" stroke-linecap="round"><path d="M83 16 C75 33 91 47 83 64 S75 95 83 106"/><path d="M74 27 L92 24 M75 45 L93 48 M74 64 L92 61 M75 84 L93 87 M74 100 L92 97"/></g><circle cx="83" cy="12" r="3.6" fill="#87A697"/></svg>
+  <div class="fbrand" style="letter-spacing:.12em">HADAR BACK</div>
+  <div class="frule"></div>
+  <div class="fdesc">BACK TO MOTION · הדר בק · טיפולים מותאמים אישית · באר שבע</div>
+  <div class="fmeta">
+    ערכת מותג · 2026<br>
+    טורקיז-אבן עמוק #3D5A60 · Frank Ruhl Libre + Heebo<br>
+    ״מטיפול לתנועה, מתנועה לחיים.״
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הדר בק · הצהרת בריאות · באר שבע</title>
+<meta name="description" content="הצהרת בריאות לפני טיפול עיסוי אצל הדר בק — מטפלת מוסמכת בבאר שבע. מילוי מהיר ובטוח, לנשים בלבד.">
+
+<meta property="og:title" content="הדר בק · הצהרת בריאות">
+<meta property="og:description" content="כמה שאלות קצרות לפני הטיפול — כדי שאתאים לך את העיסוי בבטחה.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#EEF2EF;
+  --paper-2:#F5F8F5;
+  --cream:#E7EEE8;
+  --ink:#2F3A34;
+  --ink-soft:#5C655F;
+  --ink-quiet:#8A938C;
+  --line:#E0E6E1;
+
+  --blue:#6E9484;
+  --blue-deep:#42604F;
+  --blue-soft:rgba(110,148,132,.14);
+  --clay:#6E9484;
+  --clay-deep:#4E6E5D;
+  --clay-soft:rgba(78,110,93,.10);
+  --sage:#6E9484;
+  --sage-deep:#42604F;
+  --sage-soft:rgba(110,148,132,.14);
+
+  --whatsapp:#25D366;
+  --error:#C0584A;
+
+  --display:'Rubik', ui-sans-serif, system-ui, sans-serif;
+  --body:'Assistant', ui-sans-serif, system-ui, sans-serif;
+  --num:'Rubik', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card:0 18px 44px -24px rgba(47,58,52,.25);
+  --shadow-soft:0 12px 34px -20px rgba(47,58,52,.2);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-weight:300;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Soft green glow */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(70% 50% at 50% 100%, rgba(110,148,132,.16) 0%, transparent 60%);
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,246,238,.88);
+  backdrop-filter:blur(20px) saturate(120%);
+  -webkit-backdrop-filter:blur(20px) saturate(120%);
+  border-bottom:1px solid rgba(217,207,184,.4);
+  padding:1rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.topbar .mark{font-family:var(--display);font-weight:400;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none}
+.topbar .mark .dot{display:inline-block;width:6px;height:6px;background:var(--clay);border-radius:50%;margin:0 .5rem;vertical-align:middle}
+.topbar .back{
+  font-size:.85rem;color:var(--ink-soft);text-decoration:none;font-weight:400;letter-spacing:.04em;
+  display:inline-flex;align-items:center;gap:.4rem;transition:color .2s;
+}
+.topbar .back:hover{color:var(--clay-deep)}
+@media (max-width:760px){.topbar{padding:.8rem 1.25rem}}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-head{
+  padding:5rem 2.5rem 2.5rem;
+  text-align:center;
+  position:relative;z-index:2;
+}
+.page-head::before{
+  content:'';position:absolute;top:30%;left:50%;transform:translateX(-50%);
+  width:55%;height:80%;
+  background:radial-gradient(ellipse at center, rgba(164,180,158,.16) 0%, transparent 65%);
+  filter:blur(60px);z-index:-1;
+}
+.page-eyebrow{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-size:.72rem;letter-spacing:.25em;color:var(--ink-quiet);
+  font-weight:400;text-transform:uppercase;margin-bottom:1.5rem;
+}
+.page-eyebrow::before,.page-eyebrow::after{content:'';display:inline-block;width:32px;height:1px;background:var(--clay)}
+.page-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2.3rem, 5.5vw, 3.6rem);
+  line-height:1.1;letter-spacing:-.01em;
+  color:var(--ink);margin-bottom:1.2rem;
+}
+.page-title .em{font-family:var(--num);font-weight:800;color:var(--clay-deep)}
+.page-lead{
+  font-size:1.05rem;color:var(--ink-soft);max-width:48ch;margin:0 auto;
+  line-height:1.7;font-weight:300;
+}
+.privacy-note{
+  display:inline-flex;align-items:center;gap:.5rem;
+  margin-top:1.6rem;padding:.55rem 1.1rem;
+  background:var(--sage-soft);border:1px solid rgba(164,180,158,.4);
+  border-radius:9999px;font-size:.82rem;color:var(--sage-deep);font-weight:400;
+}
+.privacy-note svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6}
+@media (max-width:760px){.page-head{padding:3rem 1.25rem 2rem}}
+
+/* ============================================================
+   PROGRESS BAR (thin, top of form)
+   ============================================================ */
+.progress-rail{
+  position:sticky;top:60px;z-index:40;
+  height:3px;background:rgba(217,207,184,.5);
+}
+.progress-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg, var(--clay), var(--clay-deep));
+  transition:width .4s cubic-bezier(.2,.7,.3,1);
+}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+main{
+  padding:2.5rem 2.5rem 5rem;
+  max-width:640px;margin:0 auto;
+  position:relative;z-index:2;
+}
+@media (max-width:760px){main{padding:1.5rem 1.25rem 4rem}}
+
+.fieldset{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:2rem 2rem 1.6rem;
+  margin-bottom:1.5rem;
+  box-shadow:var(--shadow-soft);
+  position:relative;
+}
+.fieldset > legend, .fieldset-title{
+  display:flex;align-items:center;gap:.75rem;
+  font-family:var(--display);font-weight:700;font-size:1.35rem;
+  color:var(--ink);letter-spacing:-.005em;margin-bottom:.4rem;
+}
+.fieldset-title .step-num{
+  font-family:var(--num);font-style:italic;font-weight:500;font-size:1rem;
+  width:30px;height:30px;flex-shrink:0;
+  background:var(--clay-soft);color:var(--clay-deep);
+  border:1px solid var(--clay);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.fieldset-sub{
+  color:var(--ink-quiet);font-size:.92rem;font-weight:300;
+  margin-bottom:1.6rem;line-height:1.6;
+  padding-right:calc(30px + .75rem);
+}
+@media (max-width:600px){
+  .fieldset{padding:1.5rem 1.3rem 1.2rem}
+  .fieldset-sub{padding-right:0}
+}
+
+/* ---- Text fields ---- */
+.field{margin-bottom:1.3rem}
+.field:last-child{margin-bottom:0}
+.field label{
+  display:block;font-size:.78rem;color:var(--ink-quiet);
+  margin-bottom:.5rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.field label .req{color:var(--clay-deep);margin-left:.2rem}
+.field input[type=text],.field input[type=tel],.field input[type=number],.field textarea{
+  width:100%;background:var(--paper-2);
+  border:1px solid var(--line);border-radius:8px;
+  padding:.95rem 1.1rem;font-family:inherit;font-size:1rem;
+  color:var(--ink);font-weight:400;
+  transition:all .2s;
+}
+.field input:focus,.field textarea:focus{
+  outline:none;border-color:var(--ink);
+  background:var(--paper);
+  box-shadow:0 0 0 3px rgba(38,34,28,.06);
+}
+.field textarea{resize:vertical;min-height:80px;font-family:var(--body)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:480px){.field-row{grid-template-columns:1fr}}
+.field .error{
+  display:none;color:var(--error);font-size:.82rem;margin-top:.4rem;font-weight:400;
+}
+.field.invalid input,.field.invalid textarea{border-color:var(--error)}
+.field.invalid .error{display:block}
+
+/* ---- Yes/No health questions ---- */
+.q{
+  border-bottom:1px solid rgba(217,207,184,.6);
+  padding:1.15rem 0;
+}
+.q:last-of-type{border-bottom:none}
+.q-row{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.q-text{font-size:1rem;color:var(--ink);font-weight:400;line-height:1.5;flex:1}
+.q-text .hint{display:block;font-size:.82rem;color:var(--ink-quiet);font-weight:300;margin-top:.15rem}
+.toggle{
+  display:inline-flex;flex-shrink:0;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:9999px;
+  padding:3px;gap:2px;
+  position:relative;
+}
+.toggle button{
+  appearance:none;border:none;background:none;cursor:pointer;
+  font-family:var(--body);font-size:.86rem;font-weight:500;
+  color:var(--ink-quiet);
+  padding:.5rem 1.05rem;border-radius:9999px;
+  transition:all .22s cubic-bezier(.2,.7,.3,1);
+  min-width:56px;
+}
+.toggle button[aria-pressed="true"][data-val="yes"]{background:var(--clay-deep);color:var(--paper);box-shadow:0 3px 10px rgba(163,125,106,.3)}
+.toggle button[aria-pressed="true"][data-val="no"]{background:var(--sage-deep);color:var(--paper);box-shadow:0 3px 10px rgba(124,142,118,.28)}
+.q.unanswered .toggle{box-shadow:0 0 0 2px rgba(184,88,66,.25)}
+
+/* detail field appears when "yes" */
+.q-detail{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease, margin-top .35s ease, opacity .3s ease;
+  opacity:0;margin-top:0;
+}
+.q-detail.open{max-height:180px;opacity:1;margin-top:.9rem}
+.q-detail input,.q-detail textarea{
+  width:100%;background:var(--clay-soft);
+  border:1px solid var(--clay);border-radius:8px;
+  padding:.8rem 1rem;font-family:var(--body);font-size:.95rem;
+  color:var(--ink);
+}
+.q-detail input:focus,.q-detail textarea:focus{outline:none;border-color:var(--clay-deep);box-shadow:0 0 0 3px var(--clay-soft)}
+.q-detail .dlabel{font-size:.78rem;color:var(--clay-deep);margin-bottom:.4rem;font-weight:500;letter-spacing:.04em}
+
+/* ---- Consent ---- */
+.consent{
+  display:flex;align-items:flex-start;gap:.9rem;
+  cursor:pointer;padding:.4rem 0;
+}
+.consent input{position:absolute;opacity:0;pointer-events:none}
+.consent .box{
+  width:26px;height:26px;flex-shrink:0;margin-top:.1rem;
+  border:1.5px solid var(--ink-quiet);
+  border-radius:7px;background:var(--paper-2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s ease;
+}
+.consent .box svg{width:16px;height:16px;color:var(--paper);opacity:0;transition:opacity .15s}
+.consent input:checked + .box{background:var(--ink);border-color:var(--ink)}
+.consent input:checked + .box svg{opacity:1}
+.consent .ctext{font-size:.95rem;color:var(--ink-soft);line-height:1.6;font-weight:300}
+.consent.invalid .box{border-color:var(--error);box-shadow:0 0 0 3px rgba(184,88,66,.15)}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+.actions{margin-top:2rem}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:1.1rem 2rem;border-radius:9999px;
+  font-family:var(--body);font-size:1rem;font-weight:400;
+  letter-spacing:.04em;cursor:pointer;text-decoration:none;
+  transition:all .3s cubic-bezier(.2,.7,.3,1);
+  border:1px solid transparent;width:100%;
+}
+.btn-primary{background:var(--clay-deep);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--sage-deep);transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.spinner{
+  width:18px;height:18px;
+  border:2px solid rgba(250,246,238,.4);
+  border-top-color:var(--paper);
+  border-radius:50%;animation:spin .7s linear infinite;display:none;
+}
+.btn.loading .spinner{display:block}
+.btn.loading .btn-text{opacity:.7}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   SUCCESS
+   ============================================================ */
+.success{text-align:center;padding:3rem 1.5rem;max-width:540px;margin:0 auto;display:none}
+.success.active{display:block;animation:fadeUp .5s cubic-bezier(.2,.7,.3,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.success-icon{
+  width:96px;height:96px;border-radius:50%;
+  background:linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+  margin:0 auto 2rem;display:flex;align-items:center;justify-content:center;
+  animation:pop .55s cubic-bezier(.18,.89,.32,1.28);
+  box-shadow:0 12px 40px rgba(124,142,118,.35);
+}
+.success-icon svg{width:42px;height:42px;fill:none;stroke:var(--paper);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success h2{font-family:var(--display);font-weight:700;font-size:clamp(2rem,4vw,2.8rem);margin-bottom:1rem}
+.success h2 .em{font-family:var(--num);font-weight:800;color:var(--sage-deep)}
+.success > p{color:var(--ink-soft);margin-bottom:2rem;font-size:1.05rem;line-height:1.7}
+.success-actions{display:flex;flex-direction:column;gap:.8rem;align-items:stretch}
+.btn-whatsapp{background:var(--whatsapp);color:#fff}
+.btn-whatsapp:hover{background:#1ea655;transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,211,102,.3)}
+.btn-ghost{background:transparent;color:var(--ink-soft);border-color:var(--line)}
+.btn-ghost:hover{background:var(--paper-2);color:var(--ink)}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;bottom:2rem;left:50%;
+  transform:translateX(-50%) translateY(120px);
+  background:var(--ink);color:var(--paper);
+  padding:1rem 1.6rem;border-radius:9999px;font-size:.92rem;
+  z-index:9999;transition:transform .3s ease;
+  box-shadow:var(--shadow-card);font-weight:400;letter-spacing:.02em;
+  max-width:90vw;text-align:center;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--error)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  background:var(--ink);color:var(--paper);
+  padding:2.5rem 2.5rem;text-align:center;
+  position:relative;z-index:2;
+}
+footer .brand{font-family:var(--display);font-size:1.5rem;font-weight:300;letter-spacing:-.005em;margin-bottom:.4rem}
+footer .brand .em{font-style:italic;color:var(--clay)}
+footer .info{color:rgba(250,246,238,.6);margin-bottom:.6rem;font-size:.9rem;font-weight:300}
+footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="mark">הדר<span class="dot"></span>בק</span>
+</header>
+
+<div class="progress-rail"><div class="progress-fill" id="progress"></div></div>
+
+<div class="page-head">
+  <div class="page-eyebrow">לפני הטיפול</div>
+  <h1 class="page-title">הצהרת <span class="em">בריאות</span></h1>
+  <p class="page-lead">כמה שאלות קצרות כדי שאתאים לך את הטיפול בבטחה. אפשר למלא מראש מהבית — ככה נרוויח עוד דקות של רוגע בקליניקה.</p>
+  <div class="privacy-note">
+    <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+    הפרטים נשלחים ישירות להדר בלבד ונשמרים בדיסקרטיות.
+  </div>
+</div>
+
+<main>
+  <form id="health-form" novalidate>
+
+    <!-- 1. פרטים אישיים -->
+    <div class="fieldset">
+      <div class="fieldset-title"><span class="step-num">1</span> הפרטים שלך</div>
+      <p class="fieldset-sub">כדי שאדע למי להתאים את הטיפול.</p>
+
+      <div class="field">
+        <label for="f-name"><span class="req">*</span> שם מלא</label>
+        <input type="text" id="f-name" autocomplete="name" placeholder="שם פרטי ומשפחה">
+        <div class="error">נא להזין שם</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="f-phone"><span class="req">*</span> טלפון</label>
+          <input type="tel" id="f-phone" autocomplete="tel" placeholder="05X-XXXXXXX" inputmode="tel">
+          <div class="error">מספר טלפון תקין (10 ספרות)</div>
+        </div>
+        <div class="field">
+          <label for="f-age">גיל</label>
+          <input type="number" id="f-age" min="14" max="120" placeholder="לדוגמה: 34" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-email">אימייל (אופציונלי)</label>
+        <input type="email" id="f-email" autocomplete="email" placeholder="name@example.com" inputmode="email">
+      </div>
+
+      <div class="field">
+        <label for="f-appt">תאריך הטיפול (אם ידוע)</label>
+        <input type="text" id="f-appt" placeholder="לדוגמה: יום ראשון, 12 ביולי" autocomplete="off">
+      </div>
+    </div>
+
+    <!-- 2. מצב בריאותי -->
+    <div class="fieldset">
+      <div class="fieldset-title"><span class="step-num">2</span> מצב בריאותי</div>
+      <p class="fieldset-sub">סמני "כן" או "לא" לכל שאלה. ב"כן" — תיפתח שורה קצרה לפירוט.</p>
+      <div id="questions"></div>
+    </div>
+
+    <!-- 3. הערות חופשי -->
+    <div class="fieldset">
+      <div class="fieldset-title"><span class="step-num">3</span> משהו נוסף שחשוב שאדע?</div>
+      <p class="fieldset-sub">אזורים רגישים, העדפת לחץ, אזורים להימנע מהם, או כל דבר אחר. (אופציונלי)</p>
+      <div class="field">
+        <textarea id="f-notes" maxlength="600" placeholder="לדוגמה: רגישות בכתף ימין, מעדיפה לחץ עדין, להימנע מאזור הבטן..."></textarea>
+      </div>
+    </div>
+
+    <!-- 4. הצהרה -->
+    <div class="fieldset">
+      <div class="fieldset-title"><span class="step-num">4</span> הצהרה ואישור</div>
+      <p class="fieldset-sub">לפני שנתחיל — רק לוודא שאנחנו על אותו הדף.</p>
+      <label class="consent" id="consent-label">
+        <input type="checkbox" id="f-consent">
+        <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span>
+        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי, ושבמקרה הצורך עליי להיוועץ ברופא/ה.</span>
+      </label>
+
+      <div class="field" id="sign-wrap" style="margin-top:1.4rem">
+        <label for="f-signature"><span class="req">*</span> חתימה (הקלידי את שמך המלא)</label>
+        <input type="text" id="f-signature" autocomplete="name" placeholder="השם שלך כחתימה" style="font-family:'Rubik',sans-serif;font-size:1.2rem;color:var(--clay-deep);letter-spacing:.02em">
+        <div class="error">נא לחתום (להקליד שם)</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary" id="btn-submit">
+        <span class="btn-text">שליחת ההצהרה להדר</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Success -->
+  <div class="success" id="success">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>
+    </div>
+    <h2>תודה רבה! <span class="em">הטופס נקלט בהצלחה!</span></h2>
+    <p>הפרטים שלך נשמרו במערכת ונשלחו להדר. נתראה בקליניקה 🌿</p>
+  </div>
+</main>
+
+<footer>
+  <div class="brand">הדר <span class="em">בק</span></div>
+  <div class="info">מטפלת בעיסוי · באר שבע · לנשים בלבד</div>
+  <div class="copy">© 2026 כל הזכויות שמורות</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========================================================
+   הצהרת בריאות — הדר בק
+   ======================================================== */
+
+// ---------- CONFIG (זהה ל-booking.html) ----------
+const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
+
+// critical:true = קונטראינדיקציה מוחלטת → מסומן באדום להדר
+const QUESTIONS = [
+  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?',            hint:'זיהום פעיל / דלקת חריפה', detail:false, critical:true },
+  { id:'wounds',      text:'פצעים פתוחים, כוויות, חתכים או מחלת עור מדבקת באזור הטיפול?', hint:'',                  detail:true,  dlabel:'איזה אזור?', critical:true },
+  { id:'thrombosis',  text:'קריש דם / טרומבוזה / חשד ל-DVT?',                        hint:'',                       detail:false, critical:true },
+  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?',                      hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
+  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?',                       hint:'קומדין, אספירין במינון גבוה', detail:true, dlabel:'אילו תרופות?', critical:true },
+  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?',                          hint:'',                       detail:true,  dlabel:'איפה ומתי?', critical:true },
+  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?',                 hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
+  { id:'surgery_disc',text:'ניתוח לאחרונה או פריצת דיסק אקוטית?',                     hint:'',                       detail:true,  dlabel:'מה ומתי?', critical:false },
+  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?',                             hint:'',                       detail:true,  dlabel:'באיזה שבוע / כמה אחרי?', critical:false },
+  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?',                        hint:'',                       detail:false, critical:false },
+  { id:'metabolic',   text:'סוכרת, אוסטאופורוזיס או עור דק ורגיש?',                  hint:'',                       detail:true,  dlabel:'פירוט', critical:false },
+  { id:'varicose',    text:'דליות בולטות ברגליים?',                                 hint:'',                       detail:false, critical:false },
+  { id:'allergy',     text:'אלרגיה לשמנים, קרמים או חומרי עיסוי?',                   hint:'',                       detail:true,  dlabel:'למה?', critical:false },
+  { id:'meds_other',  text:'תרופות קבועות או מצב רפואי נוסף שחשוב שאדע?',            hint:'',                       detail:true,  dlabel:'פירוט', critical:false }
+];
+
+const answers = {};   // id -> 'yes' | 'no'
+const details = {};   // id -> string
+
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+// ---------- Render questions ----------
+function renderQuestions(){
+  $('#questions').innerHTML = QUESTIONS.map(q => `
+    <div class="q" data-id="${q.id}">
+      <div class="q-row">
+        <span class="q-text">${q.text}${q.hint ? `<span class="hint">${q.hint}</span>` : ''}</span>
+        <span class="toggle" role="group" aria-label="${q.text}">
+          <button type="button" data-val="yes" aria-pressed="false">כן</button>
+          <button type="button" data-val="no"  aria-pressed="false">לא</button>
+        </span>
+      </div>
+      ${q.detail ? `<div class="q-detail" data-detail="${q.id}">
+        <div class="dlabel">${q.dlabel}</div>
+        <input type="text" maxlength="200" placeholder="${q.dlabel}">
+      </div>` : ''}
+    </div>
+  `).join('');
+
+  $$('.toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.closest('.q');
+      const id = q.dataset.id;
+      const val = btn.dataset.val;
+      answers[id] = val;
+      q.classList.remove('unanswered');
+      q.querySelectorAll('.toggle button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      const det = q.querySelector('.q-detail');
+      if (det) {
+        if (val === 'yes') { det.classList.add('open'); }
+        else { det.classList.remove('open'); det.querySelector('input').value=''; details[id]=''; }
+      }
+      updateProgress();
+    });
+  });
+
+  $$('.q-detail input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const id = e.target.closest('.q-detail').dataset.detail;
+      details[id] = e.target.value.trim();
+    });
+  });
+}
+
+// ---------- Progress ----------
+function updateProgress(){
+  const total = QUESTIONS.length + 2; // questions + name + consent
+  let done = Object.keys(answers).length;
+  if ($('#f-name').value.trim()) done++;
+  if ($('#f-consent').checked) done++;
+  $('#progress').style.width = Math.min(100, Math.round(done/total*100)) + '%';
+}
+$('#f-name').addEventListener('input', updateProgress);
+$('#f-consent').addEventListener('change', () => { $('#consent-label').classList.remove('invalid'); updateProgress(); });
+
+$('#f-phone').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d\s-]/g, ''); });
+
+function validatePhone(p){ return /^0\d{9}$/.test(p.replace(/[\s-]/g,'')); }
+
+// ---------- Toast ----------
+function showToast(msg, isError){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+// ---------- Submit ----------
+$('#health-form').addEventListener('submit', e => {
+  e.preventDefault();
+
+  const nameField  = $('#f-name').closest('.field');
+  const phoneField = $('#f-phone').closest('.field');
+  nameField.classList.remove('invalid');
+  phoneField.classList.remove('invalid');
+  $$('.q').forEach(q => q.classList.remove('unanswered'));
+  $('#consent-label').classList.remove('invalid');
+
+  const signWrap = $('#sign-wrap');
+  signWrap.classList.remove('invalid');
+
+  const name  = $('#f-name').value.trim();
+  const phone = $('#f-phone').value.trim();
+  const age   = $('#f-age').value.trim();
+  const appt  = $('#f-appt').value.trim();
+  const email = $('#f-email').value.trim();
+  const notes = $('#f-notes').value.trim();
+  const signature = $('#f-signature').value.trim();
+
+  let bad = false, firstBad = null;
+  if (!name)  { nameField.classList.add('invalid'); bad=true; firstBad=firstBad||nameField; }
+  if (!validatePhone(phone)) { phoneField.classList.add('invalid'); bad=true; firstBad=firstBad||phoneField; }
+
+  // שאלות הבריאות אינן חובה — ניתן לדלג. רק שם, טלפון, אישור וחתימה נדרשים.
+  if (!$('#f-consent').checked) { $('#consent-label').classList.add('invalid'); bad=true; firstBad=firstBad||$('#consent-label'); }
+  if (!signature) { signWrap.classList.add('invalid'); bad=true; firstBad=firstBad||signWrap; }
+
+  if (bad) {
+    showToast('כמה שדות עוד מחכים למילוי 🙂', true);
+    firstBad?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const btn = $('#btn-submit');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const finish = () => {
+    btn.classList.remove('loading'); btn.disabled = false;
+    $('#health-form').style.display = 'none';
+    $('#progress').style.width = '100%';
+    $('#success').classList.add('active');
+    window.scrollTo({ top:0, behavior:'smooth' });
+  };
+
+  if (!SHEETS_URL) { finish(); return; }
+
+  // structured flags for the sheet (🔴 לקונטראינדיקציה)
+  const flagsText = QUESTIONS
+    .filter(q => answers[q.id] === 'yes')
+    .map(q => (q.critical ? '🔴 ' : '') + q.text.replace(/\?$/, '') + (details[q.id] ? ' (' + details[q.id] + ')' : ''))
+    .join(' | ') || 'אין דגלים';
+
+  // טופס מלא (חתימה + כל שאלה + כן/לא + פירוט) לשמירה — לכפתור "צפייה בטופס מלא" באדמין
+  const answersFull = JSON.stringify(
+    [{ q: 'חתימה דיגיטלית', a: signature, detail: '', critical: false }].concat(
+      QUESTIONS.map(q => ({ q: q.text, a: answers[q.id] === 'yes' ? 'כן' : (answers[q.id] === 'no' ? 'לא' : '—'), detail: details[q.id] || '', critical: !!q.critical }))
+    )
+  );
+
+  const cbName = 'hadarHcb_' + Date.now();
+  const timeout = setTimeout(() => { try{delete window[cbName];}catch(e){} showToast('השמירה לא אומתה, נסי שוב בעוד רגע.', true); finish(); }, 8000);
+  window[cbName] = function(){ clearTimeout(timeout); try{delete window[cbName];}catch(e){} finish(); };
+
+  const params = new URLSearchParams();
+  params.append('action', 'submit_health');
+  params.append('callback', cbName);
+  params.append('timestamp', new Date().toISOString());
+  params.append('name', name.substring(0,100));
+  params.append('phone', phone);
+  params.append('age', age.substring(0,4));
+  params.append('appointment', appt.substring(0,60));
+  params.append('flags', flagsText.substring(0,1200));
+  params.append('notes', notes.substring(0,600));
+  params.append('consent', 'כן');
+  params.append('signature', signature.substring(0,100));
+  params.append('email', email.substring(0,80));
+  params.append('answers_json', answersFull.substring(0,4000));
+  if (PREFILL.booking) params.append('booking_id', PREFILL.booking);
+
+  const script = document.createElement('script');
+  script.src = SHEETS_URL + '?' + params.toString();
+  script.onerror = () => { clearTimeout(timeout); try{delete window[cbName];}catch(e){} try{document.body.removeChild(script);}catch(e){} showToast('השמירה לא אומתה, נסי שוב בעוד רגע.', true); finish(); };
+  script.onload  = () => { try{document.body.removeChild(script);}catch(e){} };
+  document.body.appendChild(script);
+});
+
+// ---------- Prefill from booking link (health.html?name=&phone=&appt=&booking=) ----------
+const PREFILL = (() => {
+  const u = new URLSearchParams(location.search);
+  return { name: u.get('name')||'', phone: u.get('phone')||'', appt: u.get('appt')||'', booking: u.get('booking')||'' };
+})();
+function applyPrefill(){
+  if (PREFILL.name)  $('#f-name').value  = PREFILL.name;
+  if (PREFILL.phone) $('#f-phone').value = PREFILL.phone;
+  if (PREFILL.appt)  $('#f-appt').value  = PREFILL.appt;
+}
+
+// ---------- INIT ----------
+renderQuestions();
+applyPrefill();
+updateProgress();
+</script>
+
+</body>
+</html>

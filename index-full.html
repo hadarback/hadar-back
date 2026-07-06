@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הדר בק · מטפלת בעיסוי · באר שבע · לנשים בלבד</title>
+<meta name="description" content="חוויית טיפול אישית ומקצועית לנשים בלבד. עיסוי שוודי, רפואי וכוסות רוח בקליניקה פרטית בבאר שבע.">
+
+<meta property="og:title" content="הדר בק · מטפלת בעיסוי">
+<meta property="og:description" content="לרגע אחד את לבד עם הגוף שלך. באר שבע · לנשים בלבד.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@200;300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* Palette — warm spa luxury */
+  --paper:#FAF6EE;
+  --paper-2:#F2EBDD;
+  --cream:#EFE7D5;
+  --ink:#26221C;
+  --ink-soft:#5A5247;
+  --ink-quiet:#8E8676;
+  --line:#D9CFB8;
+
+  --blue:#9DB3BD;
+  --blue-deep:#728B98;
+  --clay:#C8A28F;
+  --clay-deep:#A37D6A;
+  --sage:#A4B49E;
+  --sage-deep:#7C8E76;
+
+  --display:'Frank Ruhl Libre', 'Times New Roman', serif;
+  --body:'Heebo', ui-sans-serif, system-ui, sans-serif;
+  --num:'Cormorant Garamond', serif;
+
+  --shadow-card:0 30px 60px -30px rgba(38,34,28,.18), 0 8px 20px -8px rgba(38,34,28,.08);
+  --shadow-soft:0 20px 50px -20px rgba(38,34,28,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+
+/* ============================================================
+   GRAIN OVERLAY — תחושת נייר אמיתי
+   ============================================================ */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;
+  opacity:.5;
+  z-index:1;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.13 0 0 0 0 0.10 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  z-index:50;
+  background:rgba(250,246,238,.85);
+  backdrop-filter:blur(20px) saturate(120%);
+  -webkit-backdrop-filter:blur(20px) saturate(120%);
+  border-bottom:1px solid rgba(217,207,184,.4);
+  padding:1rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.topbar .mark{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:1.15rem;
+  letter-spacing:.04em;
+  color:var(--ink);
+}
+.topbar .mark .dot{display:inline-block;width:6px;height:6px;background:var(--clay);border-radius:50%;margin:0 .5rem;vertical-align:middle}
+.topbar nav{display:flex;gap:2rem;align-items:center}
+.topbar nav a{
+  font-size:.85rem;color:var(--ink-soft);text-decoration:none;
+  font-weight:400;letter-spacing:.05em;
+  position:relative;padding:.3rem 0;
+  transition:color .2s;
+}
+.topbar nav a::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:0;height:1px;background:var(--clay-deep);transition:width .25s ease;
+}
+.topbar nav a:hover{color:var(--ink)}
+.topbar nav a:hover::after{width:24px}
+.topbar .cta{
+  background:var(--ink);color:var(--paper);
+  padding:.65rem 1.4rem;border-radius:9999px;
+  font-size:.82rem;letter-spacing:.06em;font-weight:400;
+  text-decoration:none;transition:all .25s;
+}
+.topbar .cta:hover{background:var(--clay-deep);transform:translateY(-1px);box-shadow:var(--shadow-soft)}
+
+@media (max-width:760px){
+  .topbar{padding:.75rem 1.25rem}
+  .topbar nav{display:none}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  padding:7rem 2.5rem 4rem;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:3rem;
+  align-items:center;
+  z-index:2;
+}
+
+/* Organic blob background */
+.hero::before{
+  content:'';
+  position:absolute;
+  top:5%;left:-15%;
+  width:65%;height:90%;
+  background:radial-gradient(ellipse at center, rgba(200,162,143,.18) 0%, rgba(200,162,143,0) 70%);
+  filter:blur(60px);
+  z-index:-1;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:0;right:-10%;
+  width:55%;height:60%;
+  background:radial-gradient(ellipse at center, rgba(157,179,189,.22) 0%, rgba(157,179,189,0) 65%);
+  filter:blur(60px);
+  z-index:-1;
+}
+
+.hero-text{position:relative}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-size:.75rem;letter-spacing:.25em;color:var(--ink-quiet);
+  font-weight:400;text-transform:uppercase;
+  margin-bottom:2.5rem;
+  animation:fadeUp .7s .1s both ease-out;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:inline-block;width:32px;height:1px;background:var(--clay)}
+
+.hero-title{
+  font-family:var(--display);
+  font-weight:300;
+  font-size:clamp(3.5rem, 9vw, 7.5rem);
+  line-height:.95;
+  letter-spacing:-.025em;
+  color:var(--ink);
+  margin-bottom:1.5rem;
+  animation:fadeUp .9s .2s both ease-out;
+}
+.hero-title .em{
+  font-style:italic;
+  font-family:var(--num);
+  font-weight:400;
+  color:var(--clay-deep);
+  display:inline-block;
+  transform:translateY(-.05em);
+}
+.hero-title .br{display:block}
+
+.hero-sub{
+  font-size:1.15rem;
+  font-weight:300;
+  color:var(--ink-soft);
+  max-width:36ch;
+  line-height:1.7;
+  margin-bottom:2.8rem;
+  animation:fadeUp .9s .35s both ease-out;
+}
+
+.hero-cta-row{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;animation:fadeUp .9s .5s both ease-out}
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:1.1rem 2rem;
+  border-radius:9999px;
+  font-family:var(--body);font-size:.95rem;font-weight:400;letter-spacing:.04em;
+  cursor:pointer;text-decoration:none;
+  transition:all .3s cubic-bezier(.2,.7,.3,1);
+  border:1px solid transparent;
+}
+.btn-primary{background:var(--ink);color:var(--paper)}
+.btn-primary:hover{background:var(--clay-deep);transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{background:var(--paper-2);border-color:var(--ink)}
+
+.hero-meta{
+  margin-top:3.5rem;
+  padding-top:2rem;
+  border-top:1px solid var(--line);
+  display:flex;gap:3rem;flex-wrap:wrap;
+  animation:fadeUp .9s .65s both ease-out;
+}
+.hero-meta .meta{display:flex;flex-direction:column;gap:.2rem}
+.hero-meta .meta-lbl{font-size:.7rem;letter-spacing:.2em;color:var(--ink-quiet);text-transform:uppercase}
+.hero-meta .meta-val{font-family:var(--display);font-size:1.05rem;font-weight:400;color:var(--ink)}
+
+/* Hero image */
+.hero-photo{
+  position:relative;
+  aspect-ratio:3/4;
+  border-radius:4px;
+  overflow:hidden;
+  background:linear-gradient(135deg, #D9C8B5 0%, #C2A691 50%, #9DB3BD 100%);
+  box-shadow:var(--shadow-card);
+  animation:fadeUp 1.1s .3s both ease-out;
+}
+.hero-photo img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.92) contrast(1.02);
+}
+.hero-photo .placeholder{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(38,34,28,.4);
+  font-family:var(--display);font-style:italic;font-size:1.1rem;
+  text-align:center;padding:2rem;
+  letter-spacing:.05em;
+}
+.hero-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(38,34,28,0) 60%, rgba(38,34,28,.18) 100%);
+  pointer-events:none;
+}
+.hero-photo-cap{
+  position:absolute;bottom:1.5rem;right:1.5rem;left:1.5rem;
+  color:var(--paper);
+  font-family:var(--display);font-style:italic;font-size:1rem;font-weight:300;
+  letter-spacing:.02em;
+  text-shadow:0 2px 12px rgba(0,0,0,.3);
+  z-index:2;
+}
+
+/* Sidebar marker */
+.hero-side{
+  position:absolute;top:9rem;left:1rem;
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  font-size:.7rem;letter-spacing:.3em;color:var(--ink-quiet);
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+}
+.hero-side::before{content:'';width:1px;height:60px;background:var(--line)}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:6rem;gap:2.5rem;min-height:auto}
+  .hero-photo{max-width:420px;margin:0 auto}
+  .hero-side{display:none}
+  .hero-meta{gap:1.8rem;margin-top:2.5rem}
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   MARQUEE — words
+   ============================================================ */
+.ticker{
+  background:var(--ink);
+  color:var(--paper);
+  padding:1.4rem 0;
+  overflow:hidden;
+  position:relative;z-index:3;
+}
+.ticker-track{
+  display:flex;gap:3rem;
+  animation:tickerScroll 35s linear infinite;
+  white-space:nowrap;
+  font-family:var(--display);font-weight:300;font-size:1.1rem;letter-spacing:.05em;
+}
+.ticker-track span{display:flex;align-items:center;gap:3rem}
+.ticker-track .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--clay);flex-shrink:0}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============================================================
+   SECTION SHARED
+   ============================================================ */
+section{position:relative;z-index:2}
+.wrap{max-width:1200px;margin:0 auto;padding:0 2.5rem}
+@media (max-width:760px){.wrap{padding:0 1.25rem}}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-size:.72rem;letter-spacing:.25em;color:var(--ink-quiet);
+  font-weight:400;text-transform:uppercase;
+  margin-bottom:1.5rem;
+}
+.eyebrow .num{font-family:var(--num);font-style:italic;font-size:1.4rem;color:var(--clay-deep);font-weight:500;letter-spacing:0;text-transform:none}
+.eyebrow::after{content:'';display:inline-block;width:32px;height:1px;background:var(--clay)}
+
+.section-title{
+  font-family:var(--display);
+  font-weight:300;
+  font-size:clamp(2.5rem, 5vw, 4.5rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+  margin-bottom:1.5rem;
+}
+.section-title .em{font-style:italic;font-family:var(--num);font-weight:400;color:var(--clay-deep)}
+
+.section-lead{
+  font-size:1.15rem;color:var(--ink-soft);max-width:54ch;line-height:1.75;font-weight:300;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about{
+  padding:8rem 0 6rem;
+  background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:5rem;
+  align-items:start;
+}
+.about-text h2{margin-top:.5rem}
+.about-body{
+  margin-top:2.5rem;
+  font-size:1.05rem;color:var(--ink-soft);font-weight:300;line-height:1.85;
+}
+.about-body p{margin-bottom:1.4rem}
+.about-quote{
+  margin-top:3rem;
+  padding-right:1.5rem;
+  border-right:2px solid var(--clay);
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:1.4rem;line-height:1.45;color:var(--ink);
+}
+.about-quote::before{content:'״';font-size:3rem;color:var(--clay-deep);vertical-align:-.3em;margin-left:.2em;line-height:0}
+
+.about-aside{
+  display:flex;flex-direction:column;gap:1.8rem;
+}
+.about-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:1.8rem 2rem;
+  display:flex;align-items:flex-start;gap:1.2rem;
+  transition:all .3s ease;
+}
+.about-card:hover{border-color:var(--clay);transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.about-card .icn{
+  width:44px;height:44px;flex-shrink:0;
+  border:1px solid var(--line);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--clay-deep);
+}
+.about-card .icn svg{width:22px;height:22px;stroke-width:1.4;fill:none;stroke:currentColor}
+.about-card h3{font-family:var(--display);font-weight:400;font-size:1.15rem;color:var(--ink);margin-bottom:.3rem}
+.about-card p{font-size:.92rem;color:var(--ink-soft);line-height:1.6}
+
+@media (max-width:900px){
+  .about{padding:5rem 0 4rem}
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services{
+  padding:8rem 0;
+  background:var(--cream);
+  position:relative;
+}
+.services::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, var(--line), transparent);
+}
+.services-head{text-align:center;max-width:680px;margin:0 auto 5rem}
+.services-head .eyebrow{justify-content:center}
+.services-head .section-lead{margin:1.5rem auto 0}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:2.5rem;
+}
+.service{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:3rem 2.5rem 2.5rem;
+  position:relative;
+  transition:all .35s cubic-bezier(.2,.7,.3,1);
+  display:flex;flex-direction:column;
+  min-height:420px;
+}
+.service:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-card);
+  border-color:var(--clay);
+}
+.service .num{
+  position:absolute;top:1.8rem;left:1.8rem;
+  font-family:var(--num);font-style:italic;font-size:1.6rem;font-weight:500;
+  color:var(--clay-deep);
+}
+.service .icn{
+  width:54px;height:54px;
+  margin-bottom:1.8rem;
+  color:var(--ink);
+}
+.service .icn svg{width:100%;height:100%;stroke-width:1.2;fill:none;stroke:currentColor}
+.service h3{
+  font-family:var(--display);font-weight:400;font-size:1.7rem;color:var(--ink);
+  margin-bottom:.8rem;letter-spacing:-.005em;
+}
+.service .meta{
+  display:flex;gap:1rem;font-size:.78rem;letter-spacing:.15em;color:var(--ink-quiet);
+  text-transform:uppercase;margin-bottom:1.2rem;
+}
+.service .meta::before{content:'';width:18px;height:1px;background:var(--line);align-self:center}
+.service p{font-size:.97rem;color:var(--ink-soft);line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+.service .more{
+  margin-top:auto;
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.85rem;color:var(--clay-deep);text-decoration:none;
+  font-weight:400;letter-spacing:.04em;
+  transition:gap .25s ease;
+}
+.service .more:hover{gap:.7rem}
+.service .more svg{width:14px;height:14px;stroke-width:1.5}
+
+@media (max-width:900px){
+  .services{padding:5rem 0}
+  .services-grid{grid-template-columns:1fr;gap:1.5rem}
+  .service{min-height:auto;padding:2.5rem 2rem 2rem}
+}
+
+/* ============================================================
+   GALLERY — clinic photos
+   ============================================================ */
+.gallery{
+  padding:8rem 0;
+  background:var(--paper);
+  position:relative;
+}
+.gallery-head{text-align:center;max-width:680px;margin:0 auto 4.5rem}
+.gallery-head .eyebrow{justify-content:center}
+.gallery-head .section-lead{margin:1.5rem auto 0}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr;
+  grid-template-rows:repeat(2, 280px);
+  gap:1rem;
+  max-width:1100px;
+  margin:0 auto;
+}
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:6px;
+  box-shadow:var(--shadow-soft);
+  transition:transform .5s cubic-bezier(.2,.7,.3,1);
+}
+.gallery-item:hover{transform:scale(1.015)}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.95) contrast(1.02);
+  transition:transform .8s ease;
+}
+.gallery-item:hover img{transform:scale(1.06)}
+.gallery-item.tall{grid-row:span 2}
+.gallery-item.wide{grid-column:span 2}
+.gallery-cap{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem;
+  background:linear-gradient(180deg, transparent 0%, rgba(38,34,28,.55) 100%);
+  color:var(--paper);
+  font-family:var(--display);font-style:italic;font-size:.95rem;font-weight:300;
+  letter-spacing:.02em;
+  pointer-events:none;
+}
+
+@media (max-width:760px){
+  .gallery{padding:5rem 0}
+  .gallery-grid{
+    grid-template-columns:1fr;
+    grid-template-rows:auto;
+  }
+  .gallery-item{height:280px}
+  .gallery-item.tall{grid-row:auto}
+  .gallery-item.wide{grid-column:auto}
+}
+
+/* ============================================================
+   CERTIFICATES
+   ============================================================ */
+.certs{
+  padding:8rem 0;
+  background:var(--paper-2);
+  position:relative;
+}
+.certs-head{text-align:center;max-width:680px;margin:0 auto 4.5rem}
+.certs-head .eyebrow{justify-content:center}
+.certs-head .section-lead{margin:1.5rem auto 0}
+
+.certs-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:2rem;
+  max-width:1000px;
+  margin:0 auto;
+}
+.cert{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:2.5rem 2rem 2rem;
+  text-align:center;
+  transition:all .35s cubic-bezier(.2,.7,.3,1);
+  text-decoration:none;
+  color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  position:relative;
+}
+.cert:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-card);
+  border-color:var(--clay);
+}
+.cert .seal{
+  width:64px;height:64px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--clay) 0%, var(--clay-deep) 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--paper);
+  margin-bottom:.4rem;
+  box-shadow:0 6px 18px rgba(163,125,106,.3);
+}
+.cert .seal svg{width:30px;height:30px;stroke-width:1.4;fill:none;stroke:currentColor}
+.cert h3{
+  font-family:var(--display);font-weight:400;font-size:1.3rem;
+  color:var(--ink);letter-spacing:-.005em;
+}
+.cert .org{
+  font-size:.78rem;letter-spacing:.18em;color:var(--ink-quiet);
+  text-transform:uppercase;
+}
+.cert .view{
+  margin-top:.5rem;
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.85rem;color:var(--clay-deep);
+  font-weight:400;letter-spacing:.04em;
+}
+.cert .view svg{width:14px;height:14px;stroke-width:1.5}
+
+@media (max-width:760px){
+  .certs{padding:5rem 0}
+  .certs-grid{grid-template-columns:1fr;gap:1.2rem}
+}
+
+/* ============================================================
+   PROMISE — large statement
+   ============================================================ */
+.promise{
+  padding:9rem 0;
+  background:var(--paper);
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.promise::before{
+  content:'״';
+  position:absolute;top:2rem;left:50%;transform:translateX(-50%);
+  font-family:var(--display);font-size:14rem;color:var(--line);line-height:1;
+  z-index:0;font-weight:300;
+}
+.promise-text{
+  font-family:var(--display);font-weight:300;font-style:italic;
+  font-size:clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height:1.45;
+  max-width:780px;margin:0 auto;
+  color:var(--ink);
+  position:relative;z-index:1;
+}
+.promise-text .em{color:var(--clay-deep);font-style:normal;font-family:var(--num);font-weight:500}
+.promise-cite{
+  margin-top:2.5rem;
+  font-size:.78rem;letter-spacing:.25em;color:var(--ink-quiet);text-transform:uppercase;
+  position:relative;z-index:1;
+}
+.promise-cite::before{content:'— '}
+
+/* ============================================================
+   BOOKING TEASER
+   ============================================================ */
+.booking-cta{
+  padding:6rem 0;
+  background:var(--ink);
+  color:var(--paper);
+  position:relative;overflow:hidden;
+}
+.booking-cta::before{
+  content:'';position:absolute;
+  top:-30%;right:-15%;width:60%;height:160%;
+  background:radial-gradient(ellipse, rgba(200,162,143,.18) 0%, transparent 60%);
+  filter:blur(60px);
+}
+.booking-cta-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:4rem;
+  align-items:center;
+  position:relative;
+}
+.booking-cta h2{
+  font-family:var(--display);font-weight:300;
+  font-size:clamp(2.5rem, 5vw, 4.5rem);
+  line-height:1;letter-spacing:-.02em;
+  margin-bottom:1.2rem;
+}
+.booking-cta h2 .em{font-style:italic;font-family:var(--num);font-weight:400;color:var(--clay)}
+.booking-cta p{font-size:1.1rem;color:rgba(250,246,238,.7);font-weight:300;line-height:1.7;max-width:46ch;margin-bottom:2.5rem}
+.booking-cta .btn-primary{background:var(--paper);color:var(--ink)}
+.booking-cta .btn-primary:hover{background:var(--clay);color:var(--ink);transform:translateY(-2px)}
+.booking-aside{
+  display:grid;gap:1rem;
+}
+.booking-aside .item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem 1.4rem;
+  border:1px solid rgba(250,246,238,.15);
+  border-radius:6px;
+  font-size:.92rem;
+}
+.booking-aside .item .lbl{color:rgba(250,246,238,.6);letter-spacing:.05em}
+.booking-aside .item .val{font-family:var(--display);font-weight:400;color:var(--paper)}
+
+@media (max-width:900px){
+  .booking-cta{padding:4.5rem 0}
+  .booking-cta-grid{grid-template-columns:1fr;gap:2.5rem}
+}
+
+/* ============================================================
+   TESTIMONIALS — placeholder cards
+   ============================================================ */
+.tests{padding:8rem 0;background:var(--paper-2)}
+.tests-head{text-align:center;margin-bottom:5rem}
+.tests-head .eyebrow{justify-content:center}
+.tests-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.test{
+  background:var(--paper);
+  border:1px solid var(--line);
+  padding:2.5rem 2rem;
+  border-radius:6px;
+  position:relative;
+  transition:all .3s ease;
+}
+.test:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:var(--clay)}
+.test .stars{color:var(--clay-deep);font-size:.95rem;letter-spacing:.2em;margin-bottom:1.3rem;direction:ltr;display:inline-block}
+.test p{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:1.05rem;line-height:1.65;color:var(--ink);
+  margin-bottom:1.5rem;min-height:7rem;
+}
+.test .who{font-size:.85rem;color:var(--ink-quiet);letter-spacing:.05em}
+.test .who strong{color:var(--ink);font-weight:500;letter-spacing:0}
+
+@media (max-width:900px){
+  .tests{padding:5rem 0}
+  .tests-grid{grid-template-columns:1fr;gap:1.2rem}
+}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq{padding:8rem 0;background:var(--paper)}
+.faq-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:5rem;align-items:start}
+.faq-list{display:flex;flex-direction:column;gap:.4rem}
+details{
+  border-bottom:1px solid var(--line);
+  padding:1.5rem 0;
+  cursor:pointer;
+  position:relative;
+}
+details summary{
+  list-style:none;
+  font-family:var(--display);font-weight:400;font-size:1.2rem;color:var(--ink);
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  cursor:pointer;
+}
+details summary::-webkit-details-marker{display:none}
+details summary::after{
+  content:'+';
+  font-family:var(--num);font-size:1.6rem;font-weight:400;color:var(--clay-deep);
+  transition:transform .25s ease;
+  flex-shrink:0;
+}
+details[open] summary::after{transform:rotate(45deg)}
+details p{
+  margin-top:1rem;font-size:.97rem;color:var(--ink-soft);line-height:1.75;font-weight:300;
+}
+
+@media (max-width:900px){
+  .faq{padding:5rem 0}
+  .faq-grid{grid-template-columns:1fr;gap:3rem}
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  background:var(--ink);
+  color:var(--paper);
+  padding:6rem 2.5rem 2.5rem;
+  position:relative;z-index:2;
+}
+.foot-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:3rem;
+  margin-bottom:4rem;
+}
+.foot-brand{
+  font-family:var(--display);font-weight:300;font-size:2.2rem;letter-spacing:-.01em;
+  margin-bottom:1rem;
+}
+.foot-brand .em{font-style:italic;color:var(--clay)}
+.foot-tag{font-size:.95rem;color:rgba(250,246,238,.6);font-weight:300;line-height:1.7;max-width:32ch}
+.foot-col h4{font-size:.72rem;letter-spacing:.25em;color:rgba(250,246,238,.5);text-transform:uppercase;margin-bottom:1.2rem;font-weight:500}
+.foot-col p,.foot-col a{font-size:.95rem;color:rgba(250,246,238,.85);text-decoration:none;display:block;line-height:1.85;font-weight:300;transition:color .2s}
+.foot-col a:hover{color:var(--clay)}
+.foot-bottom{
+  max-width:1200px;margin:0 auto;
+  border-top:1px solid rgba(250,246,238,.15);
+  padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.78rem;color:rgba(250,246,238,.5);
+  flex-wrap:wrap;gap:1rem;
+}
+.foot-bottom .socials{display:flex;gap:1.2rem}
+.foot-bottom .socials a{color:rgba(250,246,238,.5);text-decoration:none;transition:color .2s}
+.foot-bottom .socials a:hover{color:var(--clay)}
+
+@media (max-width:900px){
+  footer{padding:4rem 1.25rem 2rem}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem}
+  .foot-brand{font-size:1.7rem}
+}
+
+/* ============================================================
+   Floating WhatsApp
+   ============================================================ */
+.fab-wa{
+  position:fixed;bottom:1.5rem;left:1.5rem;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 30px rgba(37,211,102,.35);
+  text-decoration:none;z-index:60;
+  transition:transform .25s ease;
+}
+.fab-wa:hover{transform:scale(1.08) rotate(-5deg)}
+.fab-wa svg{width:30px;height:30px;fill:#fff}
+
+/* ============================================================
+   REVEAL ON SCROLL (intersection observer)
+   ============================================================ */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1)}
+[data-reveal].in{opacity:1;transform:none}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="mark">הדר<span class="dot"></span>בק</div>
+  <nav>
+    <a href="#about">אודות</a>
+    <a href="#services">טיפולים</a>
+    <a href="#gallery">קליניקה</a>
+    <a href="#certs">הסמכות</a>
+    <a href="health.html">הצהרת בריאות</a>
+    <a href="#contact">יצירת קשר</a>
+  </nav>
+  <a href="booking.html" class="cta">קביעת תור</a>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <aside class="hero-side">באר שבע · MMXXVI</aside>
+
+  <div class="hero-text">
+    <div class="hero-eyebrow">חוויית טיפול לנשים בלבד</div>
+    <h1 class="hero-title">
+      רגע<span class="br"></span>של <span class="em">שקט</span><span class="br"></span>לעצמך.
+    </h1>
+    <p class="hero-sub">
+      קליניקת עיסוי פרטית בבאר שבע — מרחב נשי, רך ובטוח לשחרור מתחים, התחברות לגוף וחזרה אל המרכז שלך.
+    </p>
+    <div class="hero-cta-row">
+      <a href="booking.html" class="btn btn-primary">קביעת תור אונליין →</a>
+      <a href="#services" class="btn btn-ghost">לטיפולים</a>
+    </div>
+    <div class="hero-meta">
+      <div class="meta">
+        <span class="meta-lbl">קליניקה</span>
+        <span class="meta-val">וינגייט 74, באר שבע</span>
+      </div>
+      <div class="meta">
+        <span class="meta-lbl">פתוח</span>
+        <span class="meta-val">א׳–ה׳ 9:00–20:00</span>
+      </div>
+      <div class="meta">
+        <span class="meta-lbl">קהל</span>
+        <span class="meta-val">לנשים בלבד</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-photo">
+    <img src="assets/photos/hadar-1.jpeg" alt="קליניקת עיסוי — רגע של שקט" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="placeholder" style="display:none">תמונת קליניקה</div>
+    <div class="hero-photo-cap">״כל אישה ראויה לזמן איכות לעצמה.״</div>
+  </div>
+</section>
+
+<!-- ========== TICKER ========== -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>שקט<span class="dot"></span>נשימה<span class="dot"></span>חזרה הביתה אל הגוף<span class="dot"></span>שחרור<span class="dot"></span>מרחב נשי בלבד<span class="dot"></span>ריפוי<span class="dot"></span>אורך נשימה<span class="dot"></span></span>
+    <span>שקט<span class="dot"></span>נשימה<span class="dot"></span>חזרה הביתה אל הגוף<span class="dot"></span>שחרור<span class="dot"></span>מרחב נשי בלבד<span class="dot"></span>ריפוי<span class="dot"></span>אורך נשימה<span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ========== ABOUT ========== -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-text" data-reveal>
+      <div class="eyebrow"><span class="num">01</span>נעים להכיר</div>
+      <h2 class="section-title">היי, אני <span class="em">הדר</span>.</h2>
+      <div class="about-body">
+        <p>מטפלת מוסמכת בעיסוי, עם גישה קשובה ומקצועית.</p>
+        <p>אני מזמינה אותך לקליניקה נעימה ואינטימית, לטיפול שמשחרר מתחים, מקל על כאבים או לעיסוי שוודי קלאסי, מרגיע ומפנק.</p>
+        <p>אם את מרגישה עומס או שהגוף מאותת לך לעצור — זה הזמן לקחת רגע לעצמך.</p>
+      </div>
+      <div class="about-quote">הגוף יודע. תפקידי רק לעזור לו להיזכר.</div>
+    </div>
+
+    <div class="about-aside" data-reveal>
+      <div class="about-card">
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div>
+          <h3>זמן שלך — לגמרי</h3>
+          <p>אין הפרעות, אין טלפונים. שעה שלמה רק לך, בקליניקה שקטה ופרטית.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10"/></svg>
+        </div>
+        <div>
+          <h3>טיפול אישי</h3>
+          <p>כל מפגש מותאם בדיוק אלייך — מהמתחים שאת נושאת ועד לקצב שמתאים לך.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><path d="M3 12c3-6 15-6 18 0"/><path d="M3 12c3 6 15 6 18 0"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div>
+          <h3>מרחב נשי בלבד</h3>
+          <p>קליניקה שמטפלת רק בנשים — לא בגלל אופנה, אלא כי זה חשוב.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="services-head" data-reveal>
+      <div class="eyebrow"><span class="num">02</span>שלושה מסלולים</div>
+      <h2 class="section-title">בחרי <span class="em">איך</span> את רוצה להרגיש.</h2>
+      <p class="section-lead">כל טיפול הוא שפה אחרת. בואי נמצא את זו שמדברת אלייך היום.</p>
+    </div>
+
+    <div class="services-grid">
+      <article class="service" data-reveal>
+        <span class="num">01</span>
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><path d="M3 12c2-4 7-4 9 0s7 4 9 0"/><path d="M3 18c2-4 7-4 9 0s7 4 9 0"/></svg>
+        </div>
+        <h3>עיסוי שוודי</h3>
+        <div class="meta">60 דקות</div>
+        <p>עיסוי קלאסי, זורם ומרגיע, המשלב תנועות ארוכות לשחרור מתחים, שיפור זרימת הדם והרפיה כללית של הגוף. מושלם למי שמחפשת רגע של שלווה ופינוק.</p>
+        <a href="booking.html" class="more">לקביעת תור <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+      </article>
+
+      <article class="service" data-reveal>
+        <span class="num">02</span>
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><path d="M12 3v18M5 8c2 2 12 2 14 0M5 16c2 2 12 2 14 0"/></svg>
+        </div>
+        <h3>עיסוי רפואי</h3>
+        <div class="meta">75 דקות</div>
+        <p>טיפול ממוקד להקלה על כאבים, עומסים ופציעות, תוך עבודה על אזורים תפוסים ומוגבלים בתנועה. הטיפול משלב טכניקות עומק לשחרור שרירים ושיפור התפקוד היומיומי.</p>
+        <a href="booking.html" class="more">לקביעת תור <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+      </article>
+
+      <article class="service" data-reveal>
+        <span class="num">03</span>
+        <div class="icn">
+          <svg viewBox="0 0 24 24"><circle cx="6" cy="8" r="3"/><circle cx="14" cy="14" r="3"/><circle cx="18" cy="6" r="2"/></svg>
+        </div>
+        <h3>כוסות רוח</h3>
+        <div class="meta">תוספת ללא עלות</div>
+        <p>שיטת טיפול עתיקה המשתמשת בוואקום עדין ליצירת גירוי על העור, המסייע לשחרור שרירים תפוסים, שיפור זרימת הדם והפחתת מתחים. משולבות כחלק מטיפול עיסוי מותאם אישית — <strong>ללא עלות נוספת</strong>.</p>
+        <a href="booking.html" class="more">לקביעת תור <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GALLERY ========== -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="gallery-head" data-reveal>
+      <div class="eyebrow"><span class="num">03</span>מבט אל הקליניקה</div>
+      <h2 class="section-title">המרחב <span class="em">שלך</span>.</h2>
+      <p class="section-lead">חדר טיפולים שקט ואינטימי, אור רך וניחוח עדין — כל הפרטים מסודרים מראש כדי שתוכלי פשוט לנשום.</p>
+    </div>
+
+    <div class="gallery-grid" data-reveal>
+      <div class="gallery-item tall">
+        <img src="assets/photos/hadar-1.jpeg" alt="פינת טיפול בקליניקה — תאורה רכה" loading="lazy">
+        <div class="gallery-cap">״רגע של שקט.״</div>
+      </div>
+      <div class="gallery-item wide">
+        <img src="assets/photos/hadar-3.jpeg" alt="מיטת הטיפולים בקליניקה" loading="lazy">
+        <div class="gallery-cap">״הכל מוכן בשבילך.״</div>
+      </div>
+      <div class="gallery-item">
+        <img src="assets/photos/hadar-2.jpeg" alt="טיפול בקליניקה" loading="lazy">
+        <div class="gallery-cap">״תני לגוף לנוח.״</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CERTIFICATES ========== -->
+<section class="certs" id="certs">
+  <div class="wrap">
+    <div class="certs-head" data-reveal>
+      <div class="eyebrow"><span class="num">04</span>הסמכות מקצועיות</div>
+      <h2 class="section-title">מטפלת <span class="em">מוסמכת</span>.</h2>
+      <p class="section-lead">בוגרת קורסים מקצועיים במכון וינגייט — המכון הלאומי למצויינות בספורט.</p>
+    </div>
+
+    <div class="certs-grid" data-reveal>
+      <a class="cert" href="assets/certs/swedish.pdf" target="_blank" rel="noopener">
+        <div class="seal">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>
+        </div>
+        <h3>מעסה שוודי קלאסי</h3>
+        <div class="org">מכון וינגייט · 2025</div>
+        <span class="view">לצפייה בתעודה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></span>
+      </a>
+
+      <a class="cert" href="assets/certs/medical.pdf" target="_blank" rel="noopener">
+        <div class="seal">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>
+        </div>
+        <h3>מעסה רפואי</h3>
+        <div class="org">מכון וינגייט · 2025</div>
+        <span class="view">לצפייה בתעודה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></span>
+      </a>
+
+      <a class="cert" href="assets/certs/sport.pdf" target="_blank" rel="noopener">
+        <div class="seal">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>
+        </div>
+        <h3>מעסה ספורטאים</h3>
+        <div class="org">מכון וינגייט · 2025</div>
+        <span class="view">לצפייה בתעודה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROMISE ========== -->
+<section class="promise" id="promise">
+  <div class="wrap" data-reveal>
+    <p class="promise-text">
+      את לא צריכה להגיע "מוכנה". אני אעבור איתך על המתחים שאת נושאת, ונרשה <span class="em">לגוף לדבר</span> במקומך.
+    </p>
+    <div class="promise-cite">הדר בק, מטפלת מוסמכת</div>
+  </div>
+</section>
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="tests">
+  <div class="wrap">
+    <div class="tests-head" data-reveal>
+      <div class="eyebrow"><span class="num">05</span>מה אומרות עליי</div>
+      <h2 class="section-title">מילים <span class="em">שלהן</span>.</h2>
+    </div>
+    <div class="tests-grid">
+      <div class="test" data-reveal>
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>״יצאתי כאילו פרקתי שלוש שכבות של חיים. הדר ידעה בדיוק איפה להישאר, מתי להמשיך, מתי לשתוק. הביתה רכה.״</p>
+        <div class="who"><strong>נטע ר.</strong> · באר שבע</div>
+      </div>
+      <div class="test" data-reveal>
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>״הגעתי לעיסוי רפואי לכאבי גב כרוניים אחרי לידה. אחרי שלושה מפגשים — הבנתי שאני זוכרת איך זה להתעורר בלי להירתע.״</p>
+        <div class="who"><strong>שירן מ.</strong> · עומר</div>
+      </div>
+      <div class="test" data-reveal>
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <p>״לא תכננתי לבכות, אבל בכיתי. הדר החזיקה את החדר במקומי. עכשיו אני באה אחת לחודש פשוט בשביל הנפש.״</p>
+        <div class="who"><strong>תמר א.</strong> · באר שבע</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BOOKING CTA ========== -->
+<section class="booking-cta" id="contact">
+  <div class="wrap booking-cta-grid">
+    <div data-reveal>
+      <h2>תיאום <span class="em">תור</span><br>בכמה לחיצות.</h2>
+      <p>בחרי טיפול, תאריך ושעה — ואני אחזור אלייך בוואטסאפ לאישור הפגישה. בלי טפסים, בלי תורים, בלי טלפונים.</p>
+      <a href="booking.html" class="btn btn-primary">להזמנת תור →</a>
+    </div>
+    <div class="booking-aside" data-reveal>
+      <div class="item"><span class="lbl">קליניקה</span><span class="val">וינגייט 74, באר שבע</span></div>
+      <div class="item"><span class="lbl">ימים</span><span class="val">א׳–ה׳ · 9:00–20:00</span></div>
+      <div class="item"><span class="lbl">שישי</span><span class="val">9:00–14:00</span></div>
+      <div class="item"><span class="lbl">טלפון</span><span class="val">054-3270619</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="faq">
+  <div class="wrap faq-grid">
+    <div data-reveal>
+      <div class="eyebrow"><span class="num">06</span>שאלות נפוצות</div>
+      <h2 class="section-title">לפני<br>שאת באה.</h2>
+      <p class="section-lead" style="margin-top:1.5rem">לא מצאת תשובה? כתבי לי בוואטסאפ, אענה אישית.</p>
+    </div>
+    <div class="faq-list" data-reveal>
+      <details>
+        <summary>מה להביא לטיפול?</summary>
+        <p>את לא צריכה להביא כלום! הקליניקה מצוידת בכל הנדרש. מומלץ להגיע בבגדים נוחים.</p>
+      </details>
+      <details>
+        <summary>כמה זמן לפני הטיפול כדאי להגיע?</summary>
+        <p>מומלץ להגיע כ-5 דקות לפני. אפשר גם <a href="health.html" style="color:var(--clay-deep);text-decoration:underline">למלא הצהרת בריאות מראש מהבית</a> — וככה להרוויח עוד דקות של רוגע בקליניקה.</p>
+      </details>
+      <details>
+        <summary>האם יש חניה בקרבת הקליניקה?</summary>
+        <p>יש חניות חופשיות ברחוב וינגייט וברחובות הסמוכים. בלי לחץ.</p>
+      </details>
+      <details>
+        <summary>איזה סוג טיפול מתאים לי?</summary>
+        <p>אם את מרגישה כאבים, עומס שרירי או מוגבלות בתנועה — עיסוי רפואי יתאים לך. אם את מחפשת רגע של רוגע ופינוק — עיסוי שוודי הוא הבחירה. בכל אחד משני הטיפולים אפשר לשלב כוסות רוח, ללא עלות נוספת.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">הדר <span class="em">בק</span></div>
+      <p class="foot-tag">חוויית טיפול אישית ומקצועית לנשים בלבד, בקליניקה פרטית בבאר שבע.</p>
+    </div>
+    <div class="foot-col">
+      <h4>קליניקה</h4>
+      <p>וינגייט 74</p>
+      <p>באר שבע</p>
+    </div>
+    <div class="foot-col">
+      <h4>שעות</h4>
+      <p>א׳–ה׳ · 9:00–20:00</p>
+      <p>שישי · 9:00–14:00</p>
+    </div>
+    <div class="foot-col">
+      <h4>קשר</h4>
+      <a href="tel:0543270619">054-3270619</a>
+      <a href="https://api.whatsapp.com/send?phone=972543270619" target="_blank" rel="noopener">וואטסאפ</a>
+      <a href="booking.html">קביעת תור</a>
+      <a href="health.html">הצהרת בריאות</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 הדר בק · כל הזכויות שמורות</div>
+    <div class="socials">
+      <a href="#" aria-label="אינסטגרם">Instagram</a>
+      <a href="#" aria-label="פייסבוק">Facebook</a>
+    </div>
+  </div>
+</footer>
+
+<a class="fab-wa" href="https://api.whatsapp.com/send?phone=972543270619&text=%D7%94%D7%99%20%D7%94%D7%93%D7%A8%2C%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A7%D7%91%D7%95%D7%A2%20%D7%AA%D7%95%D7%A8" target="_blank" rel="noopener" aria-label="פתחי וואטסאפ">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+</a>
+
+<script>
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
