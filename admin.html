@@ -225,8 +225,9 @@ tbody tr:hover{background:var(--bg-cream)}
 .scal-grid .cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;cursor:pointer;font-size:.92rem;color:var(--text);border:1.5px solid transparent;transition:all .2s;position:relative;font-weight:500}
 .scal-grid .cell.empty{cursor:default}
 .scal-grid .cell.past{color:#C7CFC9;cursor:pointer}
-.scal-grid .cell:not(.empty):not(.no-hours):hover{background:var(--bg-cream)}
-.scal-grid .cell.no-hours{color:#C7CFC9;cursor:default;opacity:.55}
+.scal-grid .cell:not(.empty):hover{background:var(--bg-cream)}
+.scal-grid .cell.no-hours{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.3)}
+.scal-grid .cell.has-hours{background:rgba(78,110,93,.10);border-color:rgba(78,110,93,.3)}
 .scal-grid .cell.selected{border-color:var(--accent);background:var(--accent-soft)}
 .scal-grid .cell.blocked{background:rgba(192,88,74,.10)}
 .scal-grid .cell.blocked > span:first-child{color:var(--status-no);text-decoration:line-through}
@@ -258,6 +259,12 @@ tbody tr:hover{background:var(--bg-cream)}
 .slotchip.open{border-color:var(--status-ok);background:rgba(78,110,93,.08)}
 .slotchip.booked{opacity:.6;background:var(--bg-cream);cursor:default}
 .slotchip.blocked-manual{border-color:rgba(192,88,74,.35);background:rgba(192,88,74,.05)}
+.slotchip.pending{border-color:#D9A441;background:rgba(217,164,65,.14);box-shadow:0 0 0 2px rgba(217,164,65,.25)}
+.slotchip.pending .ic.add{background:#D9A441;color:#fff}
+.slot-bulk-confirm{display:flex;align-items:center;gap:.7rem;justify-content:flex-end;margin-bottom:1rem;background:rgba(217,164,65,.1);border:1px solid rgba(217,164,65,.35);border-radius:12px;padding:.7rem 1rem}
+.slot-bulk-confirm .btn-add{background:#D9A441}
+.slot-bulk-confirm .btn-add:hover{background:#c4912f}
+.btn-ghost-sm{background:none;border:none;color:var(--text-light);cursor:pointer;font-family:inherit;font-size:.85rem;text-decoration:underline}
 .slotchip .t{flex:1;text-align:center}
 .slotchip .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:var(--bg-cream);color:var(--text-mid);transition:all .15s;flex-shrink:0;cursor:pointer}
 .slotchip .ic svg{width:13px;height:13px}
@@ -351,6 +358,7 @@ tbody tr:hover{background:var(--bg-cream)}
       <div class="stats" id="stats"></div>
 
       <div class="toolbar">
+        <button class="btn-add" id="nb-open">➕ רישום תור ידני</button>
         <button class="btn-add clay" id="send-reminders">🔔 שליחת תזכורות לתורים של מחר</button>
         <span style="font-size:.8rem;color:var(--text-light)">התזכורות נשלחות גם אוטומטית כל בוקר</span>
       </div>
@@ -415,7 +423,11 @@ tbody tr:hover{background:var(--bg-cream)}
             <button class="btn-add" id="slot-add-all">＋ הוסיפי הכל</button>
             <button class="btn-add clay" id="slot-block-all">⊘ חסום הכל</button>
           </div>
-          <div class="slot-quick-lbl">הוספה מהירה:</div>
+          <div class="slot-quick-lbl">הוספה מהירה — לוחצות על ה-+ בכמה שעות לסימון, ואז מוסיפות את כולן ביחד:</div>
+          <div class="slot-bulk-confirm" id="slot-bulk-confirm" style="display:none">
+            <button class="btn-ghost-sm" id="slot-clear-selected">נקי בחירה</button>
+            <button class="btn-add" id="slot-add-selected">✓ הוספת <span id="slot-sel-count">0</span> שעות שנבחרו</button>
+          </div>
           <div class="slotgrid" id="slotgrid"></div>
         </div>
       </div>
@@ -511,6 +523,48 @@ tbody tr:hover{background:var(--bg-cream)}
   </div>
 </div>
 
+<!-- Manual booking entry -->
+<div class="modal-bg" id="m-newbooking">
+  <div class="modal">
+    <div class="modal-head"><h3>רישום תור ידני</h3><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="mrow" style="margin-bottom:1rem">
+        <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-weight:400"><input type="radio" name="nb-type" id="nb-type-new" checked> מטופלת חדשה</label>
+        <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-weight:400"><input type="radio" name="nb-type" id="nb-type-existing"> מטופלת קיימת</label>
+      </div>
+
+      <div id="nb-existing-wrap" style="display:none">
+        <div class="mfield">
+          <label>הקלידי שם מטופלת</label>
+          <input type="text" id="nb-existing-search" list="nb-client-datalist" placeholder="הקלידי כמה אותיות משם המטופלת..." autocomplete="off">
+          <datalist id="nb-client-datalist"></datalist>
+        </div>
+      </div>
+
+      <div id="nb-new-wrap">
+        <div class="mrow">
+          <div class="mfield"><label>שם פרטי</label><input type="text" id="nb-first"></div>
+          <div class="mfield"><label>שם משפחה</label><input type="text" id="nb-last"></div>
+        </div>
+        <div class="mrow">
+          <div class="mfield"><label>טלפון</label><input type="tel" id="nb-phone" placeholder="05X-XXXXXXX"></div>
+          <div class="mfield"><label>אימייל (אופציונלי)</label><input type="email" id="nb-email"></div>
+        </div>
+      </div>
+
+      <div class="mrow">
+        <div class="mfield"><label>תאריך הטיפול</label><input type="date" id="nb-date"></div>
+        <div class="mfield"><label>שעה</label><input type="time" id="nb-time" step="900"></div>
+      </div>
+      <div class="mfield"><label>פירוט קצר (אופציונלי)</label><textarea id="nb-notes" placeholder="מה סוכם, הערות..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-modal" data-close>ביטול</button>
+      <button class="btn-modal primary" id="nb-save">רישום ואישור התור</button>
+    </div>
+  </div>
+</div>
+
 <!-- Patient file (records) -->
 <div class="modal-bg" id="m-file">
   <div class="modal">
@@ -598,6 +652,8 @@ function api(params, timeoutMs) {
 // ---- PIN gate ----
 async function tryLogin(pin) {
   $('#pin-go').disabled = true;
+  const pinGoOrigText = $('#pin-go').textContent;
+  $('#pin-go').textContent = 'מתחברת...';
   $('#pin-err').textContent = '';
   try {
     const resp = await api({ action: 'list', pin: pin });
@@ -622,6 +678,7 @@ async function tryLogin(pin) {
     $('#pin-err').textContent = 'שגיאת תקשורת — נסי שוב (אם ממשיך: דפדפן אחר או כיבוי חוסם פרסומות)';
   } finally {
     $('#pin-go').disabled = false;
+    $('#pin-go').textContent = pinGoOrigText;
   }
 }
 
@@ -920,6 +977,7 @@ function fmtDateISO(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2
 let scalMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let monthOpen = new Set(), monthBooked = new Set(), monthOff = new Set();
 let selectedSlotDate = null;
+let pendingAdd = new Set();
 
 async function loadHours(){ await renderMonth(); }
 
@@ -949,8 +1007,9 @@ async function renderMonth(){
     const hasOpen = monthOpen.has(iso), hasBooked = monthBooked.has(iso);
     const noHours = !hasOpen && !hasBooked && !isOff;
     if(noHours) cell.classList.add('no-hours');
+    if(hasOpen) cell.classList.add('has-hours');
     cell.innerHTML = `${isOff?'<span class="lock">חסום</span>':''}<span>${d}</span><span class="dots">${hasBooked?'<span class="dot booked"></span>':''}${hasOpen?'<span class="dot open"></span>':''}</span>`;
-    if(!noHours) cell.addEventListener('click', ()=>selectSlotDate(iso));
+    cell.addEventListener('click', ()=>selectSlotDate(iso));
     grid.appendChild(cell);
   }
 }
@@ -964,6 +1023,7 @@ function dayHeadLabel(iso){
 }
 async function selectSlotDate(iso){
   selectedSlotDate = iso;
+  pendingAdd.clear();
   $$('#scal-grid .cell').forEach(c=>c.classList.remove('selected'));
   $('#slot-day-head').textContent = dayHeadLabel(iso);
   $('#slot-day-body').style.display='';
@@ -1019,6 +1079,7 @@ async function loadDaySlots(iso){
     if(isBooked){
       return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}"><span class="t">${t}</span><span class="bk">תפוס</span></div>`;
     }
+    if(!isOpen && pendingAdd.has(t)) cls += ' pending';
     const btn1 = isOpen
       ? `<span class="ic rem" data-btn="remove">${remSvg}</span>`
       : `<span class="ic add" data-btn="open">${addSvg}</span>`;
@@ -1026,6 +1087,7 @@ async function loadDaySlots(iso){
     const bufLbl = isBuffer ? `<span class="buf-lbl">מרווח</span>` : '';
     return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${bufLbl}</span>${btn2}</div>`;
   }).join('');
+  updateBulkConfirmBar();
 
   $('#slotgrid').querySelectorAll('.slotchip').forEach(chip=>{
     if(chip.dataset.state==='booked'||chip.dataset.state==='buffer') return;
@@ -1044,7 +1106,10 @@ async function loadDaySlots(iso){
             await loadDaySlots(selectedSlotDate); renderMonth();
           } catch(e){ showToast('שגיאת תקשורת','error'); }
         } else {
-          slotAction('add_slot',{time:t});
+          // סימון לבחירה מרובה — לא נשלח לשרת מיד, רק כשלוחצות "הוספת X שעות שנבחרו"
+          if(pendingAdd.has(t)) pendingAdd.delete(t); else pendingAdd.add(t);
+          chip.classList.toggle('pending', pendingAdd.has(t));
+          updateBulkConfirmBar();
         }
       } else if(btnType==='remove'){
         slotAction('remove_slot',{time:t});
@@ -1054,6 +1119,20 @@ async function loadDaySlots(iso){
     });
   });
 }
+function updateBulkConfirmBar(){
+  const n = pendingAdd.size;
+  $('#slot-bulk-confirm').style.display = n ? 'flex' : 'none';
+  $('#slot-sel-count').textContent = n;
+}
+$('#slot-add-selected').addEventListener('click', ()=>{
+  if(!pendingAdd.size) return;
+  slotAction('add_slots_bulk', { times: Array.from(pendingAdd).join(',') });
+  pendingAdd.clear();
+});
+$('#slot-clear-selected').addEventListener('click', ()=>{
+  pendingAdd.clear();
+  loadDaySlots(selectedSlotDate);
+});
 async function slotAction(action, extra){
   if(!selectedSlotDate) return;
   try {
@@ -1061,7 +1140,8 @@ async function slotAction(action, extra){
     if(r && r.result==='success'){
       // ביטול חסימת-יום אם פותחים שעה (תאימות למצב fallback)
       if(action==='add_slot'||action==='add_slots_bulk') api({ action:'set_day_off', pin:PIN, date:selectedSlotDate, op:'remove' }).catch(()=>{});
-      await loadDaySlots(selectedSlotDate); renderMonth();
+      // שתי הקריאות במקביל במקום בזו-אחר-זו — חוסך כ-2.5 שניות בכל פעולה
+      await Promise.all([loadDaySlots(selectedSlotDate), renderMonth()]);
     } else showToast(r && r.message || 'שגיאה','error');
   } catch(e){ showToast('שגיאת תקשורת','error'); }
 }
@@ -1213,6 +1293,75 @@ $('#client-delete').addEventListener('click', async () => {
     if (r && r.result === 'success') { showToast('נמחק','success'); closeModal($('#m-client')); loadClients(); }
     else showToast('שגיאה','error');
   } catch(e){ showToast('שגיאת תקשורת','error'); }
+});
+
+// ====== Manual booking entry ======
+function toggleNbType(){
+  const existing = $('#nb-type-existing').checked;
+  $('#nb-existing-wrap').style.display = existing ? '' : 'none';
+  $('#nb-new-wrap').style.display = existing ? 'none' : '';
+}
+$('#nb-type-new').addEventListener('change', toggleNbType);
+$('#nb-type-existing').addEventListener('change', toggleNbType);
+$('#nb-open').addEventListener('click', async () => {
+  $('#nb-type-new').checked = true;
+  toggleNbType();
+  $('#nb-first').value=''; $('#nb-last').value=''; $('#nb-phone').value=''; $('#nb-email').value='';
+  $('#nb-date').value=''; $('#nb-time').value=''; $('#nb-notes').value='';
+  $('#nb-existing-search').value = '';
+  openModal('m-newbooking');
+  if (!allClients.length) await loadClients(); // לוודא שרשימת המטופלות הקיימות טעונה גם אם עדיין לא ביקרנו בטאב "לקוחות"
+  // ה-value כולל גם טלפון כדי להבדיל בין מטופלות עם אותו שם, וגם כדי שההקלדה תקפיץ התאמות לפי אותיות
+  $('#nb-client-datalist').innerHTML = allClients.map(c =>
+    `<option value="${(c.name || '(ללא שם)') + ' · ' + c.phone}"></option>`).join('');
+});
+function findClientFromNbSearch(){
+  const val = $('#nb-existing-search').value.trim();
+  if (!val) return null;
+  const idx = val.lastIndexOf(' · ');
+  if (idx === -1) {
+    // הקלידה שם בלי לבחור מהרשימה — מנסות למצוא התאמה יחידה לפי שם
+    const matches = allClients.filter(c => (c.name||'').trim() === val);
+    return matches.length === 1 ? matches[0] : null;
+  }
+  const phone = val.slice(idx + 3).trim();
+  return allClients.find(c => String(c.phone) === phone) || null;
+}
+$('#nb-save').addEventListener('click', async () => {
+  const isExisting = $('#nb-type-existing').checked;
+  let name, phone, email;
+  if (isExisting) {
+    const c = findClientFromNbSearch();
+    if (!c) { showToast('לא נמצאה מטופלת תואמת — בחרי מהרשימה שנפתחת בהקלדה, או עברי ל"מטופלת חדשה"', 'error'); return; }
+    name = c.name || ''; phone = c.phone; email = c.email || '';
+  } else {
+    name = ($('#nb-first').value.trim() + ' ' + $('#nb-last').value.trim()).trim();
+    phone = $('#nb-phone').value.trim();
+    email = $('#nb-email').value.trim();
+    if (!name) { showToast('נא להזין שם', 'error'); return; }
+    if (!phone) { showToast('נא להזין טלפון', 'error'); return; }
+  }
+  const date = $('#nb-date').value, time = $('#nb-time').value;
+  if (!date || !time) { showToast('בחרי תאריך ושעה', 'error'); return; }
+  const notes = $('#nb-notes').value.trim();
+
+  const btn = $('#nb-save'); btn.disabled = true;
+  const waPopup = window.open('', '_blank');
+  try {
+    const subResp = await api({ action:'submit', timestamp:new Date().toISOString(), name:name, phone:phone,
+      email:email, date:date, time:time, notes:notes, service:'עיסוי', duration:'60' });
+    if (!subResp || subResp.result !== 'success') { if (waPopup) waPopup.close(); showToast(subResp && subResp.message || 'שגיאה', 'error'); return; }
+    const r = await api({ action:'update_status', pin:PIN, id:subResp.id, status:'אושר' });
+    if (r && r.result === 'success') {
+      if (r.wa_url && !r.wa_sent && waPopup) waPopup.location = r.wa_url; else if (waPopup) waPopup.close();
+      allBookings.push({ id:subResp.id, submitted:new Date().toISOString(), name:name, phone:phone, service:'עיסוי',
+        duration:'60', date:date, time:time, notes:notes, status:'אושר', health_id:'', calendar_event_id:'', reminder_sent:'', email:email });
+      showToast('התור נרשם ואושר ✓', 'success');
+      closeModal($('#m-newbooking'));
+      renderAll();
+    } else { if (waPopup) waPopup.close(); showToast(r && r.message || 'שגיאה באישור', 'error'); }
+  } catch (e) { if (waPopup) waPopup.close(); showToast('שגיאת תקשורת', 'error'); }
+  finally { btn.disabled = false; }
 });
 
 // ====== Patient file ======
