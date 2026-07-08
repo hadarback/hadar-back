@@ -236,8 +236,8 @@ tbody tr:hover{background:var(--bg-cream)}
 .block-banner .bb-text{color:var(--status-no);font-weight:600}
 .block-banner button{background:var(--white);border:1px solid var(--status-no);color:var(--status-no);border-radius:9999px;padding:.5rem 1.2rem;cursor:pointer;font-family:inherit;font-weight:600;font-size:.88rem}
 .block-banner button:hover{background:var(--status-no);color:#fff}
-.scal-grid .cell .dots{display:flex;gap:3px;height:6px;align-items:center}
-.scal-grid .cell .dot{width:6px;height:6px;border-radius:50%}
+.scal-grid .cell .dots{display:flex;gap:4px;height:9px;align-items:center}
+.scal-grid .cell .dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1.5px #fff}
 .scal-grid .cell .dot.open{background:var(--status-ok)}
 .scal-grid .cell .dot.booked{background:var(--status-no)}
 .scal-legend{display:flex;justify-content:flex-end;gap:1.2rem;margin-top:1rem;font-size:.82rem;color:var(--text-light)}
@@ -261,23 +261,34 @@ tbody tr:hover{background:var(--bg-cream)}
 .slotchip.blocked-manual{border-color:rgba(192,88,74,.35);background:rgba(192,88,74,.05)}
 .slotchip.pending{border-color:#D9A441;background:rgba(217,164,65,.14);box-shadow:0 0 0 2px rgba(217,164,65,.25)}
 .slotchip.pending .ic.add{background:#D9A441;color:#fff}
+.slotchip.pending-block{border-color:var(--status-no);background:rgba(192,88,74,.14);box-shadow:0 0 0 2px rgba(192,88,74,.3)}
+.slotchip.pending-block .ic.blk{background:var(--status-no);color:#fff}
 .slot-bulk-confirm{display:flex;align-items:center;gap:.7rem;justify-content:flex-end;margin-bottom:1rem;background:rgba(217,164,65,.1);border:1px solid rgba(217,164,65,.35);border-radius:12px;padding:.7rem 1rem}
 .slot-bulk-confirm .btn-add{background:#D9A441}
 .slot-bulk-confirm .btn-add:hover{background:#c4912f}
+.slot-bulk-confirm.block-confirm{background:rgba(192,88,74,.08);border-color:rgba(192,88,74,.3)}
+.slot-bulk-confirm.block-confirm .btn-add{background:var(--status-no)}
+.slot-bulk-confirm.block-confirm .btn-add:hover{background:#a8492e}
 .btn-ghost-sm{background:none;border:none;color:var(--text-light);cursor:pointer;font-family:inherit;font-size:.85rem;text-decoration:underline}
 .slotchip .t{flex:1;text-align:center}
 .slotchip .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:var(--bg-cream);color:var(--text-mid);transition:all .15s;flex-shrink:0;cursor:pointer}
 .slotchip .ic svg{width:13px;height:13px}
+.slotchip .ic.add{color:var(--status-ok)}
 .slotchip .ic.add:hover{background:var(--status-ok);color:#fff}
 .slotchip .ic.rem{color:var(--status-no)}
 .slotchip .ic.rem:hover{background:var(--status-no);color:#fff}
-.slotchip .ic.blk{color:rgba(192,88,74,.5)}
+.slotchip .ic.blk{color:var(--text-light)}
 .slotchip .ic.blk:hover{background:rgba(192,88,74,.15);color:var(--error)}
-.slotchip .ic.blk.active{background:rgba(192,88,74,.2);color:var(--error)}
+.slotchip .ic.blk.active{background:var(--status-no);color:#fff}
 .slotchip .bk{font-size:.72rem;color:var(--status-no);font-weight:600;padding:0 .3rem}
 .slotchip.buffer{border-color:rgba(191,141,55,.3);background:rgba(191,141,55,.05)}
 .slotchip.open.buffer{border-color:rgba(191,141,55,.7);background:rgba(191,141,55,.12)}
 .slotchip .buf-lbl{font-size:.6rem;color:rgba(150,100,20,.7);display:block;text-align:center;margin-top:1px;font-weight:500;line-height:1}
+.slotchip .state-lbl{font-size:.62rem;display:block;text-align:center;margin-top:1px;font-weight:700;line-height:1}
+.slotchip .state-lbl.ok{color:var(--status-ok)}
+.slotchip .state-lbl.no{color:var(--status-no)}
+.slotchip .state-lbl.pend{color:#B8860B}
+.slotchip .state-lbl.pend-block{color:var(--status-no)}
 
 /* Toast */
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--footer);color:#fff;padding:.85rem 1.5rem;border-radius:12px;font-size:.9rem;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow-lg)}
@@ -427,6 +438,10 @@ tbody tr:hover{background:var(--bg-cream)}
           <div class="slot-bulk-confirm" id="slot-bulk-confirm" style="display:none">
             <button class="btn-ghost-sm" id="slot-clear-selected">נקי בחירה</button>
             <button class="btn-add" id="slot-add-selected">✓ הוספת <span id="slot-sel-count">0</span> שעות שנבחרו</button>
+          </div>
+          <div class="slot-bulk-confirm block-confirm" id="slot-bulk-confirm-block" style="display:none">
+            <button class="btn-ghost-sm" id="slot-clear-block-selected">נקי בחירה</button>
+            <button class="btn-add" id="slot-block-selected">⊘ אישור חסימת <span id="slot-block-sel-count">0</span> שעות שנבחרו</button>
           </div>
           <div class="slotgrid" id="slotgrid"></div>
         </div>
@@ -978,6 +993,7 @@ let scalMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let monthOpen = new Set(), monthBooked = new Set(), monthOff = new Set();
 let selectedSlotDate = null;
 let pendingAdd = new Set();
+let pendingBlock = new Set();
 
 async function loadHours(){ await renderMonth(); }
 
@@ -1024,6 +1040,7 @@ function dayHeadLabel(iso){
 async function selectSlotDate(iso){
   selectedSlotDate = iso;
   pendingAdd.clear();
+  pendingBlock.clear();
   $$('#scal-grid .cell').forEach(c=>c.classList.remove('selected'));
   $('#slot-day-head').textContent = dayHeadLabel(iso);
   $('#slot-day-body').style.display='';
@@ -1079,13 +1096,22 @@ async function loadDaySlots(iso){
     if(isBooked){
       return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}"><span class="t">${t}</span><span class="bk">תפוס</span></div>`;
     }
-    if(!isOpen && pendingAdd.has(t)) cls += ' pending';
+    const isPendingAdd = !isOpen && pendingAdd.has(t);
+    const isPendingBlock = !isBlocked && pendingBlock.has(t);
+    if(isPendingAdd) cls += ' pending';
+    if(isPendingBlock) cls += ' pending-block';
     const btn1 = isOpen
       ? `<span class="ic rem" data-btn="remove">${remSvg}</span>`
       : `<span class="ic add" data-btn="open">${addSvg}</span>`;
     const btn2 = `<span class="ic blk${isBlocked?' active':''}" data-btn="block">${blkSvg}</span>`;
-    const bufLbl = isBuffer ? `<span class="buf-lbl">מרווח</span>` : '';
-    return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${bufLbl}</span>${btn2}</div>`;
+    // תווית טקסט מפורשת מתחת לשעה — כדי שהמצב יהיה ברור גם בלי להסתמך רק על צבע
+    let stateLbl = '';
+    if(isOpen) stateLbl = '<span class="state-lbl ok">✓ פתוח</span>';
+    else if(isBlocked) stateLbl = '<span class="state-lbl no">⊘ חסום</span>';
+    else if(isPendingAdd) stateLbl = '<span class="state-lbl pend">נבחר להוספה</span>';
+    else if(isPendingBlock) stateLbl = '<span class="state-lbl pend-block">נבחר לחסימה</span>';
+    else if(isBuffer) stateLbl = '<span class="buf-lbl">מרווח</span>';
+    return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${stateLbl}</span>${btn2}</div>`;
   }).join('');
   updateBulkConfirmBar();
 
@@ -1114,7 +1140,14 @@ async function loadDaySlots(iso){
       } else if(btnType==='remove'){
         slotAction('remove_slot',{time:t});
       } else if(btnType==='block'){
-        slotAction(chipState==='blocked' ? 'unblock_slot' : 'block_slot', {time:t});
+        if(chipState==='blocked'){
+          slotAction('unblock_slot',{time:t});
+        } else {
+          // סימון לחסימה מרובה — לא נשלח לשרת מיד, רק כשלוחצות "אישור חסימה"
+          if(pendingBlock.has(t)) pendingBlock.delete(t); else pendingBlock.add(t);
+          chip.classList.toggle('pending-block', pendingBlock.has(t));
+          updateBulkConfirmBar();
+        }
       }
     });
   });
@@ -1123,6 +1156,9 @@ function updateBulkConfirmBar(){
   const n = pendingAdd.size;
   $('#slot-bulk-confirm').style.display = n ? 'flex' : 'none';
   $('#slot-sel-count').textContent = n;
+  const nb = pendingBlock.size;
+  $('#slot-bulk-confirm-block').style.display = nb ? 'flex' : 'none';
+  $('#slot-block-sel-count').textContent = nb;
 }
 $('#slot-add-selected').addEventListener('click', ()=>{
   if(!pendingAdd.size) return;
@@ -1131,6 +1167,15 @@ $('#slot-add-selected').addEventListener('click', ()=>{
 });
 $('#slot-clear-selected').addEventListener('click', ()=>{
   pendingAdd.clear();
+  loadDaySlots(selectedSlotDate);
+});
+$('#slot-block-selected').addEventListener('click', ()=>{
+  if(!pendingBlock.size) return;
+  slotAction('block_slots_bulk', { times: Array.from(pendingBlock).join(',') });
+  pendingBlock.clear();
+});
+$('#slot-clear-block-selected').addEventListener('click', ()=>{
+  pendingBlock.clear();
   loadDaySlots(selectedSlotDate);
 });
 async function slotAction(action, extra){
