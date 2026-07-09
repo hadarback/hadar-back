@@ -850,21 +850,21 @@ function renderTable() {
       const status = btn.dataset.act;
       btn.disabled = true;
       btn.style.opacity = .5;
-      // אישור: לפתוח WhatsApp ללקוחה מיד (במסגרת לחיצת המשתמש)
+      // אישור/דחייה: לפתוח WhatsApp ללקוחה מיד (במסגרת לחיצת המשתמש)
       let waPopup = null;
-      if (status === 'אושר') waPopup = window.open('', '_blank');
+      if (status === 'אושר' || status === 'נדחה') waPopup = window.open('', '_blank');
       try {
         const resp = await api({ action: 'update_status', pin: PIN, id: id, status: status });
         if (resp && resp.result === 'success') {
           const row = allBookings.find(b => b.id === id);
           if (row) row.status = status;
           // הודעת WhatsApp ללקוחה — אם השרת לא שלח לבד (מצב manual), נפתח קישור מוכן
-          if (status === 'אושר' && resp.wa_url && !resp.wa_sent && waPopup) {
+          if ((status === 'אושר' || status === 'נדחה') && resp.wa_url && !resp.wa_sent && waPopup) {
             waPopup.location = resp.wa_url;
           } else if (waPopup) { waPopup.close(); }
           showToast(status === 'אושר'
             ? (resp.wa_sent ? 'אושר ונשלחה הודעה ללקוחה ✓' : 'אושר — נפתח WhatsApp ללקוחה')
-            : 'עודכן ל-' + status, 'success');
+            : (status === 'נדחה' ? (resp.wa_sent ? 'נדחה ונשלחה הודעה ללקוחה ✓' : 'נדחה — נפתח WhatsApp ללקוחה') : 'עודכן ל-' + status), 'success');
           renderAll();
         } else {
           if (waPopup) waPopup.close();

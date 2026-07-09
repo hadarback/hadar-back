@@ -277,7 +277,7 @@ footer .copy{color:rgba(255,255,255,.4);font-size:.78rem}
   <p class="page-lead">בחירת תאריך ושעה ומילוי הצהרת בריאות קצרה — והכל מוכן.</p>
   <div class="duration-note">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-    שימו לב — הטיפול אורך שעה.
+    שימי לב — הטיפול אורך שעה.
   </div>
 </div>
 
@@ -623,7 +623,7 @@ $('#btn-next-2').addEventListener('click',()=>{ if(state.date&&state.time){ rend
 // ---------- SCREEN 4: DETAILS ----------
 function renderSummary(){
   const html=`
-    <div class="row"><span class="lbl">טיפול</span><span class="val">עיסוי · שעה</span></div>
+    <div class="row"><span class="lbl">טיפול</span><span class="val">עיסוי\שעה</span></div>
     <div class="row"><span class="lbl">תאריך</span><span class="val">${prettyDate(state.date)}</span></div>
     <div class="row"><span class="lbl">שעה</span><span class="val">${state.time}</span></div>
     <div class="row"><span class="lbl">מיקום</span><span class="val">וינגייט 74, באר שבע</span></div>`;
@@ -642,8 +642,7 @@ $('#btn-next-4').addEventListener('click',()=>{
   if(!validatePhone(phone)){ phoneField.classList.add('invalid'); bad=true; }
   if(bad){ document.querySelector('.field.invalid')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
   state.name=name; state.phone=phone; state.email=$('#f-email').value.trim(); state.notes=$('#f-notes').value.trim();
-  // חתימה מתמלאת מראש מהשם
-  if(!$('#f-signature').value.trim()) $('#f-signature').value=name;
+  // החתימה נשארת ריקה בכוונה — חשוב שהלקוחה תקליד אותה בעצמה, לא תמולא אוטומטית מהשם
   setStep(3);
 });
 
