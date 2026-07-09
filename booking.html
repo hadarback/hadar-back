@@ -332,8 +332,9 @@ footer .copy{color:rgba(255,255,255,.4);font-size:.78rem}
         <div class="error">נא להזין מספר טלפון תקין (10 ספרות)</div>
       </div>
       <div class="field">
-        <label for="f-email">אימייל (אופציונלי)</label>
+        <label for="f-email"><span class="req">*</span> אימייל</label>
         <input type="email" id="f-email" autocomplete="email" placeholder="name@example.com" inputmode="email">
+        <div class="error">נא להזין כתובת אימייל תקינה</div>
       </div>
       <div class="field">
         <label for="f-notes">הערות (אופציונלי)</label>
@@ -631,17 +632,19 @@ function renderSummary(){
   $('#summary-success').innerHTML=html;
 }
 function validatePhone(p){ return /^0\d{9}$/.test(p.replace(/[\s-]/g,'')); }
+function validateEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 $('#f-phone').addEventListener('input',e=>{ e.target.value=e.target.value.replace(/[^\d\s-]/g,''); });
 
 $('#btn-next-4').addEventListener('click',()=>{
-  const nameField=$('#f-name').closest('.field'), phoneField=$('#f-phone').closest('.field');
-  nameField.classList.remove('invalid'); phoneField.classList.remove('invalid');
-  const name=$('#f-name').value.trim(), phone=$('#f-phone').value.trim();
+  const nameField=$('#f-name').closest('.field'), phoneField=$('#f-phone').closest('.field'), emailField=$('#f-email').closest('.field');
+  nameField.classList.remove('invalid'); phoneField.classList.remove('invalid'); emailField.classList.remove('invalid');
+  const name=$('#f-name').value.trim(), phone=$('#f-phone').value.trim(), email=$('#f-email').value.trim();
   let bad=false;
   if(!name){ nameField.classList.add('invalid'); bad=true; }
   if(!validatePhone(phone)){ phoneField.classList.add('invalid'); bad=true; }
+  if(!validateEmail(email)){ emailField.classList.add('invalid'); bad=true; }
   if(bad){ document.querySelector('.field.invalid')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
-  state.name=name; state.phone=phone; state.email=$('#f-email').value.trim(); state.notes=$('#f-notes').value.trim();
+  state.name=name; state.phone=phone; state.email=email; state.notes=$('#f-notes').value.trim();
   // החתימה נשארת ריקה בכוונה — חשוב שהלקוחה תקליד אותה בעצמה, לא תמולא אוטומטית מהשם
   setStep(3);
 });

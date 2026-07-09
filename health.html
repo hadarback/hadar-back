@@ -399,8 +399,9 @@ footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
       </div>
 
       <div class="field">
-        <label for="f-email">אימייל (אופציונלי)</label>
+        <label for="f-email"><span class="req">*</span> אימייל</label>
         <input type="email" id="f-email" autocomplete="email" placeholder="name@example.com" inputmode="email">
+        <div class="error">נא להזין כתובת אימייל תקינה</div>
       </div>
 
       <div class="field">
@@ -557,6 +558,7 @@ $('#f-consent').addEventListener('change', () => { $('#consent-label').classList
 $('#f-phone').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d\s-]/g, ''); });
 
 function validatePhone(p){ return /^0\d{9}$/.test(p.replace(/[\s-]/g,'')); }
+function validateEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
 // ---------- Toast ----------
 function showToast(msg, isError){
@@ -572,8 +574,10 @@ $('#health-form').addEventListener('submit', e => {
 
   const nameField  = $('#f-name').closest('.field');
   const phoneField = $('#f-phone').closest('.field');
+  const emailField = $('#f-email').closest('.field');
   nameField.classList.remove('invalid');
   phoneField.classList.remove('invalid');
+  emailField.classList.remove('invalid');
   $$('.q').forEach(q => q.classList.remove('unanswered'));
   $('#consent-label').classList.remove('invalid');
 
@@ -591,6 +595,7 @@ $('#health-form').addEventListener('submit', e => {
   let bad = false, firstBad = null;
   if (!name)  { nameField.classList.add('invalid'); bad=true; firstBad=firstBad||nameField; }
   if (!validatePhone(phone)) { phoneField.classList.add('invalid'); bad=true; firstBad=firstBad||phoneField; }
+  if (!validateEmail(email)) { emailField.classList.add('invalid'); bad=true; firstBad=firstBad||emailField; }
 
   // שאלות הבריאות אינן חובה — ניתן לדלג. רק שם, טלפון, אישור וחתימה נדרשים.
   if (!$('#f-consent').checked) { $('#consent-label').classList.add('invalid'); bad=true; firstBad=firstBad||$('#consent-label'); }
