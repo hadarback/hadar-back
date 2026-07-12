@@ -160,6 +160,9 @@ main{padding:2.5rem 2rem 5rem;max-width:880px;margin:0 auto;position:relative;z-
 .time-slot:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--primary)}
 .time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.04);box-shadow:0 6px 14px -4px rgba(66,96,79,.5)}
 .time-slot.busy-slot{opacity:.55;cursor:not-allowed;background:var(--surface-2);border-color:var(--line);color:var(--ink-quiet);font-size:.88rem}
+.time-slot.busy-appt{opacity:.7;border-color:rgba(192,88,74,.4);color:var(--error)}
+.time-slot.busy-gap{opacity:.5}
+.time-slot.busy-blocked{opacity:.6;border-color:rgba(110,148,132,.4)}
 .no-slots{text-align:center;color:var(--ink-quiet);padding:2.5rem;background:var(--surface-2);border-radius:14px;font-weight:600}
 
 /* Form */
@@ -176,7 +179,7 @@ main{padding:2.5rem 2rem 5rem;max-width:880px;margin:0 auto;position:relative;z-
 .field input:focus,.field textarea:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-soft)}
 .field textarea{resize:vertical;min-height:84px}
 .field .error{display:none;color:var(--error);font-size:.82rem;margin-top:.4rem;font-weight:600}
-.field.invalid input,.field.invalid textarea{border-color:var(--error)}
+.field.invalid input,.field.invalid textarea{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.2)}
 .field.invalid .error{display:block}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media (max-width:480px){.field-row{grid-template-columns:1fr}}
@@ -194,6 +197,9 @@ main{padding:2.5rem 2rem 5rem;max-width:880px;margin:0 auto;position:relative;z-
 .toggle button[aria-pressed="true"][data-val="yes"]{background:var(--primary);color:#fff}
 .toggle button[aria-pressed="true"][data-val="no"]{background:var(--accent);color:#fff}
 .q.unanswered .toggle{box-shadow:0 0 0 2px rgba(192,88,74,.3)}
+.q.unanswered .q-detail input{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.15)}
+.q-cat{font-size:.76rem;font-weight:700;letter-spacing:.06em;color:var(--primary);margin:1.5rem 0 .2rem;padding-top:.9rem;border-top:1px solid var(--line)}
+.q-cat:first-of-type{margin-top:.3rem}
 .q-detail{max-height:0;overflow:hidden;transition:max-height .35s ease,margin-top .35s ease,opacity .3s ease;opacity:0;margin-top:0}
 .q-detail.open{max-height:180px;opacity:1;margin-top:.9rem}
 .q-detail input{width:100%;background:var(--primary-soft);border:1.5px solid var(--accent);border-radius:10px;padding:.75rem 1rem;font-family:inherit;font-size:.95rem;color:var(--ink)}
@@ -361,7 +367,7 @@ footer .copy{color:rgba(255,255,255,.4);font-size:.78rem}
       <label class="consent" id="consent-label">
         <input type="checkbox" id="f-consent">
         <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span>
-        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי.</span>
+        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי. אני מאשרת כי כל הפרטים שמסרתי נכונים ומלאים למיטב ידיעתי, וידוע לי כי הסתרת מידע רפואי או מסירת מידע חלקי עלולים להשפיע על בטיחות הטיפול, ואני מתחייבת לעדכן את המטפלת בכל שינוי במצבי הרפואי.</span>
       </label>
 
       <div class="sign-field" id="sign-wrap">
@@ -436,22 +442,57 @@ const SERVICES = [
 
 const HOURS = { 0:{open:9,close:20},1:{open:9,close:20},2:{open:9,close:20},3:{open:9,close:20},4:{open:9,close:20},5:{open:9,close:14},6:null };
 
-// critical:true = קונטראינדיקציה מוחלטת → מסומן באדום להדר (לא ניתן לקבל לטיפול ללא בירור)
+// critical:true = קונטראינדיקציה מוחלטת → מסומנת באדום להדר
+// כל שאלה כאן נענית כן/לא, וב"כן" נפתח שדה פירוט חובה (dlabel = הטקסט של שדה הפירוט)
 const QUESTIONS = [
-  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?',            hint:'זיהום פעיל / דלקת חריפה', detail:false, critical:true },
-  { id:'wounds',      text:'פצעים פתוחים, כוויות, חתכים או מחלת עור מדבקת באזור הטיפול?', hint:'',                  detail:true,  dlabel:'איזה אזור?', critical:true },
-  { id:'thrombosis',  text:'קריש דם / טרומבוזה / חשד ל-DVT?',                        hint:'',                       detail:false, critical:true },
-  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?',                      hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
-  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?',                       hint:'קומדין, אספירין במינון גבוה', detail:true, dlabel:'אילו תרופות?', critical:true },
-  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?',                          hint:'',                       detail:true,  dlabel:'איפה ומתי?', critical:true },
-  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?',                 hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
-  { id:'surgery_disc',text:'ניתוח לאחרונה או פריצת דיסק אקוטית?',                     hint:'',                       detail:true,  dlabel:'מה ומתי?', critical:false },
-  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?',                             hint:'',                       detail:true,  dlabel:'באיזה שבוע / כמה אחרי?', critical:false },
-  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?',                        hint:'',                       detail:false, critical:false },
-  { id:'metabolic',   text:'סוכרת, אוסטאופורוזיס או עור דק ורגיש?',                  hint:'',                       detail:true,  dlabel:'פירוט', critical:false },
-  { id:'varicose',    text:'דליות בולטות ברגליים?',                                 hint:'',                       detail:false, critical:false },
-  { id:'allergy',     text:'אלרגיה לשמנים, קרמים או חומרי עיסוי?',                   hint:'',                       detail:true,  dlabel:'למה?', critical:false },
-  { id:'meds_other',  text:'תרופות קבועות או מצב רפואי נוסף שחשוב שאדע?',            hint:'',                       detail:true,  dlabel:'פירוט', critical:false }
+  // כללי — שאלות פתיחה
+  { id:'ongoing_care',  text:'האם הנך נמצאת בטיפול רפואי קבוע?', dlabel:'פרטי', critical:false },
+  { id:'meds_regular',  text:'האם את נוטלת תרופות באופן קבוע?', dlabel:'אילו תרופות?', critical:false },
+  { id:'allergies',     text:'האם קיימות אלרגיות כלשהן (כולל לשמנים/קרמים לעיסוי)?', dlabel:'למה?', critical:false },
+  { id:'recent_surgery',text:'האם עברת ניתוח או פציעה משמעותית ב-6 החודשים האחרונים?', dlabel:'איזה ומתי?', critical:false },
+  { id:'limitation',    text:'האם קיימת מגבלה רפואית שחשוב שאדע עליה לפני הטיפול?', dlabel:'פרטי', critical:false },
+  { id:'changed',       text:'האם חל שינוי במצבך הרפואי מאז הטיפול האחרון?', dlabel:'מה השתנה?', critical:false },
+
+  // לב וכלי דם
+  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+  { id:'thrombosis',  text:'קריש דם, טרומבוזה או חשד ל-DVT?', hint:'DVT = קריש דם ורידי עמוק', dlabel:'פרטי', category:'לב וכלי דם', critical:true },
+  { id:'active_bleed',text:'דימום פעיל כרגע?', dlabel:'פרטי', category:'לב וכלי דם', critical:true },
+  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?', dlabel:'אילו תרופות? (למשל קומדין, אספירין)', category:'לב וכלי דם', critical:true },
+  { id:'pacemaker',   text:'קוצב לב או מכשיר לב מושתל?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+  { id:'varicose',    text:'דליות בולטות ברגליים?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+
+  // מערכת הנשימה
+  { id:'asthma',      text:'אסתמה או קשיי נשימה?', dlabel:'פרטי', category:'מערכת הנשימה', critical:false },
+
+  // מערכת העצבים
+  { id:'migraines',   text:'מיגרנות תכופות?', dlabel:'פרטי', category:'מערכת העצבים', critical:false },
+  { id:'epilepsy',    text:'אפילפסיה או הפרעה נוירולוגית אחרת?', dlabel:'פרטי', category:'מערכת העצבים', critical:false },
+  { id:'numbness',    text:'ירידה בתחושה או נימול באזור כלשהו בגוף?', dlabel:'איפה?', category:'מערכת העצבים', critical:false },
+
+  // מערכת השריר והשלד
+  { id:'back_pain',   text:'כאבי גב כרוניים?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?', dlabel:'איפה ומתי?', category:'מערכת השריר והשלד', critical:true },
+  { id:'disc_acute',  text:'פריצת דיסק חריפה או נזק עצבי מתקדם?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'implants',    text:'שתלים או מפרקים מלאכותיים?', dlabel:'איפה?', category:'מערכת השריר והשלד', critical:false },
+  { id:'osteoporosis',text:'אוסטאופורוזיס?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:true },
+
+  // עור
+  { id:'wounds',      text:'פצעים פתוחים, כוויות טריות, חתכים או מחלת עור מדבקת באזור הטיפול?', dlabel:'איזה אזור?', category:'עור', critical:true },
+  { id:'skin_chronic',text:'מחלת עור כרונית (פסוריאזיס, אקזמה וכו׳)?', dlabel:'פרטי', category:'עור', critical:false },
+
+  // אנדוקרינולוגיה
+  { id:'diabetes',    text:'סוכרת?', dlabel:'פרטי', category:'אנדוקרינולוגיה', critical:false },
+  { id:'steroids',    text:'טיפול קבוע בסטרואידים?', dlabel:'פרטי', category:'אנדוקרינולוגיה', critical:false },
+
+  // אונקולוגיה
+  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?', dlabel:'פירוט', category:'אונקולוגיה', critical:true },
+
+  // מחלות זיהומיות
+  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?', dlabel:'פרטי', category:'מחלות זיהומיות', critical:true },
+
+  // הריון ולידה
+  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?', dlabel:'באיזה שבוע / כמה אחרי?', category:'הריון ולידה', critical:false }
 ];
 
 // ---------- STATE ----------
@@ -607,13 +648,24 @@ function renderTimes(){
     ...allBusyVisible.map(s=>({t:s,avail:false}))
   ].sort((a,b)=>a.t.localeCompare(b.t));
 
+  // מסבירה למה שעה חסומה: "תור" = ממש התחלת טיפול קיים, "חסום" = חסימה ידנית שלך,
+  // "מרווח" = לא תור בעצמה, אלא זמן שנתפס כי היא קרובה מדי לתור/חסימה אחרים
+  function classifySlot(s){
+    if((state.blockedSlots||[]).includes(s)) return 'חסום';
+    if(state.busy.some(b=>b.time===s && !(state.blockedSlots||[]).includes(b.time))) return 'תור';
+    return 'מרווח';
+  }
+
   allDisplay.forEach(({t:s,avail})=>{
     const btn=document.createElement('button');
     if(avail){
       btn.className='time-slot'; btn.textContent=s;
       btn.addEventListener('click',()=>{ grid.querySelectorAll('.time-slot').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); state.time=s; $('#btn-next-2').disabled=false; });
     } else {
-      btn.className='time-slot busy-slot'; btn.textContent=s+' — תפוס'; btn.disabled=true;
+      const kind=classifySlot(s);
+      btn.className='time-slot busy-slot busy-'+(kind==='תור'?'appt':kind==='חסום'?'blocked':'gap');
+      btn.textContent=s+' — '+kind;
+      btn.disabled=true;
     }
     grid.appendChild(btn);
   });
@@ -651,7 +703,11 @@ $('#btn-next-4').addEventListener('click',()=>{
 
 // ---------- SCREEN 5: HEALTH ----------
 function renderQuestions(){
-  $('#questions').innerHTML=QUESTIONS.map(q=>`
+  let lastCat;
+  $('#questions').innerHTML=QUESTIONS.map(q=>{
+    const catHeader = (q.category && q.category !== lastCat) ? `<div class="q-cat">${q.category}</div>` : '';
+    lastCat = q.category;
+    return catHeader + `
     <div class="q" data-id="${q.id}">
       <div class="q-row">
         <span class="q-text">${q.text}${q.hint?`<span class="hint">${q.hint}</span>`:''}</span>
@@ -660,8 +716,8 @@ function renderQuestions(){
           <button type="button" data-val="no" aria-pressed="false">לא</button>
         </span>
       </div>
-      ${q.detail?`<div class="q-detail" data-detail="${q.id}"><div class="dlabel">${q.dlabel}</div><input type="text" maxlength="200" placeholder="${q.dlabel}"></div>`:''}
-    </div>`).join('');
+      <div class="q-detail" data-detail="${q.id}"><div class="dlabel">${q.dlabel}</div><input type="text" maxlength="200" placeholder="${q.dlabel}"></div>
+    </div>`; }).join('');
   $$('.toggle button').forEach(btn=>btn.addEventListener('click',()=>{
     const q=btn.closest('.q'), id=q.dataset.id, val=btn.dataset.val;
     state.answers[id]=val; q.classList.remove('unanswered');
@@ -681,7 +737,13 @@ function submitAll(){
   $('#consent-label').classList.remove('invalid');
   $('#sign-wrap').classList.remove('invalid');
   let bad=false, firstBad=null;
-  // שאלות הבריאות אינן חובה — ניתן לדלג. רק אישור + חתימה נדרשים.
+  // שאלות הבריאות עצמן לא חובה לענות — אבל אם ענו "כן", חובה לפרט
+  $$('.q').forEach(q=>{
+    const id=q.dataset.id;
+    if(state.answers[id]==='yes' && !(state.details[id]||'').trim()){
+      q.classList.add('unanswered'); bad=true; firstBad=firstBad||q;
+    }
+  });
   if(!$('#f-consent').checked){ $('#consent-label').classList.add('invalid'); bad=true; firstBad=firstBad||$('#consent-label'); }
   const signature=$('#f-signature').value.trim();
   if(!signature){ $('#sign-wrap').classList.add('invalid'); bad=true; firstBad=firstBad||$('#sign-wrap'); }

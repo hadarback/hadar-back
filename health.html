@@ -189,14 +189,14 @@ main{
   text-transform:uppercase;
 }
 .field label .req{color:var(--clay-deep);margin-left:.2rem}
-.field input[type=text],.field input[type=tel],.field input[type=number],.field textarea{
+.field input[type=text],.field input[type=tel],.field input[type=number],.field select,.field textarea{
   width:100%;background:var(--paper-2);
   border:1px solid var(--line);border-radius:8px;
   padding:.95rem 1.1rem;font-family:inherit;font-size:1rem;
   color:var(--ink);font-weight:400;
   transition:all .2s;
 }
-.field input:focus,.field textarea:focus{
+.field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-color:var(--ink);
   background:var(--paper);
   box-shadow:0 0 0 3px rgba(38,34,28,.06);
@@ -204,10 +204,13 @@ main{
 .field textarea{resize:vertical;min-height:80px;font-family:var(--body)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media (max-width:480px){.field-row{grid-template-columns:1fr}}
+.q-cat{font-size:.76rem;font-weight:700;letter-spacing:.06em;color:var(--clay-deep);margin:1.5rem 0 .2rem;padding-top:.9rem;border-top:1px solid rgba(217,207,184,.6)}
+.q-cat:first-of-type{margin-top:.3rem}
+.q.unanswered .q-detail input{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.15)}
 .field .error{
   display:none;color:var(--error);font-size:.82rem;margin-top:.4rem;font-weight:400;
 }
-.field.invalid input,.field.invalid textarea{border-color:var(--error)}
+.field.invalid input,.field.invalid textarea{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.2)}
 .field.invalid .error{display:block}
 
 /* ---- Yes/No health questions ---- */
@@ -408,6 +411,25 @@ footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
         <label for="f-appt">תאריך הטיפול (אם ידוע)</label>
         <input type="text" id="f-appt" placeholder="לדוגמה: יום ראשון, 12 ביולי" autocomplete="off">
       </div>
+
+      <div class="field">
+        <label for="f-source"><span class="req">*</span> איך הגעת אליי?</label>
+        <select id="f-source">
+          <option value="">— בחרי —</option>
+          <option value="אינסטגרם">אינסטגרם</option>
+          <option value="פייסבוק">פייסבוק</option>
+          <option value="גוגל">גוגל</option>
+          <option value="המלצה מחברה">המלצה מחברה</option>
+          <option value="מטופלת חוזרת">מטופלת חוזרת</option>
+          <option value="וואטסאפ">וואטסאפ</option>
+          <option value="אחר">אחר</option>
+        </select>
+        <div class="error">נא לבחור אפשרות</div>
+      </div>
+      <div class="field" id="source-other-wrap" style="display:none">
+        <label for="f-source-other">אנא פרט/י</label>
+        <input type="text" id="f-source-other" placeholder="איך הגעת אליי?">
+      </div>
     </div>
 
     <!-- 2. מצב בריאותי -->
@@ -433,7 +455,7 @@ footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
       <label class="consent" id="consent-label">
         <input type="checkbox" id="f-consent">
         <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span>
-        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי, ושבמקרה הצורך עליי להיוועץ ברופא/ה.</span>
+        <span class="ctext">אני מצהירה שהפרטים שמסרתי נכונים ומלאים, ושאעדכן את הדר על כל שינוי במצבי הבריאותי. ידוע לי שעיסוי אינו תחליף לטיפול רפואי, ושבמקרה הצורך עליי להיוועץ ברופא/ה. אני מאשרת כי כל הפרטים שמסרתי נכונים ומלאים למיטב ידיעתי, וידוע לי כי הסתרת מידע רפואי או מסירת מידע חלקי עלולים להשפיע על בטיחות הטיפול, ואני מתחייבת לעדכן את המטפלת בכל שינוי במצבי הרפואי.</span>
       </label>
 
       <div class="field" id="sign-wrap" style="margin-top:1.4rem">
@@ -477,22 +499,57 @@ footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
 // ---------- CONFIG (זהה ל-booking.html) ----------
 const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
 
-// critical:true = קונטראינדיקציה מוחלטת → מסומן באדום להדר
+// critical:true = קונטראינדיקציה מוחלטת → מסומנת באדום להדר
+// כל שאלה כאן נענית כן/לא, וב"כן" נפתח שדה פירוט חובה (dlabel = הטקסט של שדה הפירוט)
 const QUESTIONS = [
-  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?',            hint:'זיהום פעיל / דלקת חריפה', detail:false, critical:true },
-  { id:'wounds',      text:'פצעים פתוחים, כוויות, חתכים או מחלת עור מדבקת באזור הטיפול?', hint:'',                  detail:true,  dlabel:'איזה אזור?', critical:true },
-  { id:'thrombosis',  text:'קריש דם / טרומבוזה / חשד ל-DVT?',                        hint:'',                       detail:false, critical:true },
-  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?',                      hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
-  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?',                       hint:'קומדין, אספירין במינון גבוה', detail:true, dlabel:'אילו תרופות?', critical:true },
-  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?',                          hint:'',                       detail:true,  dlabel:'איפה ומתי?', critical:true },
-  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?',                 hint:'',                       detail:true,  dlabel:'פירוט', critical:true },
-  { id:'surgery_disc',text:'ניתוח לאחרונה או פריצת דיסק אקוטית?',                     hint:'',                       detail:true,  dlabel:'מה ומתי?', critical:false },
-  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?',                             hint:'',                       detail:true,  dlabel:'באיזה שבוע / כמה אחרי?', critical:false },
-  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?',                        hint:'',                       detail:false, critical:false },
-  { id:'metabolic',   text:'סוכרת, אוסטאופורוזיס או עור דק ורגיש?',                  hint:'',                       detail:true,  dlabel:'פירוט', critical:false },
-  { id:'varicose',    text:'דליות בולטות ברגליים?',                                 hint:'',                       detail:false, critical:false },
-  { id:'allergy',     text:'אלרגיה לשמנים, קרמים או חומרי עיסוי?',                   hint:'',                       detail:true,  dlabel:'למה?', critical:false },
-  { id:'meds_other',  text:'תרופות קבועות או מצב רפואי נוסף שחשוב שאדע?',            hint:'',                       detail:true,  dlabel:'פירוט', critical:false }
+  // כללי — שאלות פתיחה
+  { id:'ongoing_care',  text:'האם הנך נמצאת בטיפול רפואי קבוע?', dlabel:'פרטי', critical:false },
+  { id:'meds_regular',  text:'האם את נוטלת תרופות באופן קבוע?', dlabel:'אילו תרופות?', critical:false },
+  { id:'allergies',     text:'האם קיימות אלרגיות כלשהן (כולל לשמנים/קרמים לעיסוי)?', dlabel:'למה?', critical:false },
+  { id:'recent_surgery',text:'האם עברת ניתוח או פציעה משמעותית ב-6 החודשים האחרונים?', dlabel:'איזה ומתי?', critical:false },
+  { id:'limitation',    text:'האם קיימת מגבלה רפואית שחשוב שאדע עליה לפני הטיפול?', dlabel:'פרטי', critical:false },
+  { id:'changed',       text:'האם חל שינוי במצבך הרפואי מאז הטיפול האחרון?', dlabel:'מה השתנה?', critical:false },
+
+  // לב וכלי דם
+  { id:'bp',          text:'לחץ דם לא מאוזן (גבוה או נמוך)?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+  { id:'thrombosis',  text:'קריש דם, טרומבוזה או חשד ל-DVT?', hint:'DVT = קריש דם ורידי עמוק', dlabel:'פרטי', category:'לב וכלי דם', critical:true },
+  { id:'active_bleed',text:'דימום פעיל כרגע?', dlabel:'פרטי', category:'לב וכלי דם', critical:true },
+  { id:'bleeding',    text:'נטייה לדימומים או נטילת מדללי דם?', dlabel:'אילו תרופות? (למשל קומדין, אספירין)', category:'לב וכלי דם', critical:true },
+  { id:'pacemaker',   text:'קוצב לב או מכשיר לב מושתל?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+  { id:'varicose',    text:'דליות בולטות ברגליים?', dlabel:'פרטי', category:'לב וכלי דם', critical:false },
+
+  // מערכת הנשימה
+  { id:'asthma',      text:'אסתמה או קשיי נשימה?', dlabel:'פרטי', category:'מערכת הנשימה', critical:false },
+
+  // מערכת העצבים
+  { id:'migraines',   text:'מיגרנות תכופות?', dlabel:'פרטי', category:'מערכת העצבים', critical:false },
+  { id:'epilepsy',    text:'אפילפסיה או הפרעה נוירולוגית אחרת?', dlabel:'פרטי', category:'מערכת העצבים', critical:false },
+  { id:'numbness',    text:'ירידה בתחושה או נימול באזור כלשהו בגוף?', dlabel:'איפה?', category:'מערכת העצבים', critical:false },
+
+  // מערכת השריר והשלד
+  { id:'back_pain',   text:'כאבי גב כרוניים?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'fracture',    text:'שבר טרי או חבלה חריפה לאחרונה?', dlabel:'איפה ומתי?', category:'מערכת השריר והשלד', critical:true },
+  { id:'disc_acute',  text:'פריצת דיסק חריפה או נזק עצבי מתקדם?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'implants',    text:'שתלים או מפרקים מלאכותיים?', dlabel:'איפה?', category:'מערכת השריר והשלד', critical:false },
+  { id:'osteoporosis',text:'אוסטאופורוזיס?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:false },
+  { id:'undiagnosed', text:'כאב חריף או חריג שלא אובחן על ידי רופא?', dlabel:'פרטי', category:'מערכת השריר והשלד', critical:true },
+
+  // עור
+  { id:'wounds',      text:'פצעים פתוחים, כוויות טריות, חתכים או מחלת עור מדבקת באזור הטיפול?', dlabel:'איזה אזור?', category:'עור', critical:true },
+  { id:'skin_chronic',text:'מחלת עור כרונית (פסוריאזיס, אקזמה וכו׳)?', dlabel:'פרטי', category:'עור', critical:false },
+
+  // אנדוקרינולוגיה
+  { id:'diabetes',    text:'סוכרת?', dlabel:'פרטי', category:'אנדוקרינולוגיה', critical:false },
+  { id:'steroids',    text:'טיפול קבוע בסטרואידים?', dlabel:'פרטי', category:'אנדוקרינולוגיה', critical:false },
+
+  // אונקולוגיה
+  { id:'cancer',      text:'סרטן פעיל (ללא אישור רופא לעיסוי)?', dlabel:'פירוט', category:'אונקולוגיה', critical:true },
+
+  // מחלות זיהומיות
+  { id:'fever',       text:'חום, מחלה זיהומית פעילה או דלקת חריפה כרגע?', dlabel:'פרטי', category:'מחלות זיהומיות', critical:true },
+
+  // הריון ולידה
+  { id:'pregnant',    text:'הריון או תקופה שלאחר לידה?', dlabel:'באיזה שבוע / כמה אחרי?', category:'הריון ולידה', critical:false }
 ];
 
 const answers = {};   // id -> 'yes' | 'no'
@@ -503,7 +560,11 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
 // ---------- Render questions ----------
 function renderQuestions(){
-  $('#questions').innerHTML = QUESTIONS.map(q => `
+  let lastCat;
+  $('#questions').innerHTML = QUESTIONS.map(q => {
+    const catHeader = (q.category && q.category !== lastCat) ? `<div class="q-cat">${q.category}</div>` : '';
+    lastCat = q.category;
+    return catHeader + `
     <div class="q" data-id="${q.id}">
       <div class="q-row">
         <span class="q-text">${q.text}${q.hint ? `<span class="hint">${q.hint}</span>` : ''}</span>
@@ -512,12 +573,12 @@ function renderQuestions(){
           <button type="button" data-val="no"  aria-pressed="false">לא</button>
         </span>
       </div>
-      ${q.detail ? `<div class="q-detail" data-detail="${q.id}">
+      <div class="q-detail" data-detail="${q.id}">
         <div class="dlabel">${q.dlabel}</div>
         <input type="text" maxlength="200" placeholder="${q.dlabel}">
-      </div>` : ''}
+      </div>
     </div>
-  `).join('');
+  `; }).join('');
 
   $$('.toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -560,6 +621,13 @@ $('#f-phone').addEventListener('input', e => { e.target.value = e.target.value.r
 function validatePhone(p){ return /^0\d{9}$/.test(p.replace(/[\s-]/g,'')); }
 function validateEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
+$('#f-source').addEventListener('change', () => {
+  $('#f-source').closest('.field').classList.remove('invalid');
+  const isOther = $('#f-source').value === 'אחר';
+  $('#source-other-wrap').style.display = isOther ? '' : 'none';
+  if (!isOther) $('#f-source-other').value = '';
+});
+
 // ---------- Toast ----------
 function showToast(msg, isError){
   const t = $('#toast');
@@ -575,9 +643,11 @@ $('#health-form').addEventListener('submit', e => {
   const nameField  = $('#f-name').closest('.field');
   const phoneField = $('#f-phone').closest('.field');
   const emailField = $('#f-email').closest('.field');
+  const sourceField = $('#f-source').closest('.field');
   nameField.classList.remove('invalid');
   phoneField.classList.remove('invalid');
   emailField.classList.remove('invalid');
+  sourceField.classList.remove('invalid');
   $$('.q').forEach(q => q.classList.remove('unanswered'));
   $('#consent-label').classList.remove('invalid');
 
@@ -591,13 +661,26 @@ $('#health-form').addEventListener('submit', e => {
   const email = $('#f-email').value.trim();
   const notes = $('#f-notes').value.trim();
   const signature = $('#f-signature').value.trim();
+  const source = $('#f-source').value;
+  const sourceOther = $('#f-source-other').value.trim();
 
   let bad = false, firstBad = null;
   if (!name)  { nameField.classList.add('invalid'); bad=true; firstBad=firstBad||nameField; }
   if (!validatePhone(phone)) { phoneField.classList.add('invalid'); bad=true; firstBad=firstBad||phoneField; }
   if (!validateEmail(email)) { emailField.classList.add('invalid'); bad=true; firstBad=firstBad||emailField; }
+  if (!source || (source === 'אחר' && !sourceOther)) { sourceField.classList.add('invalid'); bad=true; firstBad=firstBad||sourceField; }
 
-  // שאלות הבריאות אינן חובה — ניתן לדלג. רק שם, טלפון, אישור וחתימה נדרשים.
+  // שאלות הבריאות עצמן לא חובה לענות — אבל אם ענו "כן", חובה לפרט
+  $$('.q').forEach(q => {
+    const id = q.dataset.id;
+    if (answers[id] === 'yes' && !(details[id] || '').trim()) {
+      q.classList.add('unanswered');
+      bad = true;
+      firstBad = firstBad || q;
+    }
+  });
+
+  // שם, טלפון, מייל, מקור הגעה, אישור וחתימה נדרשים.
   if (!$('#f-consent').checked) { $('#consent-label').classList.add('invalid'); bad=true; firstBad=firstBad||$('#consent-label'); }
   if (!signature) { signWrap.classList.add('invalid'); bad=true; firstBad=firstBad||signWrap; }
 
@@ -626,9 +709,12 @@ $('#health-form').addEventListener('submit', e => {
     .map(q => (q.critical ? '🔴 ' : '') + q.text.replace(/\?$/, '') + (details[q.id] ? ' (' + details[q.id] + ')' : ''))
     .join(' | ') || 'אין דגלים';
 
-  // טופס מלא (חתימה + כל שאלה + כן/לא + פירוט) לשמירה — לכפתור "צפייה בטופס מלא" באדמין
+  // טופס מלא (חתימה + מקור הגעה + כל שאלה + כן/לא + פירוט) לשמירה — לכפתור "צפייה בטופס מלא" באדמין
   const answersFull = JSON.stringify(
-    [{ q: 'חתימה דיגיטלית', a: signature, detail: '', critical: false }].concat(
+    [
+      { q: 'חתימה דיגיטלית', a: signature, detail: '', critical: false },
+      { q: 'איך הגעת אליי?', a: source, detail: source === 'אחר' ? sourceOther : '', critical: false }
+    ].concat(
       QUESTIONS.map(q => ({ q: q.text, a: answers[q.id] === 'yes' ? 'כן' : (answers[q.id] === 'no' ? 'לא' : '—'), detail: details[q.id] || '', critical: !!q.critical }))
     )
   );

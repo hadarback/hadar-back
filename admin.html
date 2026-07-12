@@ -358,7 +358,7 @@ tbody tr:hover{background:var(--bg-cream)}
   <div class="tabs">
     <button class="tab" data-panel="hours">שעות</button>
     <button class="tab active" data-panel="bookings">תורים <span class="badge" id="badge-new">0</span></button>
-    <button class="tab" data-panel="declarations">הצהרות</button>
+    <button class="tab" data-panel="declarations">הצהרות <span class="badge" id="badge-decl-new">0</span></button>
     <button class="tab" data-panel="clients">לקוחות</button>
   </div>
 
@@ -679,6 +679,11 @@ async function tryLogin(pin) {
       $('#app').classList.add('active');
       allBookings = resp.bookings || [];
       renderAll();
+      // טוענת הצהרות ברקע (בלי לעכב את הכניסה) כדי שהתג "הצהרות חדשות" יהיה מדויק מיד בכניסה
+      api({ action:'list_health', pin:pin }).then(r=>{
+        allDeclarations = (r && r.declarations) || [];
+        updateDeclBadge();
+      }).catch(()=>{});
     } else {
       // קוד שגוי / לא מורשה — לנקות זיכרון ולהחזיר את מסך הקוד תמיד
       sessionStorage.removeItem('hadarPin');
@@ -729,7 +734,7 @@ $$('.tab').forEach(btn => {
     $$('.panel').forEach(p => p.classList.remove('active'));
     $('#panel-' + target).classList.add('active');
     if (target === 'hours') loadHours();
-    if (target === 'declarations') loadDeclarations();
+    if (target === 'declarations') loadDeclarations().then(markDeclarationsSeen);
     if (target === 'clients') loadClients();
   });
 });
@@ -1059,13 +1064,16 @@ async function loadDaySlots(iso){
     catch(e){ showToast('שגיאת תקשורת','error'); }
   });
   $('#slotgrid').innerHTML = '<div class="loading">טוען</div>';
-  let open=[], booked=[], blockedSlots=[];
+  let open=[], booked=[], blockedSlots=[], bookedNames={};
   try {
     const r = await api({ action:'slots_admin', pin:PIN, date:iso });
-    if(r && r.result==='success'){ open=r.open||[]; booked=r.booked||[]; blockedSlots=r.blocked||[]; }
+    if(r && r.result==='success'){ open=r.open||[]; booked=r.booked||[]; blockedSlots=r.blocked||[]; bookedNames=r.bookedNames||{}; }
   } catch(e){ $('#slotgrid').innerHTML='<div class="rec-empty">שגיאת תקשורת</div>'; return; }
 
-  // נרמול ל-HH:mm כדי למנוע כפילויות
+  // נרמול ל-HH:mm כדי למנוע כפילויות (וגם למפתחות של שמות המטופלות, כדי שיתאימו)
+  const bookedNamesFmt = {};
+  Object.keys(bookedNames).forEach(t => { bookedNamesFmt[fmtTime(t)] = bookedNames[t]; });
+  bookedNames = bookedNamesFmt;
   open = open.map(fmtTime); booked = booked.map(fmtTime); blockedSlots = blockedSlots.map(fmtTime);
   const openSet=new Set(open), bookedSet=new Set(booked), blockedSet=new Set(blockedSlots);
 
@@ -1087,15 +1095,24 @@ async function loadDaySlots(iso){
 
   $('#slotgrid').innerHTML = times.map(t=>{
     const isBooked=bookedSet.has(t), isOpen=openSet.has(t), isBlocked=blockedSet.has(t), isBuffer=bufferSet.has(t);
-    let cls='', state='closed';
-    if(isBooked){ cls='booked'; state='booked'; }
-    else if(isBlocked){ cls='blocked-manual'; state='blocked'; }
-    else if(isOpen){ cls='open'+(isBuffer?' buffer':''); state='open'; }
-    else if(isBuffer){ cls='buffer'; state='buffer'; }
+    // סדר עדיפויות אחיד לתצוגה (גם לצבע וגם לכיתוב) — כדי שלא יהיה מצב שבו הצבע והטקסט סותרים:
+    // תור אמיתי > חסום ידנית > בתוך מרווח של תור/חסימה אחרת > פתוח נקי > סגור
+    let dispState;
+    if(isBooked) dispState='booked';
+    else if(isBlocked) dispState='blocked';
+    else if(isBuffer) dispState='buffer';
+    else if(isOpen) dispState='open';
+    else dispState='closed';
 
-    if(isBooked){
-      return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}"><span class="t">${t}</span><span class="bk">תפוס</span></div>`;
+    if(dispState==='booked'){
+      const bn = bookedNames[t] || '';
+      return `<div class="slotchip booked" data-time="${t}" data-state="booked"><span class="t">${t}</span><span class="bk">נקבע תור${bn?' — '+bn:''}</span></div>`;
     }
+    let cls='', state=dispState;
+    if(dispState==='blocked') cls='blocked-manual';
+    else if(dispState==='buffer') cls='buffer'+(isOpen?' open':'');
+    else if(dispState==='open') cls='open';
+
     const isPendingAdd = !isOpen && pendingAdd.has(t);
     const isPendingBlock = !isBlocked && pendingBlock.has(t);
     if(isPendingAdd) cls += ' pending';
@@ -1104,13 +1121,13 @@ async function loadDaySlots(iso){
       ? `<span class="ic rem" data-btn="remove">${remSvg}</span>`
       : `<span class="ic add" data-btn="open">${addSvg}</span>`;
     const btn2 = `<span class="ic blk${isBlocked?' active':''}" data-btn="block">${blkSvg}</span>`;
-    // תווית טקסט מפורשת מתחת לשעה — כדי שהמצב יהיה ברור גם בלי להסתמך רק על צבע
+    // תווית טקסט מפורשת מתחת לשעה — אותו סדר עדיפויות בדיוק כמו הצבע
     let stateLbl = '';
-    if(isOpen) stateLbl = '<span class="state-lbl ok">✓ פתוח</span>';
-    else if(isBlocked) stateLbl = '<span class="state-lbl no">⊘ חסום</span>';
+    if(dispState==='blocked') stateLbl = '<span class="state-lbl no">⊘ חסום</span>';
+    else if(dispState==='buffer') stateLbl = '<span class="buf-lbl">מרווח</span>';
+    else if(dispState==='open') stateLbl = '<span class="state-lbl ok">✓ פתוח</span>';
     else if(isPendingAdd) stateLbl = '<span class="state-lbl pend">נבחר להוספה</span>';
     else if(isPendingBlock) stateLbl = '<span class="state-lbl pend-block">נבחר לחסימה</span>';
-    else if(isBuffer) stateLbl = '<span class="buf-lbl">מרווח</span>';
     return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${stateLbl}</span>${btn2}</div>`;
   }).join('');
   updateBulkConfirmBar();
@@ -1209,12 +1226,29 @@ $('#slot-block-all').addEventListener('click', async ()=>{
 // ====== Declarations ======
 let allDeclarations = [];
 let declSearch = '';
+
+// ── סימון הצהרות "נקראו" — כדי שהדשבורד יראה לך כמה חדשות יש לך לקרוא, בלי תלות במייל/וואטסאפ ──
+function getSeenDeclIds(){
+  try { return new Set(JSON.parse(localStorage.getItem('hadarSeenDecl') || '[]')); } catch(e){ return new Set(); }
+}
+function updateDeclBadge(){
+  const seen = getSeenDeclIds();
+  const unseen = allDeclarations.filter(d => !seen.has(d.id)).length;
+  const badge = $('#badge-decl-new');
+  if (badge) badge.textContent = unseen;
+}
+function markDeclarationsSeen(){
+  const ids = allDeclarations.map(d => d.id);
+  localStorage.setItem('hadarSeenDecl', JSON.stringify(ids));
+  updateDeclBadge();
+}
 async function loadDeclarations(){
   $('#decl-loading').style.display='block'; $('#decl-tbl').style.display='none'; $('#decl-empty').style.display='none';
   try {
     const r = await api({ action:'list_health', pin:PIN });
     allDeclarations = (r && r.declarations) || [];
     renderDeclarations();
+    updateDeclBadge();
   } catch(e){ $('#decl-loading').textContent='שגיאת תקשורת'; }
 }
 function renderDeclarations(){
