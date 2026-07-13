@@ -160,9 +160,6 @@ main{padding:2.5rem 2rem 5rem;max-width:880px;margin:0 auto;position:relative;z-
 .time-slot:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--primary)}
 .time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.04);box-shadow:0 6px 14px -4px rgba(66,96,79,.5)}
 .time-slot.busy-slot{opacity:.55;cursor:not-allowed;background:var(--surface-2);border-color:var(--line);color:var(--ink-quiet);font-size:.88rem}
-.time-slot.busy-appt{opacity:.7;border-color:rgba(192,88,74,.4);color:var(--error)}
-.time-slot.busy-gap{opacity:.5}
-.time-slot.busy-blocked{opacity:.6;border-color:rgba(110,148,132,.4)}
 .no-slots{text-align:center;color:var(--ink-quiet);padding:2.5rem;background:var(--surface-2);border-radius:14px;font-weight:600}
 
 /* Form */
@@ -648,23 +645,15 @@ function renderTimes(){
     ...allBusyVisible.map(s=>({t:s,avail:false}))
   ].sort((a,b)=>a.t.localeCompare(b.t));
 
-  // מסבירה למה שעה חסומה: "תור" = ממש התחלת טיפול קיים, "חסום" = חסימה ידנית שלך,
-  // "מרווח" = לא תור בעצמה, אלא זמן שנתפס כי היא קרובה מדי לתור/חסימה אחרים
-  function classifySlot(s){
-    if((state.blockedSlots||[]).includes(s)) return 'חסום';
-    if(state.busy.some(b=>b.time===s && !(state.blockedSlots||[]).includes(b.time))) return 'תור';
-    return 'מרווח';
-  }
-
   allDisplay.forEach(({t:s,avail})=>{
     const btn=document.createElement('button');
     if(avail){
       btn.className='time-slot'; btn.textContent=s;
       btn.addEventListener('click',()=>{ grid.querySelectorAll('.time-slot').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); state.time=s; $('#btn-next-2').disabled=false; });
     } else {
-      const kind=classifySlot(s);
-      btn.className='time-slot busy-slot busy-'+(kind==='תור'?'appt':kind==='חסום'?'blocked':'gap');
-      btn.textContent=s+' — '+kind;
+      // ללקוחה מוצג תמיד "תפוס" גנרי בלבד — הסיבה הפנימית (תור/מרווח/חסום) נגישה רק בדשבורד
+      btn.className='time-slot busy-slot';
+      btn.textContent=s+' — תפוס';
       btn.disabled=true;
     }
     grid.appendChild(btn);
