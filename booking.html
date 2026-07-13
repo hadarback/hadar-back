@@ -427,6 +427,22 @@ footer .copy{color:rgba(255,255,255,.4);font-size:.78rem}
 // ---------- CONFIG ----------
 const HADAR_PHONE = '972543270619';
 const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
+
+// דיווח כשל מהדפדפן חזרה לשרת — כדי שגם תקלות שקורות אצל הלקוחה (רשת וכו') יופיעו ב-Executions.
+// לעולם לא חוסם/לא נכשל בצורה גלויה — ניסיון-אחד-בלבד, בלי לחכות לתשובה.
+window.hadarNoop = function(){};
+function reportClientError(actionType, message, stack){
+  try{
+    if(!SHEETS_URL) return;
+    const usp=new URLSearchParams({ action:'log_client_error', clientAction:String(actionType||'').substring(0,40),
+      message:String(message||'').substring(0,500), stack:String(stack||'').substring(0,1000), callback:'hadarNoop' });
+    const s=document.createElement('script');
+    s.src=SHEETS_URL+'?'+usp.toString();
+    s.onload=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    s.onerror=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    document.body.appendChild(s);
+  }catch(e){}
+}
 const CLINIC_ADDRESS = 'וינגייט 74, דירה 24, קומה 6, באר שבע';
 
 const TREATMENT_MIN = 60;
@@ -514,13 +530,14 @@ function toMin(hhmm){ const [h,m]=String(hhmm).split(':').map(Number); return h*
 function showToast(msg,isError){ const t=$('#toast'); t.textContent=msg; t.className='toast show'+(isError?' error':''); setTimeout(()=>t.classList.remove('show'),3500); }
 
 // ---------- JSONP ----------
+// timeoutMs === null → אין הגבלת זמן בכלל, ממתינים לתשובה אמיתית מהשרת (או לכשל רשת אמיתי דרך onerror)
 function jsonpGet(params, timeoutMs){
   return new Promise((resolve,reject)=>{
     if(!SHEETS_URL){ reject(new Error('no SHEETS_URL')); return; }
     const cbName='hadarCb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-    const timer=setTimeout(()=>{ cleanup(); reject(new Error('timeout')); }, timeoutMs||7000);
+    const timer = timeoutMs===null ? null : setTimeout(()=>{ cleanup(); reject(new Error('timeout')); }, timeoutMs||7000);
     const script=document.createElement('script');
-    function cleanup(){ clearTimeout(timer); try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(script.parentNode) script.parentNode.removeChild(script); }
+    function cleanup(){ if(timer) clearTimeout(timer); try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(script.parentNode) script.parentNode.removeChild(script); }
     window[cbName]=function(resp){ cleanup(); resolve(resp); };
     const usp=new URLSearchParams(params); usp.append('callback',cbName);
     script.src=SHEETS_URL+'?'+usp.toString();
@@ -768,12 +785,23 @@ function submitAll(){
   const waUrl=`https://api.whatsapp.com/send?phone=${HADAR_PHONE}&text=`+encodeURIComponent(waText);
   const waWindow=window.open(waUrl,'_blank');
 
+  const btnTextOrig=$('.btn-text',btn).textContent;
+  $('.btn-text',btn).textContent='שומרת נתונים...';
+
+  // מסך הצלחה מוצג רק אחרי אישור אמיתי מהשרת שהתור נשמר
   const finish=()=>{
     btn.classList.remove('loading'); btn.disabled=false;
+    $('.btn-text',btn).textContent=btnTextOrig;
     $('#wa-fallback').href=waUrl;
     if(!waWindow||waWindow.closed) $('#wa-fallback').style.display='flex'; else $('#wa-fallback').style.display='none';
     $('#gcal-link').href=buildGCalUrl();
     setStep(4);
+  };
+  // כישלון בשמירת התור עצמו — נשארים באותו מסך, שום נתון לא נמחק, אפשר לנסות שוב
+  const fail=(msg)=>{
+    btn.classList.remove('loading'); btn.disabled=false;
+    $('.btn-text',btn).textContent=btnTextOrig;
+    showToast(msg||'השמירה נכשלה — נסי שוב. ההודעה כבר נפתחה לוואטסאפ, אפשר לשלוח אותה בינתיים.',true);
   };
 
   if(!SHEETS_URL){ finish(); return; }
@@ -792,11 +820,14 @@ function submitAll(){
     notes:state.notes.substring(0,500)
   });
 
-  let done=false;
-  const timeout=setTimeout(()=>{ if(done) return; done=true; showToast('נשלח לוואטסאפ. השמירה לא אומתה.',true); finish(); },9000);
-
-  jsonpGet(bookingParams,8000).then(resp=>{
-    if(resp&&resp.id) state.lastBookingId=resp.id;
+  // אין הגבלת זמן — ממתינים לתשובה אמיתית מהשרת. בודקים בפועל result:success, לא רק שהתקבלה תשובה כלשהי.
+  jsonpGet(bookingParams,null).then(resp=>{
+    if(!resp || resp.result!=='success'){
+      reportClientError('submit', resp && resp.message ? 'server returned error: '+resp.message : 'server returned non-success response');
+      fail(resp && resp.message ? 'שגיאה מהשרת: '+resp.message : 'התור לא נשמר, נסי שוב');
+      return;
+    }
+    if(resp.id) state.lastBookingId=resp.id;
     // 2) create health declaration linked to booking
     const healthParams=new URLSearchParams({
       action:'submit_health', timestamp:new Date().toISOString(),
@@ -807,9 +838,10 @@ function submitAll(){
       consent:'כן', answers_json:answersFull.substring(0,4000), signature:signature.substring(0,100)
     });
     if(state.lastBookingId) healthParams.append('booking_id',state.lastBookingId);
-    return jsonpGet(healthParams,8000).catch(()=>null);
-  }).then(()=>{ if(done) return; done=true; clearTimeout(timeout); finish(); })
-    .catch(()=>{ if(done) return; done=true; clearTimeout(timeout); showToast('נשלח לוואטסאפ. השמירה לא אומתה.',true); finish(); });
+    // התור עצמו כבר נשמר בהצלחה — אם רק ההצהרה נכשלת, עדיין ממשיכים להצלחה (התור קיים, וההודעה לוואטסאפ כוללת את פרטי הבריאות כגיבוי), אבל כן מדווחים על הכשל
+    jsonpGet(healthParams,null).catch(e2=>{ reportClientError('submit_health_after_booking', 'network error: '+(e2&&e2.message||e2)); return null; })
+      .then(hresp=>{ if(hresp && hresp.result!=='success') reportClientError('submit_health_after_booking', hresp&&hresp.message?'server returned error: '+hresp.message:'server returned non-success response'); finish(); });
+  }).catch(e=>{ reportClientError('submit', 'network error: '+(e&&e.message||e)); fail('הבקשה לא הגיעה לשרת (בעיית רשת) — נסי שוב'); });
 }
 
 // ---------- Google Calendar (client) ----------

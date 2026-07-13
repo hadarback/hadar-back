@@ -499,6 +499,22 @@ footer .copy{color:rgba(250,246,238,.4);font-size:.78rem;letter-spacing:.05em}
 // ---------- CONFIG (זהה ל-booking.html) ----------
 const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
 
+// דיווח כשל מהדפדפן חזרה לשרת — כדי שגם תקלות שקורות אצל הלקוחה (רשת וכו') יופיעו ב-Executions.
+// לעולם לא חוסם/לא נכשל בצורה גלויה — ניסיון-אחד-בלבד, בלי לחכות לתשובה.
+window.hadarNoop = function(){};
+function reportClientError(actionType, message, stack){
+  try{
+    if(!SHEETS_URL) return;
+    const usp=new URLSearchParams({ action:'log_client_error', clientAction:String(actionType||'').substring(0,40),
+      message:String(message||'').substring(0,500), stack:String(stack||'').substring(0,1000), callback:'hadarNoop' });
+    const s=document.createElement('script');
+    s.src=SHEETS_URL+'?'+usp.toString();
+    s.onload=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    s.onerror=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    document.body.appendChild(s);
+  }catch(e){}
+}
+
 // critical:true = קונטראינדיקציה מוחלטת → מסומנת באדום להדר
 // כל שאלה כאן נענית כן/לא, וב"כן" נפתח שדה פירוט חובה (dlabel = הטקסט של שדה הפירוט)
 const QUESTIONS = [
@@ -691,17 +707,27 @@ $('#health-form').addEventListener('submit', e => {
   }
 
   const btn = $('#btn-submit');
+  const btnTextOrig = $('.btn-text', btn).textContent;
   btn.classList.add('loading'); btn.disabled = true;
+  $('.btn-text', btn).textContent = 'שומרת נתונים...';
 
-  const finish = () => {
+  // מציגים "הצלחה" רק כשהשרת אישר במפורש result:success — לא על סמך "התקבלה תשובה כלשהי"
+  const showSuccess = () => {
     btn.classList.remove('loading'); btn.disabled = false;
+    $('.btn-text', btn).textContent = btnTextOrig;
     $('#health-form').style.display = 'none';
     $('#progress').style.width = '100%';
     $('#success').classList.add('active');
     window.scrollTo({ top:0, behavior:'smooth' });
   };
+  // כישלון — נשארים באותו עמוד, שום נתון לא נמחק, אפשר לנסות שוב
+  const showFailure = (msg) => {
+    btn.classList.remove('loading'); btn.disabled = false;
+    $('.btn-text', btn).textContent = btnTextOrig;
+    showToast(msg || 'השמירה לא הצליחה — נסי שוב, או שלחי לי הודעה בוואטסאפ כדי שאדע', true);
+  };
 
-  if (!SHEETS_URL) { finish(); return; }
+  if (!SHEETS_URL) { showSuccess(); return; }
 
   // structured flags for the sheet (🔴 לקונטראינדיקציה)
   const flagsText = QUESTIONS
@@ -719,9 +745,16 @@ $('#health-form').addEventListener('submit', e => {
     )
   );
 
+  // אין הגבלת זמן — ממתינים לתשובה אמיתית מהשרת, ובודקים בפועל מה היא אומרת (לא רק שהתקבלה)
   const cbName = 'hadarHcb_' + Date.now();
-  const timeout = setTimeout(() => { try{delete window[cbName];}catch(e){} showToast('השמירה לא אומתה, נסי שוב בעוד רגע.', true); finish(); }, 8000);
-  window[cbName] = function(){ clearTimeout(timeout); try{delete window[cbName];}catch(e){} finish(); };
+  window[cbName] = function(resp){
+    try{delete window[cbName];}catch(e){}
+    if (resp && resp.result === 'success') showSuccess();
+    else {
+      reportClientError('submit_health', resp && resp.message ? 'server returned error: '+resp.message : 'server returned non-success response');
+      showFailure(resp && resp.message ? 'שגיאה מהשרת: ' + resp.message : undefined);
+    }
+  };
 
   const params = new URLSearchParams();
   params.append('action', 'submit_health');
@@ -741,7 +774,12 @@ $('#health-form').addEventListener('submit', e => {
 
   const script = document.createElement('script');
   script.src = SHEETS_URL + '?' + params.toString();
-  script.onerror = () => { clearTimeout(timeout); try{delete window[cbName];}catch(e){} try{document.body.removeChild(script);}catch(e){} showToast('השמירה לא אומתה, נסי שוב בעוד רגע.', true); finish(); };
+  // כשל רשת אמיתי (לא ניחוש זמן) — הבקשה לא הגיעה לשרת בכלל
+  script.onerror = () => {
+    try{delete window[cbName];}catch(e){} try{document.body.removeChild(script);}catch(e){}
+    reportClientError('submit_health', 'network error — script failed to load (request likely never reached the server)');
+    showFailure('הבקשה לא הגיעה לשרת (בעיית רשת) — נסי שוב');
+  };
   script.onload  = () => { try{document.body.removeChild(script);}catch(e){} };
   document.body.appendChild(script);
 });

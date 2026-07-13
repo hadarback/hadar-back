@@ -52,7 +52,7 @@ main{padding:2rem 2rem 5rem;max-width:600px;margin:0 auto;position:relative;z-in
 .field input{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.95rem 1.1rem;font-family:inherit;font-size:1rem;color:var(--ink);transition:all .2s}
 .field input:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-soft)}
 .field .error{display:none;color:var(--error);font-size:.82rem;margin-top:.4rem;font-weight:600}
-.field.invalid input{border-color:var(--error)}
+.field.invalid input{border-color:var(--error);box-shadow:0 0 0 3px rgba(192,88,74,.2)}
 .field.invalid .error{display:block}
 
 /* found appointment cards */
@@ -220,6 +220,21 @@ footer .info{color:rgba(255,255,255,.6);font-size:.9rem}
 <script>
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx2NWe0Ghe0FFCP82DICxgE7B_KxPfuPcz_AFB__1TYVKPe15vT52BMDo2wBR149vCv6A/exec';
 const TREATMENT_MIN = 60, BUFFER_MIN = 15;
+
+// דיווח כשל מהדפדפן חזרה לשרת — כדי שגם תקלות שקורות אצל הלקוחה (רשת וכו') יופיעו ב-Executions
+window.hadarNoop = function(){};
+function reportClientError(actionType, message){
+  try{
+    if(!SHEETS_URL) return;
+    const usp=new URLSearchParams({ action:'log_client_error', clientAction:String(actionType||'').substring(0,40),
+      message:String(message||'').substring(0,500), callback:'hadarNoop' });
+    const s=document.createElement('script');
+    s.src=SHEETS_URL+'?'+usp.toString();
+    s.onload=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    s.onerror=()=>{ try{document.body.removeChild(s);}catch(e){} };
+    document.body.appendChild(s);
+  }catch(e){}
+}
 const HOURS = { 0:{open:9,close:20},1:{open:9,close:20},2:{open:9,close:20},3:{open:9,close:20},4:{open:9,close:20},5:{open:9,close:14},6:null };
 
 const $ = (s,r=document)=>r.querySelector(s);
@@ -232,12 +247,13 @@ function prettyDate(d){return HE_DOW[d.getDay()]+', '+d.getDate()+' '+HE_MONTHS[
 function toMin(t){const[h,m]=String(t).split(':').map(Number);return h*60+m;}
 function showToast(msg,err){const t=$('#toast');t.textContent=msg;t.className='toast show'+(err?' error':'');setTimeout(()=>t.classList.remove('show'),3500);}
 
+// ms===null → אין הגבלת זמן, ממתינים לתשובה אמיתית מהשרת (או לכשל רשת אמיתי דרך onerror)
 function jsonpGet(params,ms){return new Promise((res,rej)=>{
   if(!SHEETS_URL){rej(new Error('no url'));return;}
   const cb='upCb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-  const timer=setTimeout(()=>{cleanup();rej(new Error('timeout'));},ms||8000);
+  const timer=ms===null?null:setTimeout(()=>{cleanup();rej(new Error('timeout'));},ms||8000);
   const sc=document.createElement('script');
-  function cleanup(){clearTimeout(timer);try{delete window[cb];}catch(e){window[cb]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);}
+  function cleanup(){if(timer)clearTimeout(timer);try{delete window[cb];}catch(e){window[cb]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);}
   window[cb]=r=>{cleanup();res(r);};
   const u=new URLSearchParams(params);u.append('callback',cb);
   sc.src=SHEETS_URL+'?'+u.toString();sc.onerror=()=>{cleanup();rej(new Error('net'));};
@@ -261,7 +277,7 @@ async function findBooking(){
   let valid=true;
   if(!name){$('#f-name').closest('.field').classList.add('invalid');valid=false;}
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('#f-email').closest('.field').classList.add('invalid');valid=false;}
-  if(!valid)return;
+  if(!valid){ document.querySelector('.field.invalid')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
   const btn=$('#btn-find');btn.classList.add('loading');btn.disabled=true;
   try{
     const r=await jsonpGet({action:'find_booking',name:name});
@@ -362,15 +378,22 @@ $('#btn-save').addEventListener('click',async()=>{
   if(!state.bookingId||!state.date||!state.time)return;
   const btn=$('#btn-save');btn.classList.add('loading');btn.disabled=true;
   try{
-    const r=await jsonpGet({action:'client_reschedule',id:state.bookingId,name:state.name,date:fmtDate(state.date),time:state.time});
+    // אין הגבלת זמן — ממתינים לתשובה אמיתית מהשרת
+    const r=await jsonpGet({action:'client_reschedule',id:state.bookingId,name:state.name,date:fmtDate(state.date),time:state.time},null);
     if(r&&r.result==='success'){
       $('#done-summary').innerHTML=`
         <div class="row"><span class="lbl">שם</span><span class="val">${state.name}</span></div>
         <div class="row"><span class="lbl">מועד חדש</span><span class="val">${prettyDate(state.date)}</span></div>
         <div class="row"><span class="lbl">שעה</span><span class="val">${state.time}</span></div>`;
       setScreen('screen-done');
-    }else{ showToast(r&&r.message==='name mismatch'?'השם לא תואם לתור':'שגיאה בעדכון',true); btn.classList.remove('loading');btn.disabled=false; }
-  }catch(e){ showToast('שגיאת תקשורת',true); btn.classList.remove('loading');btn.disabled=false; }
+    }else{
+      reportClientError('client_reschedule', r&&r.message?'server returned error: '+r.message:'server returned non-success response');
+      showToast(r&&r.message==='name mismatch'?'השם לא תואם לתור':'שגיאה בעדכון',true); btn.classList.remove('loading');btn.disabled=false;
+    }
+  }catch(e){
+    reportClientError('client_reschedule', 'network error: '+(e&&e.message||e));
+    showToast('שגיאת תקשורת',true); btn.classList.remove('loading');btn.disabled=false;
+  }
 });
 
 // ---------- INIT ----------
