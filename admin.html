@@ -271,6 +271,8 @@ tbody tr:hover{background:var(--bg-cream)}
 .slot-bulk-confirm.block-confirm .btn-add:hover{background:#a8492e}
 .btn-ghost-sm{background:none;border:none;color:var(--text-light);cursor:pointer;font-family:inherit;font-size:.85rem;text-decoration:underline}
 .slotchip .t{flex:1;text-align:center}
+.slotchip .t[data-btn="setname"]{cursor:pointer;border-radius:6px;transition:background .15s}
+.slotchip .t[data-btn="setname"]:hover{background:var(--accent-soft)}
 .slotchip .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:var(--bg-cream);color:var(--text-mid);transition:all .15s;flex-shrink:0;cursor:pointer}
 .slotchip .ic svg{width:13px;height:13px}
 .slotchip .ic.add{color:var(--status-ok)}
@@ -1064,16 +1066,19 @@ async function loadDaySlots(iso){
     catch(e){ showToast('שגיאת תקשורת','error'); }
   });
   $('#slotgrid').innerHTML = '<div class="loading">טוען</div>';
-  let open=[], booked=[], blockedSlots=[], bookedNames={};
+  let open=[], booked=[], blockedSlots=[], bookedNames={}, blockedNames={};
   try {
     const r = await api({ action:'slots_admin', pin:PIN, date:iso });
-    if(r && r.result==='success'){ open=r.open||[]; booked=r.booked||[]; blockedSlots=r.blocked||[]; bookedNames=r.bookedNames||{}; }
+    if(r && r.result==='success'){ open=r.open||[]; booked=r.booked||[]; blockedSlots=r.blocked||[]; bookedNames=r.bookedNames||{}; blockedNames=r.blockedNames||{}; }
   } catch(e){ $('#slotgrid').innerHTML='<div class="rec-empty">שגיאת תקשורת</div>'; return; }
 
   // נרמול ל-HH:mm כדי למנוע כפילויות (וגם למפתחות של שמות המטופלות, כדי שיתאימו)
   const bookedNamesFmt = {};
   Object.keys(bookedNames).forEach(t => { bookedNamesFmt[fmtTime(t)] = bookedNames[t]; });
   bookedNames = bookedNamesFmt;
+  const blockedNamesFmt = {};
+  Object.keys(blockedNames).forEach(t => { blockedNamesFmt[fmtTime(t)] = blockedNames[t]; });
+  blockedNames = blockedNamesFmt;
   open = open.map(fmtTime); booked = booked.map(fmtTime); blockedSlots = blockedSlots.map(fmtTime);
   const openSet=new Set(open), bookedSet=new Set(booked), blockedSet=new Set(blockedSlots);
 
@@ -1123,12 +1128,16 @@ async function loadDaySlots(iso){
     const btn2 = `<span class="ic blk${isBlocked?' active':''}" data-btn="block">${blkSvg}</span>`;
     // תווית טקסט מפורשת מתחת לשעה — אותו סדר עדיפויות בדיוק כמו הצבע
     let stateLbl = '';
-    if(dispState==='blocked') stateLbl = '<span class="state-lbl no">⊘ חסום</span>';
+    if(dispState==='blocked'){
+      const kn = blockedNames[t] || '';
+      stateLbl = '<span class="state-lbl no">'+(kn?'🔒 '+kn:'⊘ חסום')+'</span>';
+    }
     else if(dispState==='buffer') stateLbl = '<span class="buf-lbl">מרווח</span>';
     else if(dispState==='open') stateLbl = '<span class="state-lbl ok">✓ פתוח</span>';
     else if(isPendingAdd) stateLbl = '<span class="state-lbl pend">נבחר להוספה</span>';
     else if(isPendingBlock) stateLbl = '<span class="state-lbl pend-block">נבחר לחסימה</span>';
-    return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t">${t}${stateLbl}</span>${btn2}</div>`;
+    // לוחצות על השעה עצמה כדי לסמן אותה כתפוסה עם שם (בועה קטנה לרישום שם)
+    return `<div class="slotchip ${cls}" data-time="${t}" data-state="${state}">${btn1}<span class="t" data-btn="setname" title="לחצי כדי לסמן תור עם שם">${t}${stateLbl}</span>${btn2}</div>`;
   }).join('');
   updateBulkConfirmBar();
 
@@ -1165,6 +1174,12 @@ async function loadDaySlots(iso){
           chip.classList.toggle('pending-block', pendingBlock.has(t));
           updateBulkConfirmBar();
         }
+      } else if(btnType==='setname'){
+        // לחיצה על השעה עצמה — "בועה" (prompt) לרישום שם, והשעה הופכת לתפוסה עם השם הזה
+        const name = prompt('שם המטופלת עבור השעה '+t+':');
+        if(name===null) return; // בוטל
+        if(!name.trim()){ showToast('נא להזין שם','error'); return; }
+        slotAction('block_slot',{time:t, name:name.trim()});
       }
     });
   });
