@@ -232,6 +232,8 @@ tbody tr:hover{background:var(--bg-cream)}
 .scal-grid .cell.blocked{background:rgba(192,88,74,.10)}
 .scal-grid .cell.blocked > span:first-child{color:var(--status-no);text-decoration:line-through}
 .scal-grid .cell .lock{position:absolute;top:3px;left:5px;font-size:.62rem;color:var(--status-no)}
+.scal-grid .cell.today{border:2px solid var(--accent-deep);box-shadow:0 0 0 2px var(--accent-soft)}
+.scal-grid .cell .today-tag{position:absolute;top:3px;right:5px;font-size:.58rem;font-weight:700;color:var(--accent-deep);letter-spacing:.02em}
 .block-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:rgba(192,88,74,.09);border:1px solid rgba(192,88,74,.3);border-radius:12px;padding:1rem 1.2rem;flex-wrap:wrap}
 .block-banner .bb-text{color:var(--status-no);font-weight:600}
 .block-banner button{background:var(--white);border:1px solid var(--status-no);color:var(--status-no);border-radius:9999px;padding:.5rem 1.2rem;cursor:pointer;font-family:inherit;font-weight:600;font-size:.88rem}
@@ -1023,6 +1025,8 @@ async function renderMonth(){
     const date = new Date(m.getFullYear(), m.getMonth(), d);
     const iso = fmtDateISO(date);
     const cell = document.createElement('div'); cell.className='cell';
+    const isToday = date.getTime()===today.getTime();
+    if(isToday) cell.classList.add('today');
     if(date<today) cell.classList.add('past');
     if(selectedSlotDate===iso) cell.classList.add('selected');
     const isOff = monthOff.has(iso);
@@ -1031,7 +1035,7 @@ async function renderMonth(){
     const noHours = !hasOpen && !hasBooked && !isOff;
     if(noHours) cell.classList.add('no-hours');
     if(hasOpen) cell.classList.add('has-hours');
-    cell.innerHTML = `${isOff?'<span class="lock">חסום</span>':''}<span>${d}</span><span class="dots">${hasBooked?'<span class="dot booked"></span>':''}${hasOpen?'<span class="dot open"></span>':''}</span>`;
+    cell.innerHTML = `${isOff?'<span class="lock">חסום</span>':''}${isToday?'<span class="today-tag">היום</span>':''}<span>${d}</span><span class="dots">${hasBooked?'<span class="dot booked"></span>':''}${hasOpen?'<span class="dot open"></span>':''}</span>`;
     cell.addEventListener('click', ()=>selectSlotDate(iso));
     grid.appendChild(cell);
   }
